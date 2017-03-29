@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingRight="8dp">
+
+        <ImageView
+            android:id="@+id/img_station"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/img_next"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_next" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/img_next"
+            android:layout_toRightOf="@id/img_station"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_station_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="杭州交警支队第三检测站"
+                android:textColor="@color/color_text_default"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_period_summer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8:00~11:30  13:30~17:30(夏)"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_period_winter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8:00~11:00  13:30~16:30(冬)"
+                android:textSize="12sp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <RatingBar
+                    android:id="@+id/rating_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:numStars="5"
+                    android:progress="75"
+                    android:stepSize="1"
+                    style="@style/RatingBar"/>
+
+                <TextView
+                    android:id="@+id/tv_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="500m" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/color_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_day1"
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_border_corner_round_color_divider"
+                android:text="23日"/>
+
+            <TextView
+                android:id="@+id/tv_day1_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="23"
+                android:textColor="@color/color_text_default"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_day2"
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_border_corner_round_color_divider"
+                android:text="24日"/>
+
+            <TextView
+                android:id="@+id/tv_day2_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="14"
+                android:textColor="@color/color_text_default"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_day3"
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_border_corner_round_color_divider"
+                android:text="25日"/>
+
+            <TextView
+                android:id="@+id/tv_day3_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="45"
+                android:textColor="@color/color_text_default"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_day4"
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_border_corner_round_color_divider"
+                android:text="26日"/>
+
+            <TextView
+                android:id="@+id/tv_day4_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="32"
+                android:textColor="@color/color_text_default"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_day5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_border_corner_round_color_divider"
+                android:text="27日"/>
+
+            <TextView
+                android:id="@+id/tv_day5_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="24"
+                android:textColor="@color/color_text_default"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

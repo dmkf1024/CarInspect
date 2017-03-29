@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:layout_alignParentBottom="true"
+    android:background="@color/color_tab_background"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/tab_home_page"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_home_page"
+            android:layout_width="@dimen/icon_size_bottom_bar"
+            android:layout_height="24dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_home_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_bottom_bar_text"
+            android:text="@string/home_page"
+            android:textColor="@color/color_tab_text_normal"
+            android:textSize="@dimen/text_size_bottom_bar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_car_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_car_info"
+            android:layout_width="@dimen/icon_size_bottom_bar"
+            android:layout_height="24dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_car_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_bottom_bar_text"
+            android:text="@string/car_info"
+            android:textColor="@color/color_tab_text_normal"
+            android:textSize="@dimen/text_size_bottom_bar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_owner_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_owner_info"
+            android:layout_width="@dimen/icon_size_bottom_bar"
+            android:layout_height="24dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_owner_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_bottom_bar_text"
+            android:text="@string/owner_info"
+            android:textColor="@color/color_tab_text_normal"
+            android:textSize="@dimen/text_size_bottom_bar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_car_file"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_car_file"
+            android:layout_width="@dimen/icon_size_bottom_bar"
+            android:layout_height="24dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_car_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_bottom_bar_text"
+            android:text="@string/car_file"
+            android:textColor="@color/color_tab_text_normal"
+            android:textSize="@dimen/text_size_bottom_bar" />
+    </LinearLayout>
+
+</LinearLayout>

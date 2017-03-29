@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_activity_bg_02"
+    tools:context="studio.imedia.vehicleinspection.SelectTimeWayActivity">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <FrameLayout
+        android:id="@+id/chart"
+        android:layout_below="@id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@android:color/white"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
+
+    <LinearLayout
+        android:id="@+id/no_data"
+        android:visibility="invisible"
+        android:layout_below="@id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@android:color/white"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:src="@drawable/icon_happy"/>
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:text="@string/inspection_station_available"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_inspection_station"
+        android:layout_below="@id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您选择的是"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_inspection_station"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="@color/color_text_default"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_select_date"
+        android:clickable="true"
+        android:layout_below="@id/layout_inspection_station"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="选择日期"
+            android:textSize="14sp"
+            android:textColor="@color/color_text_default"/>
+
+        <ImageView
+            android:id="@+id/img_next_date"
+            android:layout_width="@dimen/length_icon_next"
+            android:layout_height="@dimen/length_icon_next"
+            android:src="@drawable/icon_next"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/img_next_date" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_below="@id/layout_select_date"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_divider" />
+
+    <RelativeLayout
+        android:id="@+id/layout_select_time"
+        android:clickable="true"
+        android:layout_below="@id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="选择时间"
+            android:textSize="14sp"
+            android:textColor="@color/color_text_default"/>
+
+        <ImageView
+            android:id="@+id/img_next_time"
+            android:layout_width="@dimen/length_icon_next"
+            android:layout_height="@dimen/length_icon_next"
+            android:src="@drawable/icon_next"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/img_next_time" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/layout_select_time"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="代检"
+            android:textSize="14sp"
+            android:textColor="@color/color_text_default"/>
+
+        <studio.imedia.vehicleinspection.views.SwitchView
+            android:id="@+id/switch_view"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_commit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/btn_bg_color_primary"
+        android:layout_alignParentBottom="true"
+        android:text="提交"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"/>
+</RelativeLayout>

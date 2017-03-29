@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/part_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="风尚套餐"
+        android:textSize="14sp"
+        android:textColor="@color/color_text_default"/>
+
+    <TextView
+        android:id="@+id/part_norm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/part_name"
+        android:layout_marginLeft="4dp"
+        android:text="（已售570笔）"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/img_enter"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_next"/>
+
+    <TextView
+        android:id="@+id/vip_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/img_enter"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="4dp"
+        android:text="￥199"
+        android:textSize="14sp"
+        android:textColor="#ff0000"/>
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/vip_price"
+        android:text="￥399"
+        android:textSize="12sp"/>
+</RelativeLayout>

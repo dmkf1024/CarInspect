@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    tools:context="studio.imedia.vehicleinspection.RatingActivity">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:text="￥90.00"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/white"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp" />
+
+    <studio.imedia.vehicleinspection.views.RoundImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/img_station"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="36dp"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:text="@string/station_name_example"
+        android:textSize="16sp"
+        android:textColor="@android:color/white" />
+    
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:numStars="5"
+        android:stepSize="1"
+        android:progress="20"
+        style="@style/RatingBarYellow" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="24dp"
+        android:background="@color/color_activity_bg_02">
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:text="确认"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:background="@drawable/btn_bg_corner_round_border_divider"/>
+
+        <EditText
+            android:id="@+id/et_leave_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:layout_above="@id/btn_confirm"
+            android:gravity="top"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="留言"
+            android:textSize="14sp"
+            android:textColor="@color/color_text_default"
+            android:background="@drawable/bg_border_color_divider"/>
+    </RelativeLayout>
+</LinearLayout>

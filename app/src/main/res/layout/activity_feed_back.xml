@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_activity_bg_02"
+    tools:context="studio.imedia.vehicleinspection.FeedBackActivity">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <EditText
+        android:id="@+id/et_suggestion"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:padding="8dp"
+        android:gravity="top"
+        android:hint="@string/hint_feed_back"
+        android:textColor="@color/color_text_default"
+        android:textSize="12sp"
+        android:background="@android:color/white"/>
+
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="发送"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_bg_corner_round_color_primary"/>
+</LinearLayout>
