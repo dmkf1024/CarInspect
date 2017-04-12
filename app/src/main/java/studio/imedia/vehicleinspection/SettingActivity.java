@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -67,7 +67,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(mContext, ModifyPwdActivity.class));
                 break;
             case R.id.btn_logout:
-                MySharedPreferencesUtils.save(mContext, StaticValues.KEY_LOGIN_STATE, false);
+                SPUtil.save(mContext, Constant.Key.LOGIN_STATE, false);
                 startActivity(new Intent(mContext, MainActivity.class));
                 finish();
                 break;

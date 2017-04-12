@@ -30,8 +30,8 @@ import java.util.List;
 import studio.imedia.vehicleinspection.fragments.OrderedFragment;
 import studio.imedia.vehicleinspection.fragments.OrderingFragment;
 import studio.imedia.vehicleinspection.gbean.GOrder;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 
 public class MyOrderActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -63,6 +63,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
 
     private static final int MSG_OK = 0x01;
     private static final int MSG_FAIL = 0x02;
+    private static final int CONNECT_FAIL = 0x03;
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -74,6 +75,9 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
                     break;
                 case MSG_FAIL:
                     Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -181,8 +185,8 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP, StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT, StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(mContext, Constant.Key.URL_IP, Constant.Type.STRING);
+        String port = (String) SPUtil.get(mContext, Constant.Key.URL_PORT, Constant.Type.STRING);
 
         mUrl.append("http://")
                 .append(ip)
@@ -197,7 +201,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
      */
     private void getData(StringBuffer urlSB) {
         String url = urlSB.toString();
-        int userId = (int) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_ID, StaticValues.TYPE_INTEGER);
+        int userId = (int) SPUtil.get(mContext, Constant.Key.USER_ID, Constant.Type.INTEGER);
 
         RequestBody formBody = new FormEncodingBuilder()
                 .add("id", String.valueOf(userId))
@@ -211,8 +215,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+            mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

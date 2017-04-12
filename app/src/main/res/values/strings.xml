@@ -66,4 +66,7 @@
     <string name="title_car_file_detail">档案详情</string>
 
     <string name="inspection_station_available">当天车检站很空哦</string>
+
+
+    <string name="connect_failed">连接服务器失败</string>
 </resources>

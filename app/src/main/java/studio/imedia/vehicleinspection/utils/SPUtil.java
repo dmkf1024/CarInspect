@@ -3,13 +3,14 @@ package studio.imedia.vehicleinspection.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
-import studio.imedia.vehicleinspection.pojo.StaticValues;
+import studio.imedia.vehicleinspection.pojo.Constant;
 
 /**
  * Created by Cooffee on 15/10/15.
  */
-public class MySharedPreferencesUtils {
+public class SPUtil {
 
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
@@ -60,21 +61,26 @@ public class MySharedPreferencesUtils {
         sharedPreferences = context.getSharedPreferences(FILE_PREFERENCES, Activity.MODE_WORLD_READABLE);
         // 判断要获取的数据的类型
         switch (valueType) {
-            case StaticValues.TYPE_INTEGER:
+            case Constant.Type.INTEGER:
                 result = sharedPreferences.getInt(key, -1);
                 break;
-            case StaticValues.TYPE_STRING:
+            case Constant.Type.STRING:
                 result = sharedPreferences.getString(key, "");
                 break;
-            case StaticValues.TYPE_FLOAT:
+            case Constant.Type.FLOAT:
                 result = sharedPreferences.getFloat(key, -1);
                 break;
-            case StaticValues.TYPE_LONG:
+            case Constant.Type.LONG:
                 result = sharedPreferences.getLong(key, -1);
                 break;
-            case StaticValues.TYPE_BOOLEAN:
+            case Constant.Type.BOOLEAN:
                 result = sharedPreferences.getBoolean(key, false);
                 break;
+        }
+        if (TextUtils.equals(key, Constant.Key.URL_IP)) {
+            result = "wj1024.com";
+        } else if (TextUtils.equals(key, Constant.Key.URL_PORT)) {
+            result = "8080";
         }
         sharedPreferences = null;
         return result;

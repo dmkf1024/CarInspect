@@ -30,8 +30,8 @@ import java.util.List;
 
 import studio.imedia.vehicleinspection.adapters.MyRepairingStationAdapter;
 import studio.imedia.vehicleinspection.bean.RepairingStation;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 public class RepairStationListActivity extends AppCompatActivity implements View.OnClickListener {
@@ -60,6 +60,7 @@ public class RepairStationListActivity extends AppCompatActivity implements View
 
     private static final int MSG_OK = 0x01;
     private static final int MSG_FAIL = 0x02;
+    private static final int CONNECT_FAIL = 0x03;
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -72,6 +73,10 @@ public class RepairStationListActivity extends AppCompatActivity implements View
                 case MSG_FAIL:
                     MyWidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    MyWidgetUtils.hideProgressDialog();
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -119,8 +124,8 @@ public class RepairStationListActivity extends AppCompatActivity implements View
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP, StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT, StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(mContext, Constant.Key.URL_IP, Constant.Type.STRING);
+        String port = (String) SPUtil.get(mContext, Constant.Key.URL_PORT, Constant.Type.STRING);
 
         mUrl.append("http://")
                 .append(ip)
@@ -135,7 +140,7 @@ public class RepairStationListActivity extends AppCompatActivity implements View
     private void getData(StringBuffer urlSB) {
         String url = urlSB.toString();
         Log.d("status", "the usrl is " + url);
-        int cityId = (int) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_CITY_ID, StaticValues.TYPE_INTEGER);
+        int cityId = (int) SPUtil.get(mContext, Constant.Key.USER_CITY_ID, Constant.Type.INTEGER);
         Log.d("status", "the city id is " + cityId);
         RequestBody formBody = new FormEncodingBuilder()
                 .add("cityId", String.valueOf(cityId))
@@ -149,8 +154,7 @@ public class RepairStationListActivity extends AppCompatActivity implements View
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                MyWidgetUtils.hideProgressDialog();
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

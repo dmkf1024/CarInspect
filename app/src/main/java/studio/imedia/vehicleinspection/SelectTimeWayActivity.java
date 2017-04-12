@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -43,10 +42,9 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import studio.imedia.vehicleinspection.pojo.StaticValues;
+import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.MyCalendarUtils;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.views.MyDatePickerDialog;
 import studio.imedia.vehicleinspection.views.MyTimePickerDialog;
 import studio.imedia.vehicleinspection.views.SwitchView;
@@ -189,7 +187,7 @@ public class SelectTimeWayActivity extends AppCompatActivity implements View.OnC
     private void getBundle() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            mStationId = bundle.getInt(StaticValues.KEY_STATION_ID);
+            mStationId = bundle.getInt(Constant.Key.STATION_ID);
         }
     }
 
@@ -197,10 +195,10 @@ public class SelectTimeWayActivity extends AppCompatActivity implements View.OnC
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(mContext, Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        String port = (String) SPUtil.get(mContext, Constant.Key.URL_PORT,
+                Constant.Type.STRING);
         mUrl.append("http://");
         mUrl.append(ip);
         mUrl.append(":");
@@ -391,20 +389,20 @@ public class SelectTimeWayActivity extends AppCompatActivity implements View.OnC
                     if (SwitchView.STATE_SWITCH_ON == switchView.getState()) {
                         Intent intent = new Intent(mContext, SelectMasterWithPopupwidnowsActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString(StaticValues.KEY_ORDER_DATE, date);
-                        bundle.putString(StaticValues.KEY_ORDER_TIME, time);
-                        bundle.putString(StaticValues.KEY_INSPECT_STATION, station);
-                        bundle.putInt(StaticValues.KEY_STATION_ID, mStationId);
+                        bundle.putString(Constant.Key.ORDER_DATE, date);
+                        bundle.putString(Constant.Key.ORDER_TIME, time);
+                        bundle.putString(Constant.Key.INSPECT_STATION, station);
+                        bundle.putInt(Constant.Key.STATION_ID, mStationId);
                         intent.putExtras(bundle);
                         startActivity(intent);
                     } else if (SwitchView.STATE_SWITCH_OFF == switchView.getState()) {
                         Intent intent = new Intent(mContext, SubmitOrderActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putBoolean(StaticValues.KEY_PROXY_STATE, false);
-                        bundle.putString(StaticValues.KEY_ORDER_DATE, date);
-                        bundle.putString(StaticValues.KEY_ORDER_TIME, time);
-                        bundle.putString(StaticValues.KEY_INSPECT_STATION, station);
-                        bundle.putInt(StaticValues.KEY_STATION_ID, mStationId);
+                        bundle.putBoolean(Constant.Key.PROXY_STATE, false);
+                        bundle.putString(Constant.Key.ORDER_DATE, date);
+                        bundle.putString(Constant.Key.ORDER_TIME, time);
+                        bundle.putString(Constant.Key.INSPECT_STATION, station);
+                        bundle.putInt(Constant.Key.STATION_ID, mStationId);
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }

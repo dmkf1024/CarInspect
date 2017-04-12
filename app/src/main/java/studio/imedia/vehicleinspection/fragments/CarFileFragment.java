@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +34,8 @@ import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.adapters.MyCarFileAdapter;
 import studio.imedia.vehicleinspection.bean.CarFile;
 import studio.imedia.vehicleinspection.gbean.GOrder;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 /**
@@ -61,6 +62,7 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
 
     private static final int MSG_OK = 0x01;
     private static final int MSG_FAIL = 0x02;
+    private static final int CONNECT_FAIL = 0x03;
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -73,6 +75,10 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
                 case MSG_FAIL:
                     MyWidgetUtils.hideProgressDialog();
                     Toast.makeText(getActivity(), "数据获取失败", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    MyWidgetUtils.hideProgressDialog();
+                    Toast.makeText(getActivity(), "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -115,8 +121,8 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onResume() {
         super.onResume();
-        isLogin = (boolean) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_LOGIN_STATE,
-                StaticValues.TYPE_BOOLEAN);
+        isLogin = (boolean) SPUtil.get(getActivity(), Constant.Key.LOGIN_STATE,
+                Constant.Type.BOOLEAN);
         if (isLogin) {
             MyWidgetUtils.showProgressDialog(getActivity(), null, "加载中...", true);
             MyWidgetUtils.showList(lvCarFiles, tvNoLogin);
@@ -139,8 +145,8 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_URL_IP, StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_URL_PORT, StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(getActivity(), Constant.Key.URL_IP, Constant.Type.STRING);
+        String port = (String) SPUtil.get(getActivity(), Constant.Key.URL_PORT, Constant.Type.STRING);
 
         mUrl.append("http://")
                 .append(ip)
@@ -154,7 +160,7 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
      */
     private void getData(StringBuffer urlSB) {
         String url = urlSB.toString();
-        int userId = (int) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_USER_ID, StaticValues.TYPE_INTEGER);
+        int userId = (int) SPUtil.get(getActivity(), Constant.Key.USER_ID, Constant.Type.INTEGER);
         RequestBody formBody = new FormEncodingBuilder()
                 .add("id", String.valueOf(userId))
                 .build();
@@ -163,13 +169,11 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
                 .url(url)
                 .post(formBody)
                 .build();
-
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                MyWidgetUtils.hideProgressDialog();
-                Toast.makeText(getActivity(), "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                Log.i(Constant.Tag.NET, "onFailure: " + e.getMessage());
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

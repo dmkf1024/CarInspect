@@ -48,9 +48,9 @@ import studio.imedia.vehicleinspection.CityActivity;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.SelectCarTypeActivity;
 import studio.imedia.vehicleinspection.SelectCarBrandActivity;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
+import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.MyPicUtils;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 /**
@@ -114,6 +114,7 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
     private static final int MSG_UP_PIC_FAIL = 0x01;
     private static final int MSG_UP_INFO_SUCCESS = 0x02;
     private static final int MSG_UP_INFO_FAIL = 0x03;
+    private static final int CONNECT_FAIL = 0x04;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -132,6 +133,9 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
                     break;
                 case MSG_UP_INFO_FAIL:
                     Toast.makeText(getActivity(), "信息上传失败，请稍候重试", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    Toast.makeText(getActivity(), "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -171,8 +175,8 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        isLogin = (boolean) MySharedPreferencesUtils.get(getActivity(),
-                StaticValues.KEY_LOGIN_STATE, StaticValues.TYPE_BOOLEAN);
+        isLogin = (boolean) SPUtil.get(getActivity(),
+                Constant.Key.LOGIN_STATE, Constant.Type.BOOLEAN);
         getBundle(); // 获取传值
         if (isLogin && isInfoInited == false) {
             isInfoInited = true;
@@ -190,37 +194,37 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
     private void updateCarInfo() {
         Context context = getActivity();
         // 从preferences里面取出数据
-        mId = (int) MySharedPreferencesUtils.get(context, StaticValues.KEY_USER_ID, StaticValues.TYPE_INTEGER);
-        mLicensePicPath = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_CAR_LICENSE_PIC,
-                StaticValues.TYPE_STRING);
-        String carPlateNum = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_CAR_PLATE_NUM,
-                StaticValues.TYPE_STRING);
-        String carBrand = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_CAR_BRAND_NAME,
-                StaticValues.TYPE_STRING);
-        mCarBrandId = (int) MySharedPreferencesUtils.get(context, StaticValues.KEY_CAR_BRAND_ID,
-                StaticValues.TYPE_INTEGER);
-        String carType = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_CAR_TYPE_NAME,
-                StaticValues.TYPE_STRING);
-        mCarTypeId = (int) MySharedPreferencesUtils.get(context, StaticValues.KEY_CAR_TYPE_ID,
-                StaticValues.TYPE_INTEGER);
-        String carFrameNum = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_CAR_FRAME_NUM,
-                StaticValues.TYPE_STRING);
-        mEngineNum = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_CAR_ENGINE_NUM,
-                StaticValues.TYPE_STRING);
-        mRegisterTime = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_CAR_REGISTER_TIME,
-                StaticValues.TYPE_STRING);
-        String province = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_USER_PROVINCE_NAME,
-                StaticValues.TYPE_STRING);
-        mProvinceId = (int) MySharedPreferencesUtils.get(context, StaticValues.KEY_USER_PROVINCE_ID,
-                StaticValues.TYPE_INTEGER);
-        String city = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_USER_CITY_NAME,
-                StaticValues.TYPE_STRING);
-        mCityId = (int) MySharedPreferencesUtils.get(context, StaticValues.KEY_USER_CITY_ID,
-                StaticValues.TYPE_INTEGER);
-        String county = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_USER_COUNTY_NAME,
-                StaticValues.TYPE_STRING);
-        mCountyId = (int) MySharedPreferencesUtils.get(context, StaticValues.KEY_USER_COUNTY_ID,
-                StaticValues.TYPE_INTEGER);
+        mId = (int) SPUtil.get(context, Constant.Key.USER_ID, Constant.Type.INTEGER);
+        mLicensePicPath = (String) SPUtil.get(context, Constant.Key.CAR_LICENSE_PIC,
+                Constant.Type.STRING);
+        String carPlateNum = (String) SPUtil.get(context, Constant.Key.CAR_PLATE_NUM,
+                Constant.Type.STRING);
+        String carBrand = (String) SPUtil.get(context, Constant.Key.CAR_BRAND_NAME,
+                Constant.Type.STRING);
+        mCarBrandId = (int) SPUtil.get(context, Constant.Key.CAR_BRAND_ID,
+                Constant.Type.INTEGER);
+        String carType = (String) SPUtil.get(context, Constant.Key.CAR_TYPE_NAME,
+                Constant.Type.STRING);
+        mCarTypeId = (int) SPUtil.get(context, Constant.Key.CAR_TYPE_ID,
+                Constant.Type.INTEGER);
+        String carFrameNum = (String) SPUtil.get(context, Constant.Key.CAR_FRAME_NUM,
+                Constant.Type.STRING);
+        mEngineNum = (String) SPUtil.get(context, Constant.Key.CAR_ENGINE_NUM,
+                Constant.Type.STRING);
+        mRegisterTime = (String) SPUtil.get(context, Constant.Key.CAR_REGISTER_TIME,
+                Constant.Type.STRING);
+        String province = (String) SPUtil.get(context, Constant.Key.USER_PROVINCE_NAME,
+                Constant.Type.STRING);
+        mProvinceId = (int) SPUtil.get(context, Constant.Key.USER_PROVINCE_ID,
+                Constant.Type.INTEGER);
+        String city = (String) SPUtil.get(context, Constant.Key.USER_CITY_NAME,
+                Constant.Type.STRING);
+        mCityId = (int) SPUtil.get(context, Constant.Key.USER_CITY_ID,
+                Constant.Type.INTEGER);
+        String county = (String) SPUtil.get(context, Constant.Key.USER_COUNTY_NAME,
+                Constant.Type.STRING);
+        mCountyId = (int) SPUtil.get(context, Constant.Key.USER_COUNTY_ID,
+                Constant.Type.INTEGER);
 
         // 将数据呈现到界面上
         // TODO 行驶证图片
@@ -239,19 +243,19 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
      */
     private void saveCarInfo() {
         Context context = getActivity();
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_CAR_LICENSE_PIC, mLicensePicPath);
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_CAR_BRAND_ID, mCarBrandId);
+        SPUtil.save(context, Constant.Key.CAR_LICENSE_PIC, mLicensePicPath);
+        SPUtil.save(context, Constant.Key.CAR_BRAND_ID, mCarBrandId);
         String carBrandName = tvCarBrand.getText().toString().trim();
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_CAR_BRAND_NAME, carBrandName);
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_CAR_TYPE_ID, mCarTypeId);
+        SPUtil.save(context, Constant.Key.CAR_BRAND_NAME, carBrandName);
+        SPUtil.save(context, Constant.Key.CAR_TYPE_ID, mCarTypeId);
         String carTypeName = tvCarType.getText().toString().trim();
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_CAR_TYPE_NAME, carTypeName);
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_CAR_ENGINE_NUM, mEngineNum);
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_CAR_REGISTER_TIME, mRegisterTime);
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_USER_PROVINCE_ID, mProvinceId);
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_USER_CITY_ID, mCityId);
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_USER_COUNTY_ID, mCountyId);
-        MySharedPreferencesUtils.save(context, StaticValues.KEY_USER_DETAILED_ADDRESS, mDetailedAddress);
+        SPUtil.save(context, Constant.Key.CAR_TYPE_NAME, carTypeName);
+        SPUtil.save(context, Constant.Key.CAR_ENGINE_NUM, mEngineNum);
+        SPUtil.save(context, Constant.Key.CAR_REGISTER_TIME, mRegisterTime);
+        SPUtil.save(context, Constant.Key.USER_PROVINCE_ID, mProvinceId);
+        SPUtil.save(context, Constant.Key.USER_CITY_ID, mCityId);
+        SPUtil.save(context, Constant.Key.USER_COUNTY_ID, mCountyId);
+        SPUtil.save(context, Constant.Key.USER_DETAILED_ADDRESS, mDetailedAddress);
     }
 
     /**
@@ -294,8 +298,8 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
      */
     private void initUrl() {
         Context context = getActivity();
-        String ip = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_URL_IP, StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(context, StaticValues.KEY_URL_PORT, StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(context, Constant.Key.URL_IP, Constant.Type.STRING);
+        String port = (String) SPUtil.get(context, Constant.Key.URL_PORT, Constant.Type.STRING);
 
         // 基本url
         mBaseUrl.append("http://");
@@ -326,7 +330,7 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
                 if (!MyWidgetUtils.isTextViewEmpty(tvCarBrand)) {
                     Intent intent = new Intent(getActivity(), SelectCarTypeActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt(StaticValues.KEY_CAR_BRAND_ID, mCarBrandId);
+                    bundle.putInt(Constant.Key.CAR_BRAND_ID, mCarBrandId);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 } else {
@@ -353,24 +357,24 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
         Bundle bundle = getActivity().getIntent().getExtras();
         if (null != bundle) {
             // 选择车系
-            String carBrand = bundle.getString(StaticValues.KEY_CAR_BRAND_NAME);
-            mCarBrandId = bundle.getInt(StaticValues.KEY_CAR_BRAND_ID);
+            String carBrand = bundle.getString(Constant.Key.CAR_BRAND_NAME);
+            mCarBrandId = bundle.getInt(Constant.Key.CAR_BRAND_ID);
             if (null != carBrand && !TextUtils.isEmpty(carBrand)) {
                 tvCarBrand.setText(carBrand);
                 tvCarType.setText("");
             }
 
             // 选择车型
-            String carType = bundle.getString(StaticValues.KEY_CAR_TYPE_NAME);
-            mCarTypeId = bundle.getInt(StaticValues.KEY_CAR_TYPE_ID);
+            String carType = bundle.getString(Constant.Key.CAR_TYPE_NAME);
+            mCarTypeId = bundle.getInt(Constant.Key.CAR_TYPE_ID);
             if (null != carType && !TextUtils.isEmpty(carType)) {
                 tvCarType.setText(carType);
             }
 
             // 常住城市
-            mCityId = bundle.getInt(StaticValues.KEY_USER_CITY_ID);
-            mCountyId = bundle.getInt(StaticValues.KEY_USER_COUNTY_ID);
-            String cityCounty = bundle.getString(StaticValues.KEY_USER_CITY_COUNTY);
+            mCityId = bundle.getInt(Constant.Key.USER_CITY_ID);
+            mCountyId = bundle.getInt(Constant.Key.USER_COUNTY_ID);
+            String cityCounty = bundle.getString(Constant.Key.USER_CITY_COUNTY);
             if (cityCounty != null && !TextUtils.isEmpty(cityCounty)) {
                 tvCity.setText(cityCounty);
             }
@@ -456,8 +460,7 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Toast.makeText(getActivity(), "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+            mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

@@ -10,9 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -30,16 +28,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import studio.imedia.vehicleinspection.adapters.MyOrderItemAdapter;
-import studio.imedia.vehicleinspection.gbean.GOrder;
 import studio.imedia.vehicleinspection.gbean.GOrderItem;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 import studio.imedia.vehicleinspection.views.MyListView;
 import studio.imedia.vehicleinspection.views.SwitchView;
@@ -92,6 +86,7 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
     private static final int MSG_FAIL = 0x02;
     private static final int MSG_GET_ITEM_OK = 0x03;
     private static final int MSG_GET_ITEM_FAIL = 0x04;
+    private static final int CONNECT_FAIL = 0X05;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -103,7 +98,7 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
                     Toast.makeText(mContext, "订单提交成功！", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(mContext, PayActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt(StaticValues.KEY_ORDER_ID, mOrderId);
+                    bundle.putInt(Constant.Key.ORDER_ID, mOrderId);
                     intent.putExtras(bundle);
                     startActivity(intent);
 //                    startActivity(new Intent(mContext, PayActivity.class));
@@ -121,6 +116,10 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
                 case MSG_GET_ITEM_FAIL:
                     MyWidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取订单项目失败", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    MyWidgetUtils.hideProgressDialog();
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -183,8 +182,8 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP, StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT, StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(mContext, Constant.Key.URL_IP, Constant.Type.STRING);
+        String port = (String) SPUtil.get(mContext, Constant.Key.URL_PORT, Constant.Type.STRING);
 
         StringBuffer baseUrl = new StringBuffer();
         baseUrl.append("http://");
@@ -205,7 +204,7 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
     private void getOrderItems(StringBuffer urlSB) {
         MyWidgetUtils.showProgressDialog(mContext, null, "加载中...", true);
         String url = urlSB.toString();
-        int userId = (int) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_ID, StaticValues.TYPE_INTEGER);
+        int userId = (int) SPUtil.get(mContext, Constant.Key.USER_ID, Constant.Type.INTEGER);
         RequestBody formBody = new FormEncodingBuilder()
                 .add("id", String.valueOf(userId))
                 .build();
@@ -215,12 +214,12 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
                 .post(formBody)
                 .build();
 
+        Log.d(Constant.Tag.NET, "url is " + url + "; id " + userId);
+
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                MyWidgetUtils.hideProgressDialog();
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+               mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override
@@ -282,13 +281,13 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
     private void getBundle() {
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
-            String from = bundle.getString(StaticValues.KEY_FROM);
-            if (from == null || !StaticValues.ACTIVITY_SELECT_COUPON.equals(from)) { // 从上一界面跳转过来
+            String from = bundle.getString(Constant.Key.FROM);
+            if (from == null || !Constant.ACTIVITY_SELECT_COUPON.equals(from)) { // 从上一界面跳转过来
                 // 从上一层Activity返回的bundle
-                isProxy = bundle.getBoolean(StaticValues.KEY_PROXY_STATE);
-                String station = bundle.getString(StaticValues.KEY_INSPECT_STATION);
-                String date = bundle.getString(StaticValues.KEY_ORDER_DATE);
-                String time = bundle.getString(StaticValues.KEY_ORDER_TIME);
+                isProxy = bundle.getBoolean(Constant.Key.PROXY_STATE);
+                String station = bundle.getString(Constant.Key.INSPECT_STATION);
+                String date = bundle.getString(Constant.Key.ORDER_DATE);
+                String time = bundle.getString(Constant.Key.ORDER_TIME);
 
                 // 将日期规范成：2015-11-25格式
                 String formatDate = date.substring(0, date.indexOf("年")) + "-" +
@@ -298,12 +297,12 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
                 String formatTime = time + ":00";
                 // 时间戳格式：2015-11-25 12:34:00
                 mOrderTime = formatDate + " " + formatTime;
-                mStationId = bundle.getInt(StaticValues.KEY_STATION_ID);
+                mStationId = bundle.getInt(Constant.Key.STATION_ID);
 
                 if (isProxy) {
-                    mMasterId = bundle.getInt(StaticValues.KEY_MASTER_ID);
-                    mMsgLeft = bundle.getString(StaticValues.KEY_ORDER_MSG_LEFT);
-                    String master = bundle.getString(StaticValues.KEY_MASTER_NAME);
+                    mMasterId = bundle.getInt(Constant.Key.MASTER_ID);
+                    mMsgLeft = bundle.getString(Constant.Key.ORDER_MSG_LEFT);
+                    String master = bundle.getString(Constant.Key.MASTER_NAME);
                     tvMaster.setText("代检人： " + master);
                     tvCostSum.setText("￥132.00");
                     tvCostSumBottom.setText("￥132.00");
@@ -316,9 +315,9 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
                 tvStation.setText("检查站： " + station);
                 tvDateTime.setText("车检时间： " + date + " " + time);
             } else { // 从选择优惠券界面跳转过来
-                isUseCoupon = bundle.getBoolean(StaticValues.KEY_IS_USE_COUPON);
+                isUseCoupon = bundle.getBoolean(Constant.Key.IS_USE_COUPON);
                 if (isUseCoupon) {
-                    mCouponId = bundle.getInt(StaticValues.KEY_COUPON_ID);
+                    mCouponId = bundle.getInt(Constant.Key.COUPON_ID);
                     switchCoupon.toggleSwitch(true);
                 } else {
                     switchCoupon.toggleSwitch(false);
@@ -371,7 +370,7 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
      */
     private void submitOrder(StringBuffer urlSB) {
         String url = urlSB.toString();
-        mUserId = (int) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_ID, StaticValues.TYPE_INTEGER);
+        mUserId = (int) SPUtil.get(mContext, Constant.Key.USER_ID, Constant.Type.INTEGER);
         String content = "id:" + mUserId + ", masterId:" + mMasterId + ", inspectStationsId:" +
                 mStationId + ", couponId:" + mCouponId + ", message:" + mMsgLeft + ", payTYpe:" +
                 mPayType + ", orderTIme:" + mOrderTime;
@@ -402,9 +401,7 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                MyWidgetUtils.hideProgressDialog();
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

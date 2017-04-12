@@ -1,32 +1,10 @@
 package studio.imedia.vehicleinspection;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
-import java.io.IOException;
-import java.util.List;
-
-import studio.imedia.vehicleinspection.adapters.MyOrderAdapter;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
 
 public class OrderInfoActivity extends AppCompatActivity {
 

@@ -20,9 +20,8 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-import studio.imedia.vehicleinspection.bean.CarFile;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 
 public class CarFileDetailActivity extends AppCompatActivity {
 
@@ -55,6 +54,7 @@ public class CarFileDetailActivity extends AppCompatActivity {
 
     private static final int MSG_OK = 0x01;
     private static final int MSG_FAIL = 0x02;
+    private static final int CONNECT_FAIL = 0x03;
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -65,6 +65,9 @@ public class CarFileDetailActivity extends AppCompatActivity {
                     break;
                 case MSG_FAIL:
                     Toast.makeText(mContext, "数据获取失败", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -130,8 +133,8 @@ public class CarFileDetailActivity extends AppCompatActivity {
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP, StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT, StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(mContext, Constant.Key.URL_IP, Constant.Type.STRING);
+        String port = (String) SPUtil.get(mContext, Constant.Key.URL_PORT, Constant.Type.STRING);
 
         mUrl.append("http:")
                 .append(ip)
@@ -157,8 +160,7 @@ public class CarFileDetailActivity extends AppCompatActivity {
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+            mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

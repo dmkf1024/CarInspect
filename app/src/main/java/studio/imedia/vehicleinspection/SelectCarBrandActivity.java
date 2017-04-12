@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 public class SelectCarBrandActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -56,6 +56,7 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
 
     private static final int MSG_OK = 0;
     private static final int MSG_FAIL = 1;
+    private static final int CONNECT_FAIL = 2;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -68,6 +69,10 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
                 case MSG_FAIL:
                     MyWidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取服务器数据失败", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    MyWidgetUtils.hideProgressDialog();
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -119,10 +124,10 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
      * 初始化url
      */
     private void initUrl() {
-        mIp = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        mPort = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        mIp = (String) SPUtil.get(mContext, Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        mPort = (String) SPUtil.get(mContext, Constant.Key.URL_PORT,
+                Constant.Type.STRING);
 
         mUrl.append("http://");
         mUrl.append(mIp);
@@ -137,12 +142,12 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
         Bundle bundle = new Bundle();
 
         GBrand gBrand = mGBrandList.carbrand.get(position);
-        bundle.putString(StaticValues.KEY_CAR_BRAND_NAME, gBrand.name);
-        bundle.putInt(StaticValues.KEY_CAR_BRAND_ID, gBrand.id);
+        bundle.putString(Constant.Key.CAR_BRAND_NAME, gBrand.name);
+        bundle.putInt(Constant.Key.CAR_BRAND_ID, gBrand.id);
         Log.d("brand", gBrand.id+"");
 
         intent.putExtras(bundle);
-        String series = bundle.getString(StaticValues.KEY_CAR_BRAND_NAME);
+        String series = bundle.getString(Constant.Key.CAR_BRAND_NAME);
         Log.d("carr", series);
         startActivity(intent);
         finish();
@@ -161,9 +166,7 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                MyWidgetUtils.hideProgressDialog();
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

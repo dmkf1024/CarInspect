@@ -7,7 +7,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,8 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 
@@ -56,6 +55,7 @@ public class CityActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private static final int MSG_OK = 0;
     private static final int MSG_FAIL = 1;
+    private static final int CONNECT_FAIL = 2;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -68,6 +68,10 @@ public class CityActivity extends AppCompatActivity implements AdapterView.OnIte
                 case MSG_FAIL:
                     MyWidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    MyWidgetUtils.hideProgressDialog();
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -114,10 +118,10 @@ public class CityActivity extends AppCompatActivity implements AdapterView.OnIte
      * 初始化url
      */
     private void initUrl() {
-        mIp = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        mPort = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        mIp = (String) SPUtil.get(mContext, Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        mPort = (String) SPUtil.get(mContext, Constant.Key.URL_PORT,
+                Constant.Type.STRING);
 
         mUrl.append("http://");
         mUrl.append(mIp);
@@ -142,9 +146,7 @@ public class CityActivity extends AppCompatActivity implements AdapterView.OnIte
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                MyWidgetUtils.hideProgressDialog();
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override
@@ -213,8 +215,8 @@ public class CityActivity extends AppCompatActivity implements AdapterView.OnIte
         GCity gCity = mGCityList.city.get(position);
         int cityId = gCity.id;
         String cityName = gCity.name;
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_CITY_ID_TMP, cityId);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_CITY_NAME_TMP, cityName);
+        SPUtil.save(mContext, Constant.Key.USER_CITY_ID_TMP, cityId);
+        SPUtil.save(mContext, Constant.Key.USER_CITY_NAME_TMP, cityName);
         mDrawerLayout.openDrawer(Gravity.RIGHT);
     }
 }

@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -44,8 +43,8 @@ import studio.imedia.vehicleinspection.adapters.MyMasterAdapter;
 import studio.imedia.vehicleinspection.bean.Master;
 import studio.imedia.vehicleinspection.bean.Recorder;
 import studio.imedia.vehicleinspection.managers.MediaManager;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 import studio.imedia.vehicleinspection.views.AudioRecorderButton;
 
@@ -144,10 +143,10 @@ public class SelectMasterWithPopupwidnowsActivity extends AppCompatActivity {
     private void getBundle() {
         Bundle bundle = getIntent().getExtras();
         if (null != bundle) {
-            mDate = bundle.getString(StaticValues.KEY_ORDER_DATE);
-            mTime = bundle.getString(StaticValues.KEY_ORDER_TIME);
-            mStation = bundle.getString(StaticValues.KEY_INSPECT_STATION);
-            mStationId = bundle.getInt(StaticValues.KEY_STATION_ID);
+            mDate = bundle.getString(Constant.Key.ORDER_DATE);
+            mTime = bundle.getString(Constant.Key.ORDER_TIME);
+            mStation = bundle.getString(Constant.Key.INSPECT_STATION);
+            mStationId = bundle.getInt(Constant.Key.STATION_ID);
         }
     }
 
@@ -167,10 +166,10 @@ public class SelectMasterWithPopupwidnowsActivity extends AppCompatActivity {
      * 初始化url
      */
     private void initUrl() {
-        mPort = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
-        mIp = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
+        mPort = (String) SPUtil.get(mContext, Constant.Key.URL_PORT,
+                Constant.Type.STRING);
+        mIp = (String) SPUtil.get(mContext, Constant.Key.URL_IP,
+                Constant.Type.STRING);
 
         mUrl = "http://" + mIp + ":" + mPort + "/Car/masterInfo.jsp?id=" + mStationId;
         Log.d("master", mUrl);
@@ -286,13 +285,13 @@ public class SelectMasterWithPopupwidnowsActivity extends AppCompatActivity {
         });
 
         // 切换按钮的点击事件
-        final int[] curState = {StaticValues.TYPE_TEXT};
+        final int[] curState = {Constant.Media.TYPE_TEXT};
         btnSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MediaManager.release();
-                if (StaticValues.TYPE_TEXT == curState[0]) {
-                    curState[0] = StaticValues.TYPE_SOUND;
+                if (Constant.Media.TYPE_TEXT == curState[0]) {
+                    curState[0] = Constant.Media.TYPE_SOUND;
                     btnSwitch.setBackgroundResource(R.drawable.icon_keyboard);
 
                     // 隐藏文本输入和语音输出
@@ -301,7 +300,7 @@ public class SelectMasterWithPopupwidnowsActivity extends AppCompatActivity {
                     // 显示AudioButton
                     audioButton.setVisibility(View.VISIBLE);
                 } else {
-                    curState[0] = StaticValues.TYPE_TEXT;
+                    curState[0] = Constant.Media.TYPE_TEXT;
                     btnSwitch.setBackgroundResource(R.drawable.icon_microphone);
 
                     // 隐藏AudioButton和语音输出
@@ -321,14 +320,14 @@ public class SelectMasterWithPopupwidnowsActivity extends AppCompatActivity {
                 popupWindow.dismiss();
                 Intent intent = new Intent(mContext, SubmitOrderActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putBoolean(StaticValues.KEY_PROXY_STATE, true);
-                bundle.putString(StaticValues.KEY_MASTER_NAME, masterList.get(position).getName());
-                bundle.putString(StaticValues.KEY_ORDER_DATE, mDate);
-                bundle.putString(StaticValues.KEY_ORDER_TIME, mTime);
-                bundle.putString(StaticValues.KEY_INSPECT_STATION, mStation);
-                bundle.putInt(StaticValues.KEY_STATION_ID, mStationId);
-                bundle.putString(StaticValues.KEY_ORDER_MSG_LEFT, mMsgLeft);
-                bundle.putInt(StaticValues.KEY_MASTER_ID, masterList.get(position).getId());
+                bundle.putBoolean(Constant.Key.PROXY_STATE, true);
+                bundle.putString(Constant.Key.MASTER_NAME, masterList.get(position).getName());
+                bundle.putString(Constant.Key.ORDER_DATE, mDate);
+                bundle.putString(Constant.Key.ORDER_TIME, mTime);
+                bundle.putString(Constant.Key.INSPECT_STATION, mStation);
+                bundle.putInt(Constant.Key.STATION_ID, mStationId);
+                bundle.putString(Constant.Key.ORDER_MSG_LEFT, mMsgLeft);
+                bundle.putInt(Constant.Key.MASTER_ID, masterList.get(position).getId());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

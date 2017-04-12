@@ -28,7 +28,6 @@ import android.widget.Toast;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -40,13 +39,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import studio.imedia.vehicleinspection.pojo.StaticValues;
+import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.MyPicUtils;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 import studio.imedia.vehicleinspection.views.RoundImageView;
 
@@ -101,6 +97,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
     private static final int MSG_UPLOAD_AVATAR_FAIL = 0x01;
     private static final int MSG_UPLOAD_INFO_SUCCESS = 0x02;
     private static final int MSG_UPLOAD_INFO_FAIL = 0x03;
+    private static final int CONNECT_FAIL = 0x04;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -119,6 +116,9 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
                     break;
                 case MSG_UPLOAD_INFO_FAIL:
                     Toast.makeText(mContext, "信息修改失败，请稍候再试", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -169,14 +169,14 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
      * 初始化用户数据
      */
     private void initData() {
-        mAvatarPath = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_AVATAR,
-                StaticValues.TYPE_STRING);
-        mUsername = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_NAME,
-                StaticValues.TYPE_STRING);
-        mGender = (int) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_GENDER,
-                StaticValues.TYPE_INTEGER);
-        mSignature = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_SIGNATURE,
-                StaticValues.TYPE_STRING);
+        mAvatarPath = (String) SPUtil.get(mContext, Constant.Key.USER_AVATAR,
+                Constant.Type.STRING);
+        mUsername = (String) SPUtil.get(mContext, Constant.Key.USER_NAME,
+                Constant.Type.STRING);
+        mGender = (int) SPUtil.get(mContext, Constant.Key.USER_GENDER,
+                Constant.Type.INTEGER);
+        mSignature = (String) SPUtil.get(mContext, Constant.Key.USER_SIGNATURE,
+                Constant.Type.STRING);
     }
 
     /**
@@ -347,8 +347,8 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP, StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT, StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(mContext, Constant.Key.URL_IP, Constant.Type.STRING);
+        String port = (String) SPUtil.get(mContext, Constant.Key.URL_PORT, Constant.Type.STRING);
 
         StringBuffer baseUrl = new StringBuffer();
         baseUrl.append("http://")
@@ -385,7 +385,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
     private void uploadInfo(StringBuffer urlSB, String avatarPath) {
         Log.d("submit", "url " + urlSB.toString());
         String url = urlSB.toString();
-        int id = (int) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_ID, StaticValues.TYPE_INTEGER);
+        int id = (int) SPUtil.get(mContext, Constant.Key.USER_ID, Constant.Type.INTEGER);
         mUsername = tvUsername.getText().toString().trim();
         String gender = tvGender.getText().toString();
         if (gender.equals("男"))
@@ -448,7 +448,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
 
         // TODO 上传图片
 //        RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
-        RequestBody fileBody = RequestBody.create(StaticValues.MEDIA_TYPE_JPEG, file);
+        RequestBody fileBody = RequestBody.create(Constant.Media.TYPE_JPEG, file);
 
         RequestBody requestBody = new MultipartBuilder()
                 .type(MultipartBuilder.FORM)
@@ -465,8 +465,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override
@@ -498,8 +497,8 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
      * 将数据信息存到preferences里面
      */
     private void saveData() {
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_NAME, mUsername);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_GENDER, mGender);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_SIGNATURE, mSignature);
+        SPUtil.save(mContext, Constant.Key.USER_NAME, mUsername);
+        SPUtil.save(mContext, Constant.Key.USER_GENDER, mGender);
+        SPUtil.save(mContext, Constant.Key.USER_SIGNATURE, mSignature);
     }
 }

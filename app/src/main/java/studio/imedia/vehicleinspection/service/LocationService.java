@@ -6,7 +6,6 @@ package studio.imedia.vehicleinspection.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,12 +35,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.bean.Flow;
 import studio.imedia.vehicleinspection.bean.InspectionStation;
-import studio.imedia.vehicleinspection.bean.StationList;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 
 /**
  * 定位服务,基于高德的定位API V1.3.0实现
@@ -126,10 +122,10 @@ public class LocationService extends Service implements AMapLocationListener {
     }
 
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(this, StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(this, StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(this, Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        String port = (String) SPUtil.get(this, Constant.Key.URL_PORT,
+                Constant.Type.STRING);
         mUrl = "http://" + ip + ":" + port + "/Car/inspectionStationInfo.jsp?cityId=2";
 //        Log.d("flow", mUrl);
     }

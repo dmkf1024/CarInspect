@@ -26,8 +26,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
@@ -50,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private static final int MSG_OK = 0x01;
     private static final int MSG_FAIL = 0x02;
+    private static final int CONNECT_FAIL = 0x03;
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -59,9 +60,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(mContext, "新用户注册成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString(StaticValues.KEY_FROM, StaticValues.ACTIVITY_REGISTER);
-                    bundle.putString(StaticValues.KEY_PHONE, mPhone);
-                    bundle.putString(StaticValues.KEY_PASSWORD, mPassword);
+                    bundle.putString(Constant.Key.FROM, Constant.ACTIVITY_REGISTER);
+                    bundle.putString(Constant.Key.PHONE, mPhone);
+                    bundle.putString(Constant.Key.PASSWORD, mPassword);
                     intent.putExtras(bundle);
                     Log.d("reg", intent.toString());
                     startActivity(intent);
@@ -69,6 +70,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     break;
                 case MSG_FAIL:
                     Toast.makeText(mContext, "该号码已被注册，请登录", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -147,8 +151,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             mClient.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Request request, IOException e) {
-                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                    mHandler.sendEmptyMessage(CONNECT_FAIL);
                 }
 
                 @Override
@@ -180,10 +183,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(mContext, Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        String port = (String) SPUtil.get(mContext, Constant.Key.URL_PORT,
+                Constant.Type.STRING);
 
         mUrl.append("http://")
                 .append(ip)

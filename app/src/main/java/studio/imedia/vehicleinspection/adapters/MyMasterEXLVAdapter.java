@@ -2,12 +2,9 @@ package studio.imedia.vehicleinspection.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,7 +27,7 @@ import studio.imedia.vehicleinspection.SubmitOrderActivity;
 import studio.imedia.vehicleinspection.bean.Master;
 import studio.imedia.vehicleinspection.bean.Recorder;
 import studio.imedia.vehicleinspection.managers.MediaManager;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
+import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 import studio.imedia.vehicleinspection.views.AudioRecorderButton;
 import studio.imedia.vehicleinspection.views.RoundImageView;
@@ -61,9 +58,9 @@ public class MyMasterEXLVAdapter extends BaseExpandableListAdapter {
     public MyMasterEXLVAdapter(Context context, List<Master> masterList, ExpandableListView listView, Bundle bundle) {
         this(context, masterList, listView);
         if (null != bundle) {
-            date = bundle.getString(StaticValues.KEY_ORDER_DATE);
-            time = bundle.getString(StaticValues.KEY_ORDER_TIME);
-            station = bundle.getString(StaticValues.KEY_INSPECT_STATION);
+            date = bundle.getString(Constant.Key.ORDER_DATE);
+            time = bundle.getString(Constant.Key.ORDER_TIME);
+            station = bundle.getString(Constant.Key.INSPECT_STATION);
         }
     }
 
@@ -169,12 +166,12 @@ public class MyMasterEXLVAdapter extends BaseExpandableListAdapter {
         });
 
         // 切换按钮点击事件
-        final int[] curState = {StaticValues.TYPE_TEXT};
+        final int[] curState = {Constant.Media.TYPE_TEXT};
         finalHolder.btnSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (StaticValues.TYPE_TEXT == curState[0]) {
-                    curState[0] = StaticValues.TYPE_SOUND;
+                if (Constant.Media.TYPE_TEXT == curState[0]) {
+                    curState[0] = Constant.Media.TYPE_SOUND;
                     finalHolder.btnSwitch.setBackgroundResource(R.mipmap.ic_launcher);
 
                     // 隐藏文本输入和语音输出
@@ -183,7 +180,7 @@ public class MyMasterEXLVAdapter extends BaseExpandableListAdapter {
                     // 显示AudioButton
                     finalHolder.audioButton.setVisibility(View.VISIBLE);
                 } else {
-                    curState[0] = StaticValues.TYPE_TEXT;
+                    curState[0] = Constant.Media.TYPE_TEXT;
                     finalHolder.btnSwitch.setBackgroundResource(R.drawable.icon_microphone);
 
                     // 隐藏AudioButton和语音输出
@@ -201,11 +198,11 @@ public class MyMasterEXLVAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context, SubmitOrderActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putBoolean(StaticValues.KEY_PROXY_STATE, true);
-                bundle.putString(StaticValues.KEY_MASTER_NAME, masterList.get(groupPosition).getName());
-                bundle.putString(StaticValues.KEY_ORDER_DATE, date);
-                bundle.putString(StaticValues.KEY_ORDER_TIME, time);
-                bundle.putString(StaticValues.KEY_INSPECT_STATION, station);
+                bundle.putBoolean(Constant.Key.PROXY_STATE, true);
+                bundle.putString(Constant.Key.MASTER_NAME, masterList.get(groupPosition).getName());
+                bundle.putString(Constant.Key.ORDER_DATE, date);
+                bundle.putString(Constant.Key.ORDER_TIME, time);
+                bundle.putString(Constant.Key.INSPECT_STATION, station);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

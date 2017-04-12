@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Callback;
@@ -27,7 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +34,8 @@ import studio.imedia.vehicleinspection.SelectTimeWayActivity;
 import studio.imedia.vehicleinspection.adapters.MyInspectionStationAdapter;
 import studio.imedia.vehicleinspection.bean.Flow;
 import studio.imedia.vehicleinspection.bean.InspectionStation;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 
@@ -125,10 +123,10 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(getActivity(), Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        String port = (String) SPUtil.get(getActivity(), Constant.Key.URL_PORT,
+                Constant.Type.STRING);
         mUrl = "http://" + ip + ":" + port + "/Car/inspectionStationInfo.jsp?cityId=2";
     }
 
@@ -362,7 +360,7 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
                         Intent intent = new Intent(getActivity(), SelectTimeWayActivity.class);
                         Bundle bundle = new Bundle();
                         int id = stationFromOkHttpList.get(position - 1).getId();
-                        bundle.putInt(StaticValues.KEY_STATION_ID, id);
+                        bundle.putInt(Constant.Key.STATION_ID, id);
                         intent.putExtras(bundle);
                         startActivity(intent);
                         break;

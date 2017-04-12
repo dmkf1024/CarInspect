@@ -1,7 +1,6 @@
 package studio.imedia.vehicleinspection.adapters;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +14,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.bean.Flow;
 import studio.imedia.vehicleinspection.bean.InspectionStation;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
+import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.MyCalendarUtils;
 
 /**
@@ -102,7 +100,7 @@ public class MyInspectionStationAdapter extends BaseAdapter {
                     holder02.ratingBar = (RatingBar) convertView.findViewById(R.id.rating_bar);
                     holder02.tvDistance = (TextView) convertView.findViewById(R.id.tv_distance);
 
-                    for (int i = 0; i < StaticValues.LENGTH_TIMELY_FLOW; i++) {
+                    for (int i = 0; i < Constant.LENGTH_TIMELY_FLOW; i++) {
                         int dateResId = context.getResources().getIdentifier("tv_day" + (i + 1),
                                 "id", context.getPackageName());
                         holder02.tvFlowDates[i] = (TextView) convertView.findViewById(dateResId);
@@ -261,7 +259,7 @@ public class MyInspectionStationAdapter extends BaseAdapter {
 //        private TextView tvDay5;
 //        private TextView tvDay5Value;
 
-        private TextView[] tvFlowDates = new TextView[StaticValues.LENGTH_TIMELY_FLOW];
-        private TextView[] tvFlowValues = new TextView[StaticValues.LENGTH_TIMELY_FLOW];
+        private TextView[] tvFlowDates = new TextView[Constant.LENGTH_TIMELY_FLOW];
+        private TextView[] tvFlowValues = new TextView[Constant.LENGTH_TIMELY_FLOW];
     }
 }

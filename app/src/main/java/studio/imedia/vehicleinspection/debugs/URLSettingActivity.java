@@ -6,19 +6,17 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import studio.imedia.vehicleinspection.MainActivity;
 import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 
 public class URLSettingActivity extends AppCompatActivity {
 
@@ -72,22 +70,22 @@ public class URLSettingActivity extends AppCompatActivity {
             mIp = ipUpdate;
         }
         Log.d("save", "inside " + mIp);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_URL_IP, mIp);
+        SPUtil.save(mContext, Constant.Key.URL_IP, mIp);
 
         if (!portUpdate.isEmpty()) {
             mPort = portUpdate;
         }
         Log.d("save", "inside " + mPort);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_URL_PORT, mPort);
+        SPUtil.save(mContext, Constant.Key.URL_PORT, mPort);
     }
 
     private void initUrl() {
         Log.d("url", "enter initUrl");
-        mIp = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
+        mIp = (String) SPUtil.get(mContext, Constant.Key.URL_IP,
+                Constant.Type.STRING);
         Log.d("url", mIp);
-        mPort = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        mPort = (String) SPUtil.get(mContext, Constant.Key.URL_PORT,
+                Constant.Type.STRING);
         Log.d("url", mPort);
 
         if (mIp.isEmpty()) {

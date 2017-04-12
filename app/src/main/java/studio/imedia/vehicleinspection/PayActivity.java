@@ -7,9 +7,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +23,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import studio.imedia.vehicleinspection.pojo.StaticValues;
+import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 public class PayActivity extends AppCompatActivity {
@@ -39,6 +37,7 @@ public class PayActivity extends AppCompatActivity {
 
     private static final int MSG_OK = 0x01;
     private static final int MSG_FAIL = 0x02;
+    private static final int CONNECT_FAIL = 0x03;
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -49,6 +48,9 @@ public class PayActivity extends AppCompatActivity {
                     break;
                 case MSG_FAIL:
                     Toast.makeText(mContext, "支付失败，请稍候再试", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    Toast.makeText(PayActivity.this, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -79,7 +81,7 @@ public class PayActivity extends AppCompatActivity {
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Request request, IOException e) {
-                        Toast.makeText(PayActivity.this, "连接服务器失败", Toast.LENGTH_SHORT).show();
+                        mHandler.sendEmptyMessage(CONNECT_FAIL);
                     }
 
                     @Override
@@ -125,6 +127,6 @@ public class PayActivity extends AppCompatActivity {
     private void getOrderId() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null)
-            mOrderId = bundle.getInt(StaticValues.KEY_ORDER_ID);
+            mOrderId = bundle.getInt(Constant.Key.ORDER_ID);
     }
 }

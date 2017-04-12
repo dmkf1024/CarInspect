@@ -28,8 +28,8 @@ import java.util.List;
 
 import studio.imedia.vehicleinspection.adapters.MyCouponAdapter;
 import studio.imedia.vehicleinspection.bean.Coupon;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 public class SelectCouponActivity extends AppCompatActivity {
@@ -55,6 +55,7 @@ public class SelectCouponActivity extends AppCompatActivity {
     private static final int MSG_HAS_COUPON = 0x01;
     private static final int MSG_NO_COUPON = 0x02;
     private static final int MSG_FAIL = 0x03;
+    private static final int CONNECT_FAIL = 0x04;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -73,6 +74,10 @@ public class SelectCouponActivity extends AppCompatActivity {
                 case MSG_FAIL:
                     MyWidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取数据异常", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    MyWidgetUtils.hideProgressDialog();
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -110,10 +115,10 @@ public class SelectCouponActivity extends AppCompatActivity {
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(mContext, Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        String port = (String) SPUtil.get(mContext, Constant.Key.URL_PORT,
+                Constant.Type.STRING);
 
         mUrl.append("http://");
         mUrl.append(ip);
@@ -141,9 +146,9 @@ public class SelectCouponActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext, SubmitOrderActivity.class);
                 Bundle bundle = new Bundle();
                 int couponId = mGCouponList.coupons.get(position).id;
-                bundle.putString(StaticValues.KEY_FROM, StaticValues.ACTIVITY_SELECT_COUPON);
-                bundle.putInt(StaticValues.KEY_COUPON_ID, couponId);
-                bundle.putBoolean(StaticValues.KEY_IS_USE_COUPON, true);
+                bundle.putString(Constant.Key.FROM, Constant.ACTIVITY_SELECT_COUPON);
+                bundle.putInt(Constant.Key.COUPON_ID, couponId);
+                bundle.putBoolean(Constant.Key.IS_USE_COUPON, true);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -156,7 +161,7 @@ public class SelectCouponActivity extends AppCompatActivity {
     private void getData(StringBuffer urlSB) {
         String url = urlSB.toString();
         Log.d(TAG, "the url is " + url);
-        int userId = (int) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_ID, StaticValues.TYPE_INTEGER);
+        int userId = (int) SPUtil.get(mContext, Constant.Key.USER_ID, Constant.Type.INTEGER);
         Log.d(TAG, "user id is " + userId);
         // 换成动态id
         RequestBody formBody = new FormEncodingBuilder()
@@ -172,9 +177,7 @@ public class SelectCouponActivity extends AppCompatActivity {
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                MyWidgetUtils.hideProgressDialog();
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

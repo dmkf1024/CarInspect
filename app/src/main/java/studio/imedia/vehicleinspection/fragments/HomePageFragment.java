@@ -39,10 +39,9 @@ import studio.imedia.vehicleinspection.LoginActivity;
 import studio.imedia.vehicleinspection.OrderInfoActivity;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.RepairStationListActivity;
-import studio.imedia.vehicleinspection.debugs.LocationActivity;
 import studio.imedia.vehicleinspection.debugs.URLSettingActivity;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -171,7 +170,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        boolean isLogin = (boolean) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_LOGIN_STATE, StaticValues.TYPE_BOOLEAN);
+        boolean isLogin = (boolean) SPUtil.get(getActivity(), Constant.Key.LOGIN_STATE, Constant.Type.BOOLEAN);
         switch (v.getId()) {
             case R.id.illegal_query:
                 startActivity(new Intent(getActivity(), IllegalQueryActivity.class));
@@ -274,8 +273,8 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
      * 初始化url
      */
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_URL_IP, StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_URL_PORT, StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(getActivity(), Constant.Key.URL_IP, Constant.Type.STRING);
+        String port = (String) SPUtil.get(getActivity(), Constant.Key.URL_PORT, Constant.Type.STRING);
 
         mUrl.append("http://")
                 .append(ip)

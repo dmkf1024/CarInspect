@@ -25,14 +25,13 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import studio.imedia.vehicleinspection.MainActivity;
 import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 /**
@@ -58,6 +57,7 @@ public class CountyFragment extends Fragment {
 
     private static final int MSG_OK = 0;
     private static final int MSG_FAIL = 1;
+    private static final int CONNECT_FAIL = 2;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -70,6 +70,10 @@ public class CountyFragment extends Fragment {
                 case MSG_FAIL:
                     MyWidgetUtils.hideProgressDialog();
                     Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    MyWidgetUtils.hideProgressDialog();
+                    Toast.makeText(getActivity(), "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -85,8 +89,8 @@ public class CountyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCityId = (int) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_USER_CITY_ID,
-                StaticValues.TYPE_INTEGER);
+        mCityId = (int) SPUtil.get(getActivity(), Constant.Key.USER_CITY_ID,
+                Constant.Type.INTEGER);
     }
 
     @Override
@@ -98,10 +102,10 @@ public class CountyFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 从preferences中取出城市名称、城市id
-                String cityName = (String) MySharedPreferencesUtils.get(getActivity(),
-                        StaticValues.KEY_USER_CITY_NAME_TMP, StaticValues.TYPE_STRING);
-                int cityId = (int) MySharedPreferencesUtils.get(getActivity(),
-                        StaticValues.KEY_USER_CITY_ID_TMP, StaticValues.TYPE_INTEGER);
+                String cityName = (String) SPUtil.get(getActivity(),
+                        Constant.Key.USER_CITY_NAME_TMP, Constant.Type.STRING);
+                int cityId = (int) SPUtil.get(getActivity(),
+                        Constant.Key.USER_CITY_ID_TMP, Constant.Type.INTEGER);
 
                 // 获取区ID，并存入preferences
                 int countyId = mGCountyList.county.get(position).id;
@@ -114,9 +118,9 @@ public class CountyFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt(StaticValues.KEY_USER_CITY_ID, cityId);
-                bundle.putInt(StaticValues.KEY_USER_COUNTY_ID, countyId);
-                bundle.putString(StaticValues.KEY_USER_CITY_COUNTY, cityCounty);
+                bundle.putInt(Constant.Key.USER_CITY_ID, cityId);
+                bundle.putInt(Constant.Key.USER_COUNTY_ID, countyId);
+                bundle.putString(Constant.Key.USER_CITY_COUNTY, cityCounty);
                 intent.putExtras(bundle);
                 getActivity().startActivity(intent);
                 getActivity().finish();
@@ -160,10 +164,10 @@ public class CountyFragment extends Fragment {
      * 初始化url
      */
     private void initUrl() {
-        mIp = (String) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        mPort = (String) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        mIp = (String) SPUtil.get(getActivity(), Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        mPort = (String) SPUtil.get(getActivity(), Constant.Key.URL_PORT,
+                Constant.Type.STRING);
 
         mUrl.append("http://");
         mUrl.append(mIp);
@@ -177,8 +181,8 @@ public class CountyFragment extends Fragment {
      */
     private void getData(StringBuffer urlSB) {
         String url = urlSB.toString();
-        mCityId = (int) MySharedPreferencesUtils.get(getActivity(), StaticValues.KEY_USER_CITY_ID,
-                StaticValues.TYPE_INTEGER);
+        mCityId = (int) SPUtil.get(getActivity(), Constant.Key.USER_CITY_ID,
+                Constant.Type.INTEGER);
         Log.d("city", "the cityid got is " + mCityId);
         // TODO 做cityId的异常处理
         RequestBody formBody = new FormEncodingBuilder()
@@ -193,8 +197,7 @@ public class CountyFragment extends Fragment {
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                MyWidgetUtils.hideProgressDialog();
-                Toast.makeText(getActivity(), "连接服务器失败", Toast.LENGTH_SHORT).show();
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

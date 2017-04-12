@@ -41,10 +41,8 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.NaviPara;
-import com.amap.api.maps.overlay.DrivingRouteOverlay;
 import com.amap.api.maps.overlay.PoiOverlay;
 import com.amap.api.services.core.AMapException;
-import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.core.SuggestionCity;
 import com.amap.api.services.help.Inputtips;
@@ -52,12 +50,6 @@ import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiItemDetail;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
-import com.amap.api.services.route.BusRouteResult;
-import com.amap.api.services.route.DrivePath;
-import com.amap.api.services.route.DriveRouteResult;
-import com.amap.api.services.route.RouteSearch;
-import com.amap.api.services.route.RouteSearch.OnRouteSearchListener;
-import com.amap.api.services.route.WalkRouteResult;
 import com.amap.api.maps.AMap.InfoWindowAdapter;
 import com.amap.api.maps.AMap.OnInfoWindowClickListener;
 
@@ -67,7 +59,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
+import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.MyLocationUtils;
 
 /**
@@ -164,7 +156,7 @@ public class InspectionStationMapFragment extends Fragment implements LocationSo
                 return false;
             }
         });
-        index = new int[StaticValues.NUM_VI];
+        index = new int[Constant.Location.NUM_VI];
 
 
     }
@@ -350,16 +342,16 @@ public class InspectionStationMapFragment extends Fragment implements LocationSo
      * 在地图上添加marker
      */
     protected void addMarkersToMap() {
-        markers = new Marker[StaticValues.NUM_VI];
-        for (int i = 0; i < StaticValues.NUM_VI; i++) {
+        markers = new Marker[Constant.Location.NUM_VI];
+        for (int i = 0; i < Constant.Location.NUM_VI; i++) {
             markers[i] = aMap.addMarker(new MarkerOptions()
-                    .position(StaticValues.VI[i])
-                    .title(StaticValues.NAME_VI[i])
+                    .position(Constant.Location.VI[i])
+                    .title(Constant.Location.NAME_VI[i])
                     .snippet("这是contents")
                     .icon(BitmapDescriptorFactory
                             .defaultMarker(BitmapDescriptorFactory.HUE_RED))
                     .draggable(true));
-            Log.d("msg", "已添加Markers：" + StaticValues.VI[i]);
+            Log.d("msg", "已添加Markers：" + Constant.Location.VI[i]);
         }
     }
 
@@ -601,19 +593,19 @@ public class InspectionStationMapFragment extends Fragment implements LocationSo
      * 计算每个加油站与定位点之间的距离并进行排序
      */
     protected void getOrder() {
-        distanceOrder = new String[StaticValues.NUM_VI];
-        String[] orderList = new String[StaticValues.NUM_VI];
+        distanceOrder = new String[Constant.Location.NUM_VI];
+        String[] orderList = new String[Constant.Location.NUM_VI];
 
-        for (int i = 0; i < StaticValues.NUM_VI; i++) {
-            BigDecimal bigDecimal = new BigDecimal(AMapUtils.calculateLineDistance(location, StaticValues.VI[i]));
+        for (int i = 0; i < Constant.Location.NUM_VI; i++) {
+            BigDecimal bigDecimal = new BigDecimal(AMapUtils.calculateLineDistance(location, Constant.Location.VI[i]));
             distanceOrder[i] = bigDecimal.toPlainString();
             orderList[i] = distanceOrder[i];
             Log.d("msg", "转换的距离为： " + distanceOrder[i] + "米");
         }
         Arrays.sort(distanceOrder);
-        for (int i = 0; i < StaticValues.NUM_VI; i++) {
+        for (int i = 0; i < Constant.Location.NUM_VI; i++) {
             MyLocationUtils myLocationUtils = MyLocationUtils.getInstance();
-            myLocationUtils.saveIndex(orderList, distanceOrder, StaticValues.NUM_VI);
+            myLocationUtils.saveIndex(orderList, distanceOrder, Constant.Location.NUM_VI);
 
 //            index[i] = getIndex(orderList, distanceOrder, StaticValues.NUM_VI)[i];
             Log.d("msg", "距离" + i + ": " + distanceOrder[i] + "米");

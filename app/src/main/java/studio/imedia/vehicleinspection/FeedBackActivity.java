@@ -25,8 +25,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 public class FeedBackActivity extends AppCompatActivity implements View.OnClickListener {
@@ -45,6 +45,7 @@ public class FeedBackActivity extends AppCompatActivity implements View.OnClickL
 
     private static final int MSG_OK = 0x01;
     private static final int MSG_FAIL = 0x02;
+    private static final int CONNECT_FAIL = 0x03;
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -56,6 +57,9 @@ public class FeedBackActivity extends AppCompatActivity implements View.OnClickL
                     break;
                 case MSG_FAIL:
                     Toast.makeText(mContext, "提交反馈失败，请稍候再试", Toast.LENGTH_SHORT).show();
+                    break;
+                case CONNECT_FAIL:
+                    Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -108,8 +112,8 @@ public class FeedBackActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void initUrl() {
-        String ip = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP, StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT, StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(mContext, Constant.Key.URL_IP, Constant.Type.STRING);
+        String port = (String) SPUtil.get(mContext, Constant.Key.URL_PORT, Constant.Type.STRING);
 
         mUrl.append("http://")
                 .append(ip)
@@ -124,7 +128,7 @@ public class FeedBackActivity extends AppCompatActivity implements View.OnClickL
      */
     private void sendFeedback(StringBuffer urlSB) {
         String url = urlSB.toString();
-        int userId = (int) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_USER_ID, StaticValues.TYPE_INTEGER);
+        int userId = (int) SPUtil.get(mContext, Constant.Key.USER_ID, Constant.Type.INTEGER);
         String feedback = etSuggestion.getText().toString().trim();
 
         RequestBody formBody = new FormEncodingBuilder()
@@ -140,8 +144,7 @@ public class FeedBackActivity extends AppCompatActivity implements View.OnClickL
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override

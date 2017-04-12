@@ -1,14 +1,12 @@
 package studio.imedia.vehicleinspection.application;
 
 import android.app.Application;
-import android.content.ComponentCallbacks;
 import android.os.Environment;
-import android.util.Log;
 
 import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
+import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.MyFileUtils;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 
 /**
  * Created by eric on 15/10/15.
@@ -28,10 +26,10 @@ public class MyApplication extends Application {
      * 初始化IP地址和端口号
      */
     private void initIpPort() {
-        String ip = (String) MySharedPreferencesUtils.get(getApplicationContext(), StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        String port = (String) MySharedPreferencesUtils.get(getApplicationContext(), StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        String ip = (String) SPUtil.get(getApplicationContext(), Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        String port = (String) SPUtil.get(getApplicationContext(), Constant.Key.URL_PORT,
+                Constant.Type.STRING);
 
         if (null == ip || ip.isEmpty()) {
             ip = getResources().getString(R.string.default_ip);
@@ -40,15 +38,15 @@ public class MyApplication extends Application {
             port = getResources().getString(R.string.default_port);
         }
 
-        MySharedPreferencesUtils.save(getApplicationContext(), StaticValues.KEY_URL_IP, ip);
-        MySharedPreferencesUtils.save(getApplicationContext(), StaticValues.KEY_URL_PORT, port);
+        SPUtil.save(getApplicationContext(), Constant.Key.URL_IP, ip);
+        SPUtil.save(getApplicationContext(), Constant.Key.URL_PORT, port);
     }
 
     /**
      * 清除历史录音文件
      */
     private void clearAudioFiles() {
-        String folderPath = Environment.getExternalStorageDirectory() + "/" + StaticValues.AUDIO_FILE_NAME;
+        String folderPath = Environment.getExternalStorageDirectory() + "/" + Constant.AUDIO_FILE_NAME;
         MyFileUtils.deleteAllFiles(folderPath, "amr");
     }
 
@@ -57,6 +55,6 @@ public class MyApplication extends Application {
      * 软清除
      */
     private void clearLogHisRecord() {
-        MySharedPreferencesUtils.save(getApplicationContext(), StaticValues.KEY_LOGIN_STATE, false);
+        SPUtil.save(getApplicationContext(), Constant.Key.LOGIN_STATE, false);
     }
 }

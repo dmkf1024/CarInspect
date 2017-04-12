@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -28,8 +27,8 @@ import java.io.IOException;
 
 import studio.imedia.vehicleinspection.gbean.GCar;
 import studio.imedia.vehicleinspection.gbean.GUser;
-import studio.imedia.vehicleinspection.pojo.StaticValues;
-import studio.imedia.vehicleinspection.utils.MySharedPreferencesUtils;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -104,18 +103,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
     private void getBundle() {
         Intent intent = getIntent();
-        Log.d("reg", intent.toString());
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String from = bundle.getString(StaticValues.KEY_FROM);
-            if (StaticValues.ACTIVITY_REGISTER.equals(from)) {
-                String phone = bundle.getString(StaticValues.KEY_PHONE);
-                String password = bundle.getString(StaticValues.KEY_PASSWORD);
+            String from = bundle.getString(Constant.Key.FROM);
+            if (Constant.ACTIVITY_REGISTER.equals(from)) {
+                String phone = bundle.getString(Constant.Key.PHONE);
+                String password = bundle.getString(Constant.Key.PASSWORD);
                 etPhoneNum.setText(phone);
                 etPassword.setText(password);
             }
-        } else {
-            Log.d("reg", "bundle null");
         }
     }
 
@@ -154,10 +150,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 初始化url
      */
     private void initUrl() {
-        mIp = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_IP,
-                StaticValues.TYPE_STRING);
-        mPort = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_URL_PORT,
-                StaticValues.TYPE_STRING);
+        mIp = (String) SPUtil.get(mContext, Constant.Key.URL_IP,
+                Constant.Type.STRING);
+        mPort = (String) SPUtil.get(mContext, Constant.Key.URL_PORT,
+                Constant.Type.STRING);
         mUrl = "http://" + mIp + ":" + mPort + "/Car/getInfo.jsp";
     }
 
@@ -192,7 +188,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = etPassword.getText().toString();
 
         String urlGet = url + "?phone=" + phone + "&password=" + password;
-        Log.d("reg", "url" + urlGet);
         // 登录验证
         final Request request = new Request.Builder()
                 .url(urlGet)
@@ -229,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             JSONObject result = new JSONObject(json);
             int status = result.getInt("status");
             Message msg = new Message();
-            if (StaticValues.STATUS_OK == status) {
+            if (Constant.Status.OK == status) {
                 Log.d("reg", "status ok");
                 GInfo gInfo = mGson.fromJson(json, GInfo.class); // GSON解析json数据
                 GUser gUser = gInfo.user;
@@ -238,7 +233,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 msg.what = MSG_LOGIN_SUCCESS;
                 mHandler.sendMessage(msg);
-            } else if (StaticValues.STATUS_FAIL == status) {
+            } else if (Constant.Status.FAIL == status) {
                 Log.d("reg", "status fail");
                 msg.what = MSG_LOGIN_FAIL;
                 mHandler.sendMessage(msg);
@@ -285,46 +280,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String registerTime = gCar.getRegisterTime();
 
         // 将用户信息存至preferences
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_ID, id);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_NAME, name);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_AVATAR, avatar);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_GENDER, gender);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_SCORE, score);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_SIGNATURE, signature);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_PROVINCE_ID, provinceId);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_PROVINCE_NAME, provinceName);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_CITY_ID, cityId);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_CITY_NAME, cityName);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_COUNTY_ID, countyId);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_COUNTY_NAME, countyName);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_USER_DETAILED_ADDRESS, detailedAddress);
+        SPUtil.save(mContext, Constant.Key.USER_ID, id);
+        SPUtil.save(mContext, Constant.Key.USER_NAME, name);
+        SPUtil.save(mContext, Constant.Key.USER_AVATAR, avatar);
+        SPUtil.save(mContext, Constant.Key.USER_GENDER, gender);
+        SPUtil.save(mContext, Constant.Key.USER_SCORE, score);
+        SPUtil.save(mContext, Constant.Key.USER_SIGNATURE, signature);
+        SPUtil.save(mContext, Constant.Key.USER_PROVINCE_ID, provinceId);
+        SPUtil.save(mContext, Constant.Key.USER_PROVINCE_NAME, provinceName);
+        SPUtil.save(mContext, Constant.Key.USER_CITY_ID, cityId);
+        SPUtil.save(mContext, Constant.Key.USER_CITY_NAME, cityName);
+        SPUtil.save(mContext, Constant.Key.USER_COUNTY_ID, countyId);
+        SPUtil.save(mContext, Constant.Key.USER_COUNTY_NAME, countyName);
+        SPUtil.save(mContext, Constant.Key.USER_DETAILED_ADDRESS, detailedAddress);
 
         // 将车辆信息存至preferences
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_CAR_BRAND_NAME, carBrand);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_CAR_FRAME_NUM, carFrameNum);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_CAR_PLATE_NUM, carPlateNum);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_CAR_TYPE_NAME, carType);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_CAR_ENGINE_NUM, engineNum);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_CAR_LICENSE_PIC, licensePic);
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_CAR_REGISTER_TIME, registerTime);
+        SPUtil.save(mContext, Constant.Key.CAR_BRAND_NAME, carBrand);
+        SPUtil.save(mContext, Constant.Key.CAR_FRAME_NUM, carFrameNum);
+        SPUtil.save(mContext, Constant.Key.CAR_PLATE_NUM, carPlateNum);
+        SPUtil.save(mContext, Constant.Key.CAR_TYPE_NAME, carType);
+        SPUtil.save(mContext, Constant.Key.CAR_ENGINE_NUM, engineNum);
+        SPUtil.save(mContext, Constant.Key.CAR_LICENSE_PIC, licensePic);
+        SPUtil.save(mContext, Constant.Key.CAR_REGISTER_TIME, registerTime);
 
         // 保存登录状态
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_LOGIN_STATE, true);
+        SPUtil.save(mContext, Constant.Key.LOGIN_STATE, true);
     }
 
     /**
      * 记住账号
      */
     private void rememberAccount(String phoneNum) {
-        MySharedPreferencesUtils.save(mContext, StaticValues.KEY_LOGIN_PHONE_NUM, phoneNum);
+        SPUtil.save(mContext, Constant.Key.LOGIN_PHONE_NUM, phoneNum);
     }
 
     /**
      * 初始化上次登录的账号
      */
     private void initAccount() {
-        String phoneNum = (String) MySharedPreferencesUtils.get(mContext, StaticValues.KEY_LOGIN_PHONE_NUM,
-                StaticValues.TYPE_STRING);
+        String phoneNum = (String) SPUtil.get(mContext, Constant.Key.LOGIN_PHONE_NUM,
+                Constant.Type.STRING);
         if (phoneNum == null || phoneNum.equals(""))
             return;
         etPhoneNum.setText(phoneNum);
