@@ -1,13 +1,13 @@
 package studio.imedia.vehicleinspection;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,20 +24,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.adapters.MyCouponAdapter;
 import studio.imedia.vehicleinspection.bean.Coupon;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
-public class MyCouponActivity extends AppCompatActivity {
+public class MyCouponActivity extends BaseActivity {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.lv_coupon)
+    ListView lvCoupon;
+    @BindView(R.id.tv_no_coupon)
+    TextView tvNoCoupon;
 
-    private ListView lvCoupon;
     private List<Coupon> mCouponList;
-    private TextView tvNoCoupon;
 
     private MyCouponAdapter mAdapter;
 
@@ -59,15 +65,15 @@ public class MyCouponActivity extends AppCompatActivity {
                 case MSG_OK:
                     Log.d("coupon", "msg_ok");
                     mGCouponList = (GCouponList) msg.obj;
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     setAdapter(); // 设置适配器
                     break;
                 case MSG_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
                     break;
                 case CONNECT_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -78,31 +84,21 @@ public class MyCouponActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_coupon);
+        ButterKnife.bind(this);
 
-        MyWidgetUtils.showProgressDialog(mContext, null, "数据加载中...", true);
+        WidgetUtils.showProgressDialog(mContext, null, "数据加载中...", true);
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initUrl(); // 初始化url
         getData(mUrl); // 获取数据
     }
 
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         mTitle.setText(getString(R.string.title_my_coupon));
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        lvCoupon = (ListView) findViewById(R.id.lv_coupon);
-        tvNoCoupon = (TextView) findViewById(R.id.tv_no_coupon);
     }
 
     /**
@@ -137,14 +133,14 @@ public class MyCouponActivity extends AppCompatActivity {
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-            mHandler.sendEmptyMessage(CONNECT_FAIL);
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
                 if (!response.isSuccessful()) {
                     Log.d("coupon", "onResponse");
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     throw new IOException("Unexpected code " + response);
                 }
 

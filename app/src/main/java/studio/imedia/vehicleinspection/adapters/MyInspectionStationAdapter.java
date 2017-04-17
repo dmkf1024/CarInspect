@@ -19,7 +19,7 @@ import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.bean.Flow;
 import studio.imedia.vehicleinspection.bean.InspectionStation;
 import studio.imedia.vehicleinspection.pojo.Constant;
-import studio.imedia.vehicleinspection.utils.MyCalendarUtils;
+import studio.imedia.vehicleinspection.utils.CalendarUtils;
 
 /**
  * Created by eric on 15/10/11.
@@ -171,7 +171,7 @@ public class MyInspectionStationAdapter extends BaseAdapter {
                 holder02.tvDistance.setText(inspectionStation.getDistance() + "km");
 
                 List<Flow> dailyFlows = inspectionStationList.get(position - 1).getDailyFlows();
-                ArrayList<String> dates = MyCalendarUtils.getFutureWeeklyDate(mCurYear, mCurMonth, mCurDay);
+                ArrayList<String> dates = CalendarUtils.getFutureWeeklyDate(mCurYear, mCurMonth, mCurDay);
                 if (null != dailyFlows) {
                     int dailyFlowLength = dailyFlows.size();
                     int i = 0; // 日期下标

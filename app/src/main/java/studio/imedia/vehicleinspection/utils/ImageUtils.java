@@ -8,20 +8,20 @@ import java.io.ByteArrayOutputStream;
 /**
  * Created by eric on 15/11/22.
  */
-public class MyImageUtils {
+public class ImageUtils {
 
-    private static MyImageUtils mInstance = null;
+    private static ImageUtils mInstance = null;
 
     private static final int TYPE_JPEG = 0;
     private static final int TYPE_PNG = 1;
 
-    private MyImageUtils() {}
+    private ImageUtils() {}
 
-    public static MyImageUtils getInstance() {
+    public static ImageUtils getInstance() {
         if (mInstance == null) {
-            synchronized (MyImageUtils.class) {
+            synchronized (ImageUtils.class) {
                 if (mInstance == null) {
-                    mInstance = new MyImageUtils();
+                    mInstance = new ImageUtils();
                 }
             }
         }

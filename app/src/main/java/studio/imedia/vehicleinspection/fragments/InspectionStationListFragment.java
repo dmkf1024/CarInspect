@@ -36,7 +36,7 @@ import studio.imedia.vehicleinspection.bean.Flow;
 import studio.imedia.vehicleinspection.bean.InspectionStation;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
 
 /**
@@ -63,7 +63,7 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     putIntoAdapter();
                     break;
             }
@@ -87,7 +87,7 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        MyWidgetUtils.showProgressDialog(getActivity(), null, "数据加载中...", true);
+        WidgetUtils.showProgressDialog(getActivity(), null, "数据加载中...", true);
         init();
         findView(); // 关联控件
         initUrl(); // 初始化url
@@ -97,7 +97,7 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
     @Override
     public void onPause() {
         super.onPause();
-        MyWidgetUtils.hideProgressDialog();
+        WidgetUtils.hideProgressDialog();
     }
 
     private void init() {
@@ -169,14 +169,14 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                MyWidgetUtils.hideProgressDialog();
+                WidgetUtils.hideProgressDialog();
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     throw new IOException("Unexpected code " + response);
                 }
 

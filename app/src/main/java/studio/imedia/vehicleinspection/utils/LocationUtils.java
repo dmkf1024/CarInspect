@@ -3,22 +3,22 @@ package studio.imedia.vehicleinspection.utils;
 /**
  * Created by eric on 15/10/31.
  */
-public class MyLocationUtils {
+public class LocationUtils {
 
     private int[] mIndex = null;
 
     private int mLength = 0;
 
-    private static volatile MyLocationUtils mInstance = null;
+    private static volatile LocationUtils mInstance = null;
 
-    private MyLocationUtils() {
+    private LocationUtils() {
     }
 
-    public static MyLocationUtils getInstance() {
+    public static LocationUtils getInstance() {
         if (null == mInstance) {
-            synchronized (MyLocationUtils.class) {
+            synchronized (LocationUtils.class) {
                 if (null == mInstance) {
-                    mInstance = new MyLocationUtils();
+                    mInstance = new LocationUtils();
                 }
             }
         }

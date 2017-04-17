@@ -6,16 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,31 +42,43 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
-import studio.imedia.vehicleinspection.utils.MyCalendarUtils;
+import studio.imedia.vehicleinspection.utils.CalendarUtils;
 import studio.imedia.vehicleinspection.utils.SPUtil;
 import studio.imedia.vehicleinspection.views.MyDatePickerDialog;
 import studio.imedia.vehicleinspection.views.MyTimePickerDialog;
 import studio.imedia.vehicleinspection.views.SwitchView;
 
-public class SelectTimeWayActivity extends AppCompatActivity implements View.OnClickListener {
+public class SelectTimeWayActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private Button btnCommit;
-    private FrameLayout layoutChart;
-    private LinearLayout noData;
-    private TextView tvNoData;
-    private TextView tvInspactStation;
-
-    private RelativeLayout layoutSelectDate;
-    private RelativeLayout layoutSelectTime;
-
-    private TextView tvDate;
-    private TextView tvTime;
-
-    private SwitchView switchView;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.chart)
+    FrameLayout layoutChart;
+    @BindView(R.id.tv_no_data)
+    TextView tvNoData;
+    @BindView(R.id.no_data)
+    LinearLayout noData;
+    @BindView(R.id.tv_inspection_station)
+    TextView tvInspactStation;
+    @BindView(R.id.tv_date)
+    TextView tvDate;
+    @BindView(R.id.layout_select_date)
+    RelativeLayout layoutSelectDate;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
+    @BindView(R.id.layout_select_time)
+    RelativeLayout layoutSelectTime;
+    @BindView(R.id.switch_view)
+    SwitchView switchView;
+    @BindView(R.id.btn_commit)
+    Button btnCommit;
 
     private Context mContext = SelectTimeWayActivity.this;
 
@@ -130,6 +142,7 @@ public class SelectTimeWayActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_time_way);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
         findView(); // 关联控件
@@ -558,7 +571,7 @@ public class SelectTimeWayActivity extends AppCompatActivity implements View.OnC
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         // 获取未来七天的日期
-        textX = MyCalendarUtils.getFutureWeeklyDate(year, month, day);
+        textX = CalendarUtils.getFutureWeeklyDate(year, month, day);
         int dailyFlowLength = flows.size();
         if (flows != null && dailyFlowLength > 0) {
             showChart(); // 显示图表
@@ -688,6 +701,7 @@ public class SelectTimeWayActivity extends AppCompatActivity implements View.OnC
 
     /**
      * 隐藏图表
+     *
      * @param str 显示提示信息
      */
     private void hideChart(String str) {

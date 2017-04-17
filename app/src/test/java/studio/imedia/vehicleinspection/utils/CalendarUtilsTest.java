@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 /**
  * Created by eric on 15/12/9.
  */
-public class MyCalendarUtilsTest {
+public class CalendarUtilsTest {
 
     @Test
     public void testIsLeapYear() throws Exception {

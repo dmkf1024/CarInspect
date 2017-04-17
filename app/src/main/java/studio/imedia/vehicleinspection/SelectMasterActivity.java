@@ -1,6 +1,5 @@
 package studio.imedia.vehicleinspection;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,13 +12,18 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.adapters.MyMasterEXLVAdapter;
 import studio.imedia.vehicleinspection.bean.Master;
 
-public class SelectMasterActivity extends Activity implements View.OnClickListener {
+public class SelectMasterActivity extends BaseActivity implements View.OnClickListener {
 
-    private LinearLayout layoutBack;
-    private ExpandableListView exlvMasters;
+    @BindView(R.id.layout_back)
+    LinearLayout layoutBack;
+    @BindView(R.id.exlv_masters)
+    ExpandableListView exlvMasters;
+
     private List<Master> masterList;
     private MyMasterEXLVAdapter myMasterEXLVAdapter;
 
@@ -33,19 +37,11 @@ public class SelectMasterActivity extends Activity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_master);
+        ButterKnife.bind(this);
 
-        findView(); // 关联控件
         initEvent(); // 初始化监听事件
         initData(); // 初始化数据
         putIntoAdapter(); // 放入适配器中
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        layoutBack = (LinearLayout) findViewById(R.id.layout_back);
-        exlvMasters = (ExpandableListView) findViewById(R.id.exlv_masters);
     }
 
     /**
@@ -64,7 +60,7 @@ public class SelectMasterActivity extends Activity implements View.OnClickListen
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_head);
             master.setAvatar(bitmap);
             master.setName(names[i]);
-            master.setStartNum(i+3);
+            master.setStartNum(i + 3);
             master.setServiceAmount(serviceAmount[i]);
             master.setPrice(prices[i]);
 

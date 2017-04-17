@@ -2,14 +2,14 @@ package studio.imedia.vehicleinspection;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,18 +26,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.adapters.MyCouponAdapter;
 import studio.imedia.vehicleinspection.bean.Coupon;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
-public class SelectCouponActivity extends AppCompatActivity {
+public class SelectCouponActivity extends BaseActivity {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-    private ListView lvCoupon;
-    private TextView tvNoData;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.coupon_list)
+    ListView lvCoupon;
+    @BindView(R.id.tv_no_data)
+    TextView tvNoData;
 
     private StringBuffer mUrl = new StringBuffer();
 
@@ -62,21 +70,21 @@ public class SelectCouponActivity extends AppCompatActivity {
             switch (msg.what) {
                 case MSG_HAS_COUPON:
                     Log.d("coupon", "msg_ok");
-                    MyWidgetUtils.hideProgressDialog();
-                    MyWidgetUtils.showList(lvCoupon, tvNoData); // 显示列表
+                    WidgetUtils.hideProgressDialog();
+                    WidgetUtils.showList(lvCoupon, tvNoData); // 显示列表
                     mGCouponList = (GCouponList) msg.obj;
                     setAdapter();
                     break;
                 case MSG_NO_COUPON:
-                    MyWidgetUtils.hideProgressDialog();
-                    MyWidgetUtils.hideList(lvCoupon, tvNoData);
+                    WidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideList(lvCoupon, tvNoData);
                     break;
                 case MSG_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取数据异常", Toast.LENGTH_SHORT).show();
                     break;
                 case CONNECT_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -87,8 +95,9 @@ public class SelectCouponActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_coupon);
+        ButterKnife.bind(this);
 
-        MyWidgetUtils.showProgressDialog(mContext, null, "加载中...", true);
+        WidgetUtils.showProgressDialog(mContext, null, "加载中...", true);
         initToolbar(); // 初始化toolbar
         initUrl(); // 初始化url
         findView(); // 关联控件
@@ -193,6 +202,7 @@ public class SelectCouponActivity extends AppCompatActivity {
 
     /**
      * 通过gson解析json
+     *
      * @param jsonStr
      */
     private void parseJsonByGson(String jsonStr) {
@@ -200,7 +210,7 @@ public class SelectCouponActivity extends AppCompatActivity {
         GCouponList gCouponList = mGson.fromJson(jsonStr, GCouponList.class);
         Message msg = new Message();
         int status = gCouponList.status;
-        Log.d("mUrl", status+"");
+        Log.d("mUrl", status + "");
         if (status == 0) {
             List<GCoupon> gCoupons = gCouponList.coupons;
             if (gCoupons != null && gCoupons.size() > 0) {

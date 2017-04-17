@@ -2,7 +2,6 @@ package studio.imedia.vehicleinspection;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,18 +11,22 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.adapters.MyRecorderAdapter;
 import studio.imedia.vehicleinspection.bean.Recorder;
 import studio.imedia.vehicleinspection.managers.MediaManager;
 import studio.imedia.vehicleinspection.views.AudioRecorderButton;
 
-public class RecorderActivity extends AppCompatActivity {
+public class RecorderActivity extends BaseActivity {
 
-    private ListView mListView;
+    @BindView(R.id.id_recorder_button)
+    AudioRecorderButton mAudioRecorderButton;
+    @BindView(R.id.id_listview)
+    ListView mListView;
+
     private ArrayAdapter<Recorder> mAdapter;
     private List<Recorder> mDatas = new ArrayList<Recorder>();
-
-    private AudioRecorderButton mAudioRecorderButton;
 
     private View mAnimView;
 
@@ -31,6 +34,7 @@ public class RecorderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recorder);
+        ButterKnife.bind(this);
 
         mListView = (ListView) findViewById(R.id.id_listview);
         mAudioRecorderButton = (AudioRecorderButton) findViewById(R.id.id_recorder_button);

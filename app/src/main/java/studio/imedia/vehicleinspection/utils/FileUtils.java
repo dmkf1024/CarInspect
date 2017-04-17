@@ -7,7 +7,7 @@ import java.io.File;
 /**
  * Created by eric on 15/10/25.
  */
-public class MyFileUtils {
+public class FileUtils {
 
 
     public static void deleteAllFiles(String folderPath, String suffix) {

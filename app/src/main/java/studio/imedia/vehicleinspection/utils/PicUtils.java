@@ -22,7 +22,7 @@ import static android.graphics.BitmapFactory.Options;
 /**
  * Created by eric on 15/6/14.
  */
-public class MyPicUtils {
+public class PicUtils {
 
     public static final Bitmap getBitmap(String fileName) {
         Bitmap bitmap = null;

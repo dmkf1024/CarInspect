@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,21 +25,30 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.gbean.GCar;
 import studio.imedia.vehicleinspection.gbean.GUser;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private Button btnLogin;
-    private EditText etPhoneNum;
-    private EditText etPassword;
-    private Button btnRegister;
+    @BindView(R.id.title)
+    TextView tvTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar toolbar;
+    @BindView(R.id.et_phone_num)
+    EditText etPhoneNum;
+    @BindView(R.id.et_password)
+    EditText etPassword;
+    @BindView(R.id.btn_register)
+    Button btnRegister;
+    @BindView(R.id.btn_login)
+    Button btnLogin;
 
     private Context mContext = LoginActivity.this;
 
@@ -78,8 +87,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        ButterKnife.bind(this);
+
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initAccount(); // 初始化上次登录账号
         initWidget(); // 初始化控件状态
         initUrl(); // 初始化url
@@ -102,7 +112,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 获取传值
      */
     private void getBundle() {
-        Intent intent = getIntent();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String from = bundle.getString(Constant.Key.FROM);
@@ -119,31 +128,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 初始化toolbar
      */
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
-        mToolbar.setTitle("");
-        setSupportActionBar(mToolbar);
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
-        mTitle.setText(getString(R.string.title_car_inspection));
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        etPhoneNum = (EditText) findViewById(R.id.et_phone_num);
-        etPassword = (EditText) findViewById(R.id.et_password);
-        btnRegister = (Button) findViewById(R.id.btn_register);
+        tvTitle = (TextView) toolbar.findViewById(R.id.title);
+        tvTitle.setText(getString(R.string.title_car_inspection));
     }
 
     /**
      * 初始化控件状态
      */
     private void initWidget() {
-        MyWidgetUtils.enableButtonByEditText(btnLogin, etPhoneNum, etPassword); // 初始化登录按钮使能状态
+        WidgetUtils.enableButtonByEditText(btnLogin, etPhoneNum, etPassword); // 初始化登录按钮使能状态
     }
 
     /**
@@ -180,6 +178,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      * 登录
+     *
      * @param url
      */
     private void login(String url) {
@@ -216,6 +215,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      * 解析json数据
+     *
      * @param json
      */
     private void getStatus(String json) {
@@ -243,7 +243,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
         }
     }
-
 
 
     static class GInfo {

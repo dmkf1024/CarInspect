@@ -7,25 +7,31 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amap.api.services.route.DriveRouteResult;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.fragments.InspectionStationListFragment;
 import studio.imedia.vehicleinspection.fragments.InspectionStationMapFragment;
 import studio.imedia.vehicleinspection.service.LocationService;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
 
-public class InspectionStationActivity extends AppCompatActivity implements View.OnClickListener {
+public class InspectionStationActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private ImageView mSwitch;
-    private TextView mTitle;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView mSwitch;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.container)
+    FrameLayout container;
 
     private InspectionStationListFragment fragmentStationList;
     private InspectionStationMapFragment fragmentStationMap;
@@ -48,6 +54,7 @@ public class InspectionStationActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inspection_station);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
         //setSelect方法在init()方法中实现。获取定位坐标后再运行setSelect()方法
@@ -69,17 +76,14 @@ public class InspectionStationActivity extends AppCompatActivity implements View
      * 初始化toolbar
      */
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         String title = getResources().getString(R.string.title_select_car_inspection_station);
         mTitle.setText(title);
 
-        mSwitch = (ImageView) mToolbar.findViewById(R.id.right_icon);
         mSwitch.setVisibility(View.VISIBLE);
         mSwitch.setImageResource(R.drawable.icon_map_show);
         mSwitch.setOnClickListener(this);
@@ -112,11 +116,10 @@ public class InspectionStationActivity extends AppCompatActivity implements View
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("system","执行了onDestroy");
+        Log.d("system", "执行了onDestroy");
         if (service != null)
             stopService(service);
         if (receiver != null)
-//            receiver = null;
             LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 

@@ -28,7 +28,7 @@ import studio.imedia.vehicleinspection.bean.Master;
 import studio.imedia.vehicleinspection.bean.Recorder;
 import studio.imedia.vehicleinspection.managers.MediaManager;
 import studio.imedia.vehicleinspection.pojo.Constant;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 import studio.imedia.vehicleinspection.views.AudioRecorderButton;
 import studio.imedia.vehicleinspection.views.RoundImageView;
 
@@ -160,7 +160,7 @@ public class MyMasterEXLVAdapter extends BaseExpandableListAdapter {
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MyWidgetUtils.displayViewByCheckBox(isChecked, true, MyWidgetUtils.Type.TYPE_GONE,
+                WidgetUtils.displayViewByCheckBox(isChecked, true, WidgetUtils.Type.TYPE_GONE,
                         finalHolder.layoutMessage);
             }
         });
@@ -274,7 +274,7 @@ public class MyMasterEXLVAdapter extends BaseExpandableListAdapter {
     private void resetChildView(CheckBox checkBox, RelativeLayout layoutMessage, Button switchButton, EditText etMessage,
                                 AudioRecorderButton audioRecorderButton, RelativeLayout layoutAudio, View animView) {
         checkBox.setChecked(true);
-        MyWidgetUtils.displayViewByCheckBox(checkBox, true, MyWidgetUtils.Type.TYPE_GONE,
+        WidgetUtils.displayViewByCheckBox(checkBox, true, WidgetUtils.Type.TYPE_GONE,
                 layoutMessage);
         switchButton.setBackgroundResource(R.drawable.icon_microphone);
         etMessage.setVisibility(View.VISIBLE);

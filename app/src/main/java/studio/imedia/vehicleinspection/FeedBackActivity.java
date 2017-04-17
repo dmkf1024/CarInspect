@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,17 +25,24 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
-public class FeedBackActivity extends AppCompatActivity implements View.OnClickListener {
+public class FeedBackActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private EditText etSuggestion;
-    private Button btnSend;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.et_suggestion)
+    EditText etSuggestion;
+    @BindView(R.id.btn_send)
+    Button btnSend;
 
     private Context mContext = FeedBackActivity.this;
 
@@ -64,24 +71,23 @@ public class FeedBackActivity extends AppCompatActivity implements View.OnClickL
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_back);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initEvent(); // 初始化监听事件
     }
 
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         mTitle.setText(getString(R.string.title_feed_back));
     }
 
@@ -97,7 +103,7 @@ public class FeedBackActivity extends AppCompatActivity implements View.OnClickL
      * 初始化监听事件
      */
     private void initEvent() {
-        MyWidgetUtils.enableButtonByEditText(btnSend, etSuggestion);
+        WidgetUtils.enableButtonByEditText(btnSend, etSuggestion);
         btnSend.setOnClickListener(this);
     }
 
@@ -124,6 +130,7 @@ public class FeedBackActivity extends AppCompatActivity implements View.OnClickL
 
     /**
      * 发送反馈信息
+     *
      * @param urlSB
      */
     private void sendFeedback(StringBuffer urlSB) {
@@ -158,7 +165,7 @@ public class FeedBackActivity extends AppCompatActivity implements View.OnClickL
                     int status = new JSONObject(jsonStr).getInt("status");
                     if (status == 0)
                         mHandler.sendEmptyMessage(MSG_OK);
-                     else
+                    else
                         mHandler.sendEmptyMessage(MSG_FAIL);
                 } catch (JSONException e) {
                     e.printStackTrace();

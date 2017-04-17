@@ -2,15 +2,15 @@ package studio.imedia.vehicleinspection;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,19 +26,28 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private EditText etPhone;
-    private EditText etPassword;
-    private EditText etConfirmPwd;
-    private Button btnRegister;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.et_phone)
+    EditText etPhone;
+    @BindView(R.id.et_password)
+    EditText etPassword;
+    @BindView(R.id.et_confirm_password)
+    EditText etConfirmPwd;
+    @BindView(R.id.btn_register)
+    Button btnRegister;
 
     private String mPhone;
     private String mPassword;
@@ -82,9 +91,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initEvent(); // 监听事件回调
     }
 
@@ -92,26 +101,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      * 初始化toolbar
      */
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
-        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         String title = getString(R.string.title_register);
         mTitle.setText(title);
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        etPhone = (EditText) findViewById(R.id.et_phone);
-        etPassword = (EditText) findViewById(R.id.et_password);
-        etConfirmPwd = (EditText) findViewById(R.id.et_confirm_password);
-        btnRegister = (Button) findViewById(R.id.btn_register);
-        MyWidgetUtils.enableButtonByEditText(btnRegister, etPhone, etPassword, etConfirmPwd);
     }
 
     /**
@@ -134,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      * 注册
      */
     private void register() {
-        if (MyWidgetUtils.isEtContentEqual(etPassword, etConfirmPwd)) {
+        if (WidgetUtils.isEtContentEqual(etPassword, etConfirmPwd)) {
             final String phone = etPhone.getText().toString();
             final String password = etPassword.getText().toString();
             initUrl(); // 初始化url

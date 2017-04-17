@@ -1,16 +1,16 @@
 package studio.imedia.vehicleinspection;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,17 +27,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
 
-public class CityActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class CityActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-    private ListView lvCity;
-    private DrawerLayout mDrawerLayout;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.city_list)
+    ListView lvCity;
+    @BindView(R.id.container)
+    DrawerLayout mDrawerLayout;
 
     private List<String> mCityList;
     private ArrayAdapter mAdapter;
@@ -62,15 +70,15 @@ public class CityActivity extends AppCompatActivity implements AdapterView.OnIte
             switch (msg.what) {
                 case MSG_OK:
                     mGCityList = (GCityList) msg.obj;
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     setAdapter(); // 设置适配器
                     break;
                 case MSG_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
                     break;
                 case CONNECT_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -81,8 +89,9 @@ public class CityActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
+        ButterKnife.bind(this);
 
-        MyWidgetUtils.showProgressDialog(mContext, null, "加载中...", true);
+        WidgetUtils.showProgressDialog(mContext, null, "加载中...", true);
         initToolbar(); // 初始化toolbar
         findView(); // 关联控件
         initUrl(); // 初始化url

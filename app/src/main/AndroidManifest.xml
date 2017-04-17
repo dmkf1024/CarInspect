@@ -27,7 +27,6 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -39,7 +38,6 @@
         </activity>
         <activity
             android:name=".IllegalQueryActivity"
-            android:label="@string/title_activity_illegal_query"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -48,7 +46,6 @@
         </activity>
         <activity
             android:name=".CarInsuranceActivity"
-            android:label="@string/title_activity_car_insurance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

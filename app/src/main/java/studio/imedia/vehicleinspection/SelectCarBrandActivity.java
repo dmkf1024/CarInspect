@@ -2,15 +2,15 @@ package studio.imedia.vehicleinspection;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,16 +25,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
-public class SelectCarBrandActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class SelectCarBrandActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.lv_car_series)
+    ListView lvCarSeries;
 
-    private ListView lvCarSeries;
     private ArrayAdapter<String> mAdapter;
     private List<String> seriesList;
 
@@ -42,7 +49,6 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
 
     private String mIp;
     private String mPort;
-    private int mId;
     private StringBuffer mUrl = new StringBuffer();
 
 
@@ -64,14 +70,14 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
                 case MSG_OK:
                     mGBrandList = (GBrandList) msg.obj;
                     setAdapter();
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     break;
                 case MSG_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取服务器数据失败", Toast.LENGTH_SHORT).show();
                     break;
                 case CONNECT_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -82,10 +88,10 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_car_brand);
+        ButterKnife.bind(this);
 
-        MyWidgetUtils.showProgressDialog(mContext, null, DIALOG_MSG, false);
+        WidgetUtils.showProgressDialog(mContext, null, DIALOG_MSG, false);
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initEvent(); // 监听事件回调
         initUrl(); // 初始化url
         getData(mUrl); // 获取数据
@@ -104,13 +110,6 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
         mTitle = (TextView) mToolbar.findViewById(R.id.title);
         String title = getString(R.string.title_select_car_series);
         mTitle.setText(title);
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        lvCarSeries = (ListView) findViewById(R.id.lv_car_series);
     }
 
     /**
@@ -144,7 +143,7 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
         GBrand gBrand = mGBrandList.carbrand.get(position);
         bundle.putString(Constant.Key.CAR_BRAND_NAME, gBrand.name);
         bundle.putInt(Constant.Key.CAR_BRAND_ID, gBrand.id);
-        Log.d("brand", gBrand.id+"");
+        Log.d("brand", gBrand.id + "");
 
         intent.putExtras(bundle);
         String series = bundle.getString(Constant.Key.CAR_BRAND_NAME);
@@ -181,6 +180,7 @@ public class SelectCarBrandActivity extends AppCompatActivity implements Adapter
 
     /**
      * 通过gson解析json
+     *
      * @param json
      */
     private void parseJsonByGson(String json) {

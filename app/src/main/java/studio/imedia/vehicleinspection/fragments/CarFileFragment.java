@@ -36,7 +36,7 @@ import studio.imedia.vehicleinspection.bean.CarFile;
 import studio.imedia.vehicleinspection.gbean.GOrder;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,16 +68,16 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_OK:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     mGist = (Gist) msg.obj;
                     setAdapter(mGist); // 设置适配器
                     break;
                 case MSG_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(getActivity(), "数据获取失败", Toast.LENGTH_SHORT).show();
                     break;
                 case CONNECT_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(getActivity(), "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -124,12 +124,12 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
         isLogin = (boolean) SPUtil.get(getActivity(), Constant.Key.LOGIN_STATE,
                 Constant.Type.BOOLEAN);
         if (isLogin) {
-            MyWidgetUtils.showProgressDialog(getActivity(), null, "加载中...", true);
-            MyWidgetUtils.showList(lvCarFiles, tvNoLogin);
+            WidgetUtils.showProgressDialog(getActivity(), null, "加载中...", true);
+            WidgetUtils.showList(lvCarFiles, tvNoLogin);
             initUrl(); // 初始化url
             getData(mUrl); // 获取数据
         } else {
-            MyWidgetUtils.hideList(lvCarFiles, tvNoLogin);
+            WidgetUtils.hideList(lvCarFiles, tvNoLogin);
         }
     }
 
@@ -179,7 +179,7 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
             @Override
             public void onResponse(Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     throw new IOException("Unexpected code " + response);
                 }
 

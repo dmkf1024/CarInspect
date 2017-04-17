@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by eric on 15/12/9.
  */
-public class MyCalendarUtils {
+public class CalendarUtils {
 
     /**
      * 获取未来七天的“日”，包括当天

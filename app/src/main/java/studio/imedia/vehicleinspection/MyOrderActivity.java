@@ -2,16 +2,17 @@ package studio.imedia.vehicleinspection;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,23 +28,29 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.fragments.OrderedFragment;
 import studio.imedia.vehicleinspection.fragments.OrderingFragment;
 import studio.imedia.vehicleinspection.gbean.GOrder;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
 
-public class MyOrderActivity extends AppCompatActivity implements View.OnClickListener {
+public class MyOrderActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private Button btnOrdering;
-    private Button btnOrdered;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.btn_ordering)
+    Button btnOrdering;
+    @BindView(R.id.btn_ordered)
+    Button btnOrdered;
 
     private OrderedFragment fragmentOrdered;
     private OrderingFragment fragmentOrdering;
-
 
     private int textColorSelected;
     private int textColorNormal;
@@ -87,6 +94,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
         findView(); // 关联控件
@@ -181,6 +189,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         }
         transaction.commit();
     }
+
     /**
      * 初始化url
      */
@@ -215,7 +224,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-            mHandler.sendEmptyMessage(CONNECT_FAIL);
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override
@@ -226,7 +235,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
                 GOrderList gOrderList = mGson.fromJson(jsonStr, GOrderList.class); // 通过gson解析json
                 Message msg = new Message();
                 int status = gOrderList.status;
-                Log.d("orders", gOrderList.orders.size()+"--");
+                Log.d("orders", gOrderList.orders.size() + "--");
                 if (status == 0) {
                     msg.what = MSG_OK;
                     msg.obj = gOrderList;
@@ -257,7 +266,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     private void filterCoupon(GOrderList gOrderList) {
         List<GOrder> gOrders = gOrderList.orders;
         for (GOrder gOrder : gOrders) {
-            Log.d("orders", gOrder.getId()+"");
+            Log.d("orders", gOrder.getId() + "");
             int orderStatus = gOrder.getOrderStatus();
             if (orderStatus < 2)
                 mFinishingOrders.add(gOrder);

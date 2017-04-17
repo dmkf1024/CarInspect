@@ -33,7 +33,7 @@ import studio.imedia.vehicleinspection.views.MyTimePickerDialog;
 /**
  * Created by cooffee on 15/10/15.
  */
-public class MyWidgetUtils {
+public class WidgetUtils {
 
     private static ProgressDialog mPDialog = null;
 

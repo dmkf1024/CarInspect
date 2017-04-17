@@ -5,7 +5,7 @@ import android.os.Environment;
 
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.pojo.Constant;
-import studio.imedia.vehicleinspection.utils.MyFileUtils;
+import studio.imedia.vehicleinspection.utils.FileUtils;
 import studio.imedia.vehicleinspection.utils.SPUtil;
 
 /**
@@ -47,7 +47,7 @@ public class MyApplication extends Application {
      */
     private void clearAudioFiles() {
         String folderPath = Environment.getExternalStorageDirectory() + "/" + Constant.AUDIO_FILE_NAME;
-        MyFileUtils.deleteAllFiles(folderPath, "amr");
+        FileUtils.deleteAllFiles(folderPath, "amr");
     }
 
     /**

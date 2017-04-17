@@ -32,7 +32,7 @@ import studio.imedia.vehicleinspection.MainActivity;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,16 +63,16 @@ public class CountyFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_OK:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     mGCountyList = (GCountyList) msg.obj;
                     setAdapter(); // 设置适配器
                     break;
                 case MSG_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
                     break;
                 case CONNECT_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(getActivity(), "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -138,7 +138,7 @@ public class CountyFragment extends Fragment {
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 if (isLoaded == false) {
                     isLoaded = true;
-                    MyWidgetUtils.showProgressDialog(getActivity(), null, "加载中...", true);
+                    WidgetUtils.showProgressDialog(getActivity(), null, "加载中...", true);
                     initUrl(); // 初始化url
                     getData(mUrl); // 获取数据
                 }

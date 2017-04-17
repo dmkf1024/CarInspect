@@ -6,41 +6,55 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.fragments.CarFileFragment;
 import studio.imedia.vehicleinspection.fragments.CarInfoFragment;
 import studio.imedia.vehicleinspection.fragments.HomePageFragment;
 import studio.imedia.vehicleinspection.fragments.OwnerInfoFragment;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private LinearLayout tabHomePage;       // 首页
-    private LinearLayout tabCarInfo;        // 爱车信息
-    private LinearLayout tabOwnerInfo;      // 车主资料
-    private LinearLayout tabCarFile;        // 爱车档案
+    @BindView(R.id.img_home_page)
+    ImageView imgHomePage;
+    @BindView(R.id.tv_home_page)
+    TextView tvHomePage;
+    @BindView(R.id.tab_home_page)
+    LinearLayout tabHomePage;
+    @BindView(R.id.img_car_info)
+    ImageView imgCarInfo;
+    @BindView(R.id.tv_car_info)
+    TextView tvCarInfo;
+    @BindView(R.id.tab_car_info)
+    LinearLayout tabCarInfo;
+    @BindView(R.id.img_owner_info)
+    ImageView imgOwnerInfo;
+    @BindView(R.id.tv_owner_info)
+    TextView tvOwnerInfo;
+    @BindView(R.id.tab_owner_info)
+    LinearLayout tabOwnerInfo;
+    @BindView(R.id.img_car_file)
+    ImageView imgCarFile;
+    @BindView(R.id.tv_car_file)
+    TextView tvCarFile;
+    @BindView(R.id.tab_car_file)
+    LinearLayout tabCarFile;
+    @BindView(R.id.container)
+    FrameLayout container;
 
     private Fragment fragmentHomePage;
     private Fragment fragmentCarInfo;
     private Fragment fragmentOwnerInfo;
     private Fragment fragmentCarFile;
-
-    private ImageView imgHomePage;          // tab栏 ”首页“图标
-    private ImageView imgCarInfo;           // tab栏 ”爱车信息“图标
-    private ImageView imgOwnerInfo;         // tab栏 ”车主资料“图标
-    private ImageView imgCarFile;           // tab栏 ”爱车档案“图标
-
-    private TextView tvHomePage;            // tab栏 ”首页“标题
-    private TextView tvCarInfo;             // tab栏 ”爱车信息“标题
-    private TextView tvOwnerInfo;           // tab栏 ”车主资料“标题
-    private TextView tvCarFile;             // tab栏 ”爱车档案“标题
 
     private int colorNormal;
     private int colorSelected;
@@ -57,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        findView(); // 关联控件
         initColor(); // 初始化颜色
         initEvent(); // 初始化事件监听
         initTab(); // 初始化tab栏
@@ -85,31 +99,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            Log.d("car", "bundle null");
 //        }
 //    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        tabHomePage = (LinearLayout) findViewById(R.id.tab_home_page);
-        tabCarInfo = (LinearLayout) findViewById(R.id.tab_car_info);
-        tabOwnerInfo = (LinearLayout) findViewById(R.id.tab_owner_info);
-        tabCarFile = (LinearLayout) findViewById(R.id.tab_car_file);
-
-        imgHomePage = (ImageView) findViewById(R.id.img_home_page);
-        imgCarInfo = (ImageView) findViewById(R.id.img_car_info);
-        imgOwnerInfo = (ImageView) findViewById(R.id.img_owner_info);
-        imgCarFile = (ImageView) findViewById(R.id.img_car_file);
-
-        tvHomePage = (TextView) findViewById(R.id.tv_home_page);
-        tvCarInfo = (TextView) findViewById(R.id.tv_car_info);
-        tvOwnerInfo = (TextView) findViewById(R.id.tv_owner_info);
-        tvCarFile = (TextView) findViewById(R.id.tv_car_file);
     }
 
     /**

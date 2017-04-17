@@ -1,19 +1,23 @@
 package studio.imedia.vehicleinspection;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class IllegalQueryActivity extends AppCompatActivity implements View.OnClickListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
+public class IllegalQueryActivity extends BaseActivity {
+
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
 
     private Context mContext = IllegalQueryActivity.this;
 
@@ -21,38 +25,18 @@ public class IllegalQueryActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_illegal_query);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
-        initEvent(); // 注册监听事件
     }
 
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         mTitle.setText(getString(R.string.title_illegal_query));
     }
 
-    /**
-     * 关联控件
-     */
-    private void findView() {
-    }
-
-    /**
-     * 注册监听事件
-     */
-    private void initEvent() {
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-        }
-    }
 }

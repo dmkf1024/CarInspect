@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,18 +22,24 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.adapters.MyCarPartAdapter;
 import studio.imedia.vehicleinspection.gbean.GPart;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
-public class CarInspectionLibraryActivity extends AppCompatActivity {
+public class CarInspectionLibraryActivity extends BaseActivity {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private ListView lvCarInspection;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.lv_car_inspection)
+    ListView lvCarInspection;
 
     private Context mContext = CarInspectionLibraryActivity.this;
 
@@ -53,16 +59,16 @@ public class CarInspectionLibraryActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_OK:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     mGist = (Gist) msg.obj;
                     setAdapter(mGist); // 设置适配器
                     break;
                 case MSG_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "数据获取失败", Toast.LENGTH_SHORT).show();
                     break;
                 case CONNECT_OUT:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -73,10 +79,10 @@ public class CarInspectionLibraryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_inspection_library);
+        ButterKnife.bind(this);
 
-        MyWidgetUtils.showProgressDialog(mContext, null, "加载中...", true);
+        WidgetUtils.showProgressDialog(mContext, null, "加载中...", true);
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initUrl(); // 初始化url
         getData(mUrl); // 获取数据
     }
@@ -85,21 +91,12 @@ public class CarInspectionLibraryActivity extends AppCompatActivity {
      * 初始化toolbar
      */
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         mTitle.setText(getString(R.string.title_car_inspection_library));
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        lvCarInspection = (ListView) findViewById(R.id.lv_car_inspection);
     }
 
     /**
@@ -137,7 +134,7 @@ public class CarInspectionLibraryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     throw new IOException("Unexpected code " + response);
                 }
 

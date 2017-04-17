@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,19 +25,28 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
-public class ModifyPwdActivity extends AppCompatActivity implements View.OnClickListener {
+public class ModifyPwdActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private EditText etOrgPwd;
-    private EditText etNewPwd;
-    private EditText etConfirmNewPwd;
-    private Button btnConfirm;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.et_org_pwd)
+    EditText etOrgPwd;
+    @BindView(R.id.et_new_pwd)
+    EditText etNewPwd;
+    @BindView(R.id.et_confirm_new_pwd)
+    EditText etConfirmNewPwd;
+    @BindView(R.id.btn_confirm)
+    Button btnConfirm;
 
     StringBuffer mUrl = new StringBuffer();
 
@@ -71,20 +80,10 @@ public class ModifyPwdActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_pwd);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initEvent(); // 初始化监听事件
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        etOrgPwd = (EditText) findViewById(R.id.et_org_pwd);
-        etNewPwd = (EditText) findViewById(R.id.et_new_pwd);
-        etConfirmNewPwd = (EditText) findViewById(R.id.et_confirm_new_pwd);
-        btnConfirm = (Button) findViewById(R.id.btn_confirm);
     }
 
     /**
@@ -102,13 +101,11 @@ public class ModifyPwdActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         mTitle.setText(getString(R.string.title_modify_pwd));
     }
 
@@ -116,7 +113,7 @@ public class ModifyPwdActivity extends AppCompatActivity implements View.OnClick
      * 初始化监听事件
      */
     private void initEvent() {
-        MyWidgetUtils.enableButtonByEditText(btnConfirm, etOrgPwd, etNewPwd, etConfirmNewPwd);
+        WidgetUtils.enableButtonByEditText(btnConfirm, etOrgPwd, etNewPwd, etConfirmNewPwd);
         btnConfirm.setOnClickListener(this);
     }
 

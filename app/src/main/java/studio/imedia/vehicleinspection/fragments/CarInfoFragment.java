@@ -49,9 +49,9 @@ import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.SelectCarTypeActivity;
 import studio.imedia.vehicleinspection.SelectCarBrandActivity;
 import studio.imedia.vehicleinspection.pojo.Constant;
-import studio.imedia.vehicleinspection.utils.MyPicUtils;
+import studio.imedia.vehicleinspection.utils.PicUtils;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -327,7 +327,7 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), SelectCarBrandActivity.class));
                 break;
             case R.id.layout_car_type:
-                if (!MyWidgetUtils.isTextViewEmpty(tvCarBrand)) {
+                if (!WidgetUtils.isTextViewEmpty(tvCarBrand)) {
                     Intent intent = new Intent(getActivity(), SelectCarTypeActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constant.Key.CAR_BRAND_ID, mCarBrandId);
@@ -338,8 +338,8 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.layout_register_date:
-                MyWidgetUtils.pickerDialogToTextView(getActivity(), tvRegisterDate,
-                        MyWidgetUtils.Type.DATE_PICKER_DIALOG, false);
+                WidgetUtils.pickerDialogToTextView(getActivity(), tvRegisterDate,
+                        WidgetUtils.Type.DATE_PICKER_DIALOG, false);
                 break;
             case R.id.layout_city:
                 startActivity(new Intent(getActivity(), CityActivity.class));
@@ -573,7 +573,7 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
                     File tmpFile = new File(Environment.getExternalStorageDirectory(),
                             IMG_LICENSE_FILE_NAME);
                     mLicensePic = BitmapFactory.decodeFile(tmpFile.getPath());
-                    imgDriverLicense.setImageBitmap(MyPicUtils.fitView(mLicensePic, imgDriverLicense));
+                    imgDriverLicense.setImageBitmap(PicUtils.fitView(mLicensePic, imgDriverLicense));
                     isLicenseUpdate = true;
                 } else {
                     Toast.makeText(getActivity(), "未检测到SD卡", Toast.LENGTH_SHORT).show();
@@ -582,10 +582,10 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
             case REQUEST_GALLERY_BEFORE_KITKAT:
             case REQUEST_GALLERY_AFTER_KITKAT:
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    mImgFileName = MyPicUtils.getDataColumn(getActivity().getApplicationContext(),
+                    mImgFileName = PicUtils.getDataColumn(getActivity().getApplicationContext(),
                             data.getData(), null, null); // 得到文件名
                     mLicensePic = BitmapFactory.decodeFile(mImgFileName);
-                    imgDriverLicense.setImageBitmap(MyPicUtils.fitView(mLicensePic, imgDriverLicense));
+                    imgDriverLicense.setImageBitmap(PicUtils.fitView(mLicensePic, imgDriverLicense));
                     isLicenseUpdate = true;
                 }
                 break;

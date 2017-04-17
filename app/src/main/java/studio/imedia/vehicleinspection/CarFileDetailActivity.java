@@ -1,12 +1,12 @@
 package studio.imedia.vehicleinspection;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,24 +20,37 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
 
-public class CarFileDetailActivity extends AppCompatActivity {
+public class CarFileDetailActivity extends BaseActivity {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private TextView tvStation;
-    private TextView tvDate;
-    private TextView tvStatus;
-
-    private TextView tvField1;
-    private TextView tvField2;
-    private TextView tvField3;
-    private TextView tvField4;
-    private TextView tvField5;
-    private TextView tvField6;
+    @BindView(R.id.title)
+    TextView tvTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar toolbar;
+    @BindView(R.id.tv_station)
+    TextView tvStation;
+    @BindView(R.id.tv_date)
+    TextView tvDate;
+    @BindView(R.id.tv_status)
+    TextView tvStatus;
+    @BindView(R.id.tv_field1)
+    TextView tvField1;
+    @BindView(R.id.tv_field2)
+    TextView tvField2;
+    @BindView(R.id.tv_field3)
+    TextView tvField3;
+    @BindView(R.id.tv_field4)
+    TextView tvField4;
+    @BindView(R.id.tv_field5)
+    TextView tvField5;
+    @BindView(R.id.tv_field6)
+    TextView tvField6;
 
     private int mOrderId;
     private String mDate;
@@ -77,6 +90,7 @@ public class CarFileDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_file_detail);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
         findView(); // 关联控件
@@ -89,15 +103,13 @@ public class CarFileDetailActivity extends AppCompatActivity {
      * 初始化toolbar
      */
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
-        mToolbar.setTitle("");
-        setSupportActionBar(mToolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) findViewById(R.id.title);
         String title = getString(R.string.title_car_file_detail);
-        mTitle.setText(title);
+        tvTitle.setText(title);
     }
 
     /**
@@ -160,7 +172,7 @@ public class CarFileDetailActivity extends AppCompatActivity {
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-            mHandler.sendEmptyMessage(CONNECT_FAIL);
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override
@@ -212,11 +224,11 @@ public class CarFileDetailActivity extends AppCompatActivity {
             tvStatus.setText("状态：未通过");
         else
             tvStatus.setText("状态：通过");
-        tvField1.setText(archives.field1+"");
-        tvField2.setText(archives.field2+"");
-        tvField3.setText(archives.field3+"");
-        tvField4.setText(archives.field4+"");
-        tvField5.setText(archives.field5+"");
-        tvField6.setText(archives.field6+"");
+        tvField1.setText(archives.field1 + "");
+        tvField2.setText(archives.field2 + "");
+        tvField3.setText(archives.field3 + "");
+        tvField4.setText(archives.field4 + "");
+        tvField5.setText(archives.field5 + "");
+        tvField6.setText(archives.field6 + "");
     }
 }

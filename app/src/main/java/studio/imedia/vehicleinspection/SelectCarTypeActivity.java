@@ -2,15 +2,15 @@ package studio.imedia.vehicleinspection;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,16 +28,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
-public class SelectCarTypeActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class SelectCarTypeActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-    private ListView lvCarModel;
-    private TextView tvNoCarType;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.lv_car_type)
+    ListView lvCarType;
+    @BindView(R.id.tv_no_car_type)
+    TextView tvNoCarType;
+
     private ArrayAdapter<String> mAdapter;
 
     private List<String> carModelList;
@@ -64,16 +73,16 @@ public class SelectCarTypeActivity extends AppCompatActivity implements AdapterV
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_OK:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     mGTypeList = (GTypeList) msg.obj;
                     setAdapter();
                     break;
                 case MSG_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     hideList();
                     break;
                 case CONNECT_OUT:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -84,10 +93,10 @@ public class SelectCarTypeActivity extends AppCompatActivity implements AdapterV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_car_type);
+        ButterKnife.bind(this);
 
-        MyWidgetUtils.showProgressDialog(mContext, null, DIALOG_MSG, false);
+        WidgetUtils.showProgressDialog(mContext, null, DIALOG_MSG, false);
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         showList();
         getBundle(); // 获取传递的数据
         initUrl(); // 初始化url
@@ -99,24 +108,14 @@ public class SelectCarTypeActivity extends AppCompatActivity implements AdapterV
      * 初始化toolbar
      */
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         String title = getString(R.string.title_select_car_model);
         mTitle.setText(title);
 
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        lvCarModel = (ListView) findViewById(R.id.lv_car_type);
-        tvNoCarType = (TextView) findViewById(R.id.tv_no_car_type);
     }
 
     /**
@@ -178,6 +177,7 @@ public class SelectCarTypeActivity extends AppCompatActivity implements AdapterV
 
     /**
      * 通过gson解析json
+     *
      * @param jsonStr
      */
     private void parseJsonByGson(String jsonStr) {
@@ -215,14 +215,14 @@ public class SelectCarTypeActivity extends AppCompatActivity implements AdapterV
         if (mAdapter == null) {
             mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, carModelList);
         }
-        lvCarModel.setAdapter(mAdapter);
+        lvCarType.setAdapter(mAdapter);
     }
 
     /**
      * 显示列表
      */
     private void showList() {
-        lvCarModel.setVisibility(View.VISIBLE);
+        lvCarType.setVisibility(View.VISIBLE);
         tvNoCarType.setVisibility(View.GONE);
     }
 
@@ -230,7 +230,7 @@ public class SelectCarTypeActivity extends AppCompatActivity implements AdapterV
      * 隐藏列表
      */
     private void hideList() {
-        lvCarModel.setVisibility(View.GONE);
+        lvCarType.setVisibility(View.GONE);
         tvNoCarType.setVisibility(View.VISIBLE);
     }
 
@@ -238,7 +238,7 @@ public class SelectCarTypeActivity extends AppCompatActivity implements AdapterV
      * 监听事件回调
      */
     private void initEvent() {
-        lvCarModel.setOnItemClickListener(this);
+        lvCarType.setOnItemClickListener(this);
     }
 
     @Override

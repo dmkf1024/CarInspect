@@ -2,18 +2,18 @@ package studio.imedia.vehicleinspection;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Callback;
@@ -30,36 +30,62 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.adapters.MyOrderItemAdapter;
 import studio.imedia.vehicleinspection.gbean.GOrderItem;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 import studio.imedia.vehicleinspection.views.MyListView;
 import studio.imedia.vehicleinspection.views.SwitchView;
 
-public class SubmitOrderActivity extends AppCompatActivity implements View.OnClickListener {
+public class SubmitOrderActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private TextView tvMaster;
-    private TextView tvStation;
-    private TextView tvDateTime;
-
-    private RelativeLayout layoutProxyCost;
-    private TextView tvCostSum;
-    private TextView tvCostSumBottom;
-
-    private SwitchView switchCoupon;
-
-    private RelativeLayout layoutAlipay;
-    private RelativeLayout layoutWechatPay;
-    private ImageView imgCheckAlipay;
-    private ImageView imgCheckWechatPay;
-    private MyListView lvOrderItem;
-
-    private Button btnConfirm;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.btn_confirm)
+    Button btnConfirm;
+    @BindView(R.id.tv_cost_sum_bottom)
+    TextView tvCostSumBottom;
+    @BindView(R.id.layout_bottom)
+    LinearLayout layoutBottom;
+    @BindView(R.id.tv_master)
+    TextView tvMaster;
+    @BindView(R.id.tv_station)
+    TextView tvStation;
+    @BindView(R.id.tv_date_time)
+    TextView tvDateTime;
+    @BindView(R.id.lv_order_items)
+    MyListView lvOrderItem;
+    @BindView(R.id.layout_proxy_cost)
+    RelativeLayout layoutProxyCost;
+    @BindView(R.id.tv_cost_sum)
+    TextView tvCostSum;
+    @BindView(R.id.layout_order)
+    LinearLayout layoutOrder;
+    @BindView(R.id.tv_user_coupon)
+    TextView tvUserCoupon;
+    @BindView(R.id.switch_coupon)
+    SwitchView switchCoupon;
+    @BindView(R.id.layout_user_coupon)
+    RelativeLayout layoutUserCoupon;
+    @BindView(R.id.img_alipay)
+    ImageView imgAlipay;
+    @BindView(R.id.img_check_alipay)
+    ImageView imgCheckAlipay;
+    @BindView(R.id.layout_alipay)
+    RelativeLayout layoutAlipay;
+    @BindView(R.id.img_wechat_pay)
+    ImageView imgWechatPay;
+    @BindView(R.id.img_check_wechat_pay)
+    ImageView imgCheckWechatPay;
+    @BindView(R.id.layout_wechat_pay)
+    RelativeLayout layoutWechatPay;
 
     private boolean isProxy;
     private boolean isUseCoupon;
@@ -92,7 +118,7 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_OK:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     // 跳转支付界面
                     mOrderId = (int) msg.obj;
                     Toast.makeText(mContext, "订单提交成功！", Toast.LENGTH_SHORT).show();
@@ -104,21 +130,21 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
 //                    startActivity(new Intent(mContext, PayActivity.class));
                     break;
                 case MSG_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "订单提交失败", Toast.LENGTH_SHORT).show();
                     break;
                 case MSG_GET_ITEM_OK:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     mGItemList = (GItemList) msg.obj;
                     setAdapter(mGItemList); // 显示订单项目
                     initPriceSum(mGItemList);
                     break;
                 case MSG_GET_ITEM_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取订单项目失败", Toast.LENGTH_SHORT).show();
                     break;
                 case CONNECT_FAIL:
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -129,9 +155,9 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_order);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initUrl();
         getOrderItems(mItemsUrl); // 获取订单项目
         initEvent(); // 初始化监听事件
@@ -147,35 +173,12 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
      * 初始化toolbar
      */
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         mTitle.setText(getString(R.string.title_sumbit_order));
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        tvMaster = (TextView) findViewById(R.id.tv_master);
-        tvStation = (TextView) findViewById(R.id.tv_station);
-        tvDateTime = (TextView) findViewById(R.id.tv_date_time);
-        layoutProxyCost = (RelativeLayout) findViewById(R.id.layout_proxy_cost);
-        tvCostSum = (TextView) findViewById(R.id.tv_cost_sum);
-        tvCostSumBottom = (TextView) findViewById(R.id.tv_cost_sum_bottom);
-        switchCoupon = (SwitchView) findViewById(R.id.switch_coupon);
-
-        layoutAlipay = (RelativeLayout) findViewById(R.id.layout_alipay);
-        layoutWechatPay = (RelativeLayout) findViewById(R.id.layout_wechat_pay);
-        imgCheckAlipay = (ImageView) findViewById(R.id.img_check_alipay);
-        imgCheckWechatPay = (ImageView) findViewById(R.id.img_check_wechat_pay);
-        btnConfirm = (Button) findViewById(R.id.btn_confirm);
-
-        lvOrderItem = (MyListView) findViewById(R.id.lv_order_items);
     }
 
     /**
@@ -202,7 +205,7 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
      * 获得订单项目
      */
     private void getOrderItems(StringBuffer urlSB) {
-        MyWidgetUtils.showProgressDialog(mContext, null, "加载中...", true);
+        WidgetUtils.showProgressDialog(mContext, null, "加载中...", true);
         String url = urlSB.toString();
         int userId = (int) SPUtil.get(mContext, Constant.Key.USER_ID, Constant.Type.INTEGER);
         RequestBody formBody = new FormEncodingBuilder()
@@ -219,13 +222,13 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-               mHandler.sendEmptyMessage(CONNECT_FAIL);
+                mHandler.sendEmptyMessage(CONNECT_FAIL);
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    MyWidgetUtils.hideProgressDialog();
+                    WidgetUtils.hideProgressDialog();
                     throw new IOException("Unexpected code " + response);
                 }
 
@@ -341,7 +344,7 @@ public class SubmitOrderActivity extends AppCompatActivity implements View.OnCli
                 selectWechatPay(); // 选择微信支付
                 break;
             case R.id.btn_confirm:
-                MyWidgetUtils.showProgressDialog(mContext, null, "订单提交中...", true);
+                WidgetUtils.showProgressDialog(mContext, null, "订单提交中...", true);
                 submitOrder(mSubmitUrl); // 提交订单
                 break;
         }

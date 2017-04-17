@@ -60,7 +60,7 @@ import java.util.List;
 
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.pojo.Constant;
-import studio.imedia.vehicleinspection.utils.MyLocationUtils;
+import studio.imedia.vehicleinspection.utils.LocationUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -604,7 +604,7 @@ public class InspectionStationMapFragment extends Fragment implements LocationSo
         }
         Arrays.sort(distanceOrder);
         for (int i = 0; i < Constant.Location.NUM_VI; i++) {
-            MyLocationUtils myLocationUtils = MyLocationUtils.getInstance();
+            LocationUtils myLocationUtils = LocationUtils.getInstance();
             myLocationUtils.saveIndex(orderList, distanceOrder, Constant.Location.NUM_VI);
 
 //            index[i] = getIndex(orderList, distanceOrder, StaticValues.NUM_VI)[i];

@@ -10,17 +10,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,26 +40,44 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
-import studio.imedia.vehicleinspection.utils.MyPicUtils;
+import studio.imedia.vehicleinspection.utils.PicUtils;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 import studio.imedia.vehicleinspection.views.RoundImageView;
 
-public class PersonalInfoActivity extends AppCompatActivity implements View.OnClickListener {
+public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-
-    private RelativeLayout layoutAvatar;
-    private RelativeLayout layoutUsername;
-    private RelativeLayout layoutGender;
-
-    private RoundImageView imgAvatar;
-    private TextView tvUsername;
-    private TextView tvGender;
-    private EditText etSignature;
-    private Button btnSave;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView rightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.img_next_avatar)
+    ImageView imgNextAvatar;
+    @BindView(R.id.img_user_avatar)
+    RoundImageView imgUserAvatar;
+    @BindView(R.id.avatar)
+    RelativeLayout layoutAvatar;
+    @BindView(R.id.img_next_nickname)
+    ImageView imgNextNickname;
+    @BindView(R.id.tv_username)
+    TextView tvUsername;
+    @BindView(R.id.username)
+    RelativeLayout layoutUsername;
+    @BindView(R.id.img_next_gendar)
+    ImageView imgNextGendar;
+    @BindView(R.id.tv_gender)
+    TextView tvGender;
+    @BindView(R.id.gender)
+    RelativeLayout layoutGender;
+    @BindView(R.id.et_signature)
+    EditText etSignature;
+    @BindView(R.id.btn_save)
+    Button btnSave;
 
     private String mAvatarPath;
     private String mUsername;
@@ -128,9 +146,9 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
+        ButterKnife.bind(this);
 
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initData(); // 初始化用户数据
         initView(); // 初始化视图
         initEvent(); // 初始化监听事件
@@ -148,21 +166,6 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
 
         mTitle = (TextView) mToolbar.findViewById(R.id.title);
         mTitle.setText(getString(R.string.title_personal_info));
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        layoutAvatar = (RelativeLayout) findViewById(R.id.avatar);
-        layoutUsername = (RelativeLayout) findViewById(R.id.username);
-        layoutGender = (RelativeLayout) findViewById(R.id.gender);
-
-        imgAvatar = (RoundImageView) findViewById(R.id.img_user_avatar);
-        tvUsername = (TextView) findViewById(R.id.tv_username);
-        tvGender = (TextView) findViewById(R.id.tv_gender);
-        etSignature = (EditText) findViewById(R.id.et_signature);
-        btnSave = (Button) findViewById(R.id.btn_save);
     }
 
     /**
@@ -216,11 +219,11 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
                 showImgPickerDialog();
                 break;
             case R.id.username:
-                MyWidgetUtils.showDialogWithET(mContext, "请输入昵称", tvUsername);
+                WidgetUtils.showDialogWithET(mContext, "请输入昵称", tvUsername);
                 break;
             case R.id.gender:
                 String[] genders = {"男", "女"};
-                MyWidgetUtils.showDialogWithItems(mContext, "请选择性别", tvGender, genders);
+                WidgetUtils.showDialogWithItems(mContext, "请选择性别", tvGender, genders);
                 break;
             case R.id.btn_save:
                 initUrl(); // 初始化url
@@ -321,7 +324,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
                             IMG_LICENSE_FILE_NAME);
                     mAvatarFile = tmpFile;
                     mAvatar = BitmapFactory.decodeFile(tmpFile.getPath());
-                    imgAvatar.setImageBitmap(MyPicUtils.fitView(mAvatar, imgAvatar));
+                    imgUserAvatar.setImageBitmap(PicUtils.fitView(mAvatar, imgUserAvatar));
                     isAvatarUpdate = true;
                 } else {
                     Toast.makeText(mContext, "未检测到SD卡", Toast.LENGTH_SHORT).show();
@@ -330,12 +333,12 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
             case REQUEST_GALLERY_BEFORE_KITKAT:
             case REQUEST_GALLERY_AFTER_KITKAT:
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    mImgFileName = MyPicUtils.getDataColumn(getApplicationContext(),
+                    mImgFileName = PicUtils.getDataColumn(getApplicationContext(),
                             data.getData(), null, null); // 得到文件名
                     mAvatarFile = new File(mImgFileName); // 得到文件
                     Log.d("files", "the file from gallery is " + mAvatarFile.toString());
                     mAvatar = BitmapFactory.decodeFile(mImgFileName);
-                    imgAvatar.setImageBitmap(MyPicUtils.fitView(mAvatar, imgAvatar));
+                    imgUserAvatar.setImageBitmap(PicUtils.fitView(mAvatar, imgUserAvatar));
                     isAvatarUpdate = true;
                 }
                 break;
@@ -379,6 +382,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
 
     /**
      * 上传信息
+     *
      * @param urlSB
      * @param avatarPath
      */
@@ -438,6 +442,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
 
     /**
      * 上传头像
+     *
      * @param urlSB
      */
     private void uploadAvatar(StringBuffer urlSB, File avatarFile) {
@@ -453,7 +458,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
         RequestBody requestBody = new MultipartBuilder()
                 .type(MultipartBuilder.FORM)
                 .addPart(Headers.of("Content-Disposition",
-                                "form-data; name=\"uploadFile\""),
+                        "form-data; name=\"uploadFile\""),
                         fileBody)
                 .build();
 

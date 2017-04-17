@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -45,10 +44,10 @@ import studio.imedia.vehicleinspection.bean.Recorder;
 import studio.imedia.vehicleinspection.managers.MediaManager;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.MyWidgetUtils;
+import studio.imedia.vehicleinspection.utils.WidgetUtils;
 import studio.imedia.vehicleinspection.views.AudioRecorderButton;
 
-public class SelectMasterWithPopupwidnowsActivity extends AppCompatActivity {
+public class SelectMasterWithPopupwidnowsActivity extends BaseActivity {
 
     private Toolbar mToolbar;
     private TextView mTitle;
@@ -279,7 +278,7 @@ public class SelectMasterWithPopupwidnowsActivity extends AppCompatActivity {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MyWidgetUtils.displayViewByCheckBox(isChecked, true, MyWidgetUtils.Type.TYPE_GONE,
+                WidgetUtils.displayViewByCheckBox(isChecked, true, WidgetUtils.Type.TYPE_GONE,
                         layoutMessage);
             }
         });
