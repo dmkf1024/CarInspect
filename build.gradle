@@ -11,12 +11,15 @@ buildscript {
 
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.4.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
+        classpath 'com.android.tools.build:gradle:1.2.3'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
     }
 }
 

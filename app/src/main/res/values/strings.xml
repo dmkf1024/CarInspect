@@ -5,6 +5,13 @@
     <string name="car_info">爱车信息</string>
     <string name="owner_info">车主资料</string>
 
+    <!--Bmob开始-->
+    <string name="bmob_app_id">caea73f225257bdceb66ff911430afb9</string>
+    <string name="bmob_rest_api_key">77c379edb86ba8b73545904f3dfe2ee2</string>
+    <string name="secret_key">396b970c3cd9b7eb</string>
+    <string name="master_key">9498b61b2cf179ab62cb748a661c6443</string>
+    <!--Bmob结束-->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="car_file">爱车档案</string>
     <string name="title_activity_illegal_query">IllegalQueryActivity</string>

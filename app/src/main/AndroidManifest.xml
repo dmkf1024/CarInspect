@@ -229,8 +229,10 @@
                 android:value=".activity.LoginActivity" />
         </activity>
 
+        <activity android:name="cn.bmob.pay.v3.act.PayAct" />
 
         <service android:name=".service.LocationService" />
+
     </application>
 
 </manifest>

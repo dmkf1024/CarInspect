@@ -107,6 +107,9 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
     private final Gson mGson = new Gson();
     private GItemList mGItemList;
 
+    private String mStation;
+    private String mSumStr;
+
     private Context mContext = SubmitOrderActivity.this;
 
     private static final int MSG_OK = 0x01;
@@ -126,9 +129,11 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                     Intent intent = new Intent(mContext, PayActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt(Constant.Key.ORDER_ID, mOrderId);
+                    bundle.putString(Constant.Key.ORDER_MONEY, mSumStr);
+                    bundle.putString(Constant.Key.INSPECT_STATION, mStation);
+                    bundle.putInt(Constant.Key.PAY_TYPE, mPayType);
                     intent.putExtras(bundle);
                     startActivity(intent);
-//                    startActivity(new Intent(mContext, PayActivity.class));
                     break;
                 case MSG_FAIL:
                     WidgetUtils.hideProgressDialog();
@@ -218,7 +223,6 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 .post(formBody)
                 .build();
 
-        Log.d(Constant.Tag.NET, "url is " + url + "; id " + userId);
 
         mClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -289,7 +293,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             if (from == null || !Constant.ACTIVITY_SELECT_COUPON.equals(from)) { // 从上一界面跳转过来
                 // 从上一层Activity返回的bundle
                 isProxy = bundle.getBoolean(Constant.Key.PROXY_STATE);
-                String station = bundle.getString(Constant.Key.INSPECT_STATION);
+                mStation = bundle.getString(Constant.Key.INSPECT_STATION);
                 String date = bundle.getString(Constant.Key.ORDER_DATE);
                 String time = bundle.getString(Constant.Key.ORDER_TIME);
 
@@ -316,7 +320,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                     tvCostSum.setText("￥80.00");
                     tvCostSumBottom.setText("￥80.00");
                 }
-                tvStation.setText("检查站： " + station);
+                tvStation.setText("检查站： " + mStation);
                 tvDateTime.setText("车检时间： " + date + " " + time);
             } else { // 从选择优惠券界面跳转过来
                 isUseCoupon = bundle.getBoolean(Constant.Key.IS_USE_COUPON);
@@ -379,14 +383,11 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 mStationId + ", couponId:" + mCouponId + ", message:" + mMsgLeft + ", payTYpe:" +
                 mPayType + ", orderTIme:" + mOrderTime;
 
-        Log.d("aaa", content);
         FormEncodingBuilder builder = new FormEncodingBuilder();
-        Log.d("aaa", "builder");
         builder.add("id", String.valueOf(mUserId))
                 .add("inspectStationId", String.valueOf(mStationId))
                 .add("payType", String.valueOf(mPayType))
                 .add("orderTime", mOrderTime);
-        Log.d("aaa", "builder.add");
         if (isProxy) {
             builder.add("masterId", String.valueOf(mMasterId))
                     .add("message", mMsgLeft);
@@ -395,13 +396,10 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             builder.add("couponId", String.valueOf(mCouponId));
         }
         RequestBody formBody = builder.build();
-        Log.d("aaa", "formBody");
-        Log.d("aaa", "the url is " + url);
         Request request = new Request.Builder()
                 .url(url)
                 .post(formBody)
                 .build();
-        Log.d("aaa", "init request");
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
@@ -416,10 +414,8 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
                 String resMsg = response.message();
                 String result = response.body().string();
-                Log.d("aaa", "the json is " + result);
                 try {
                     int status = new JSONObject(result).getInt("status");
-                    Log.d("aaa", "the status is " + status);
                     if (status == 0) {
                         JSONObject jsonObject = new JSONObject(result);
                         int orderId = jsonObject.getInt("orderId");
@@ -458,8 +454,8 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         if (isProxy)
             sum += 52; // 加上代检费
         DecimalFormat df = new DecimalFormat(".00");
-        String sumStr = df.format(sum);
-        tvCostSum.setText("￥" + sumStr);
-        tvCostSumBottom.setText("￥" + sumStr);
+        mSumStr = df.format(sum);
+        tvCostSum.setText("￥" + mSumStr);
+        tvCostSumBottom.setText("￥" + mSumStr);
     }
 }

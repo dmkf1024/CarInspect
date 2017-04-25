@@ -100,6 +100,9 @@ public class Constant {
         public static final String PASSWORD = "key_password";
         public static final String FROM = "key_from";
         public static final String LOGIN_PHONE_NUM = "key_login_account";
+
+        public static final String ORDER_MONEY = "key_order_money";
+        public static final String PAY_TYPE = "key_pay_type";
     }
 
     public static class Media {

@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,15 +30,16 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.activity.CarInspectionLibraryActivity;
 import studio.imedia.vehicleinspection.activity.CarInsuranceActivity;
 import studio.imedia.vehicleinspection.activity.IllegalQueryActivity;
 import studio.imedia.vehicleinspection.activity.InspectionStationActivity;
 import studio.imedia.vehicleinspection.activity.LoginActivity;
 import studio.imedia.vehicleinspection.activity.OrderInfoActivity;
-import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.activity.RepairStationListActivity;
-import studio.imedia.vehicleinspection.debugs.URLSettingActivity;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
 
@@ -48,22 +48,30 @@ import studio.imedia.vehicleinspection.utils.SPUtil;
  */
 public class HomePageFragment extends Fragment implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private ImageView mRightIcon;
-    private TextView mTitle;
-
-    private SliderLayout mSliderLayout;
-    private PagerIndicator indicator;
-
-    private TextView tvUserCount;
-    private TextView tvLimit;
-
-    private LinearLayout illegalQuery;
-    private LinearLayout carInsurance;
-    private LinearLayout repairStation;
-    private LinearLayout validateCar;
-    private RelativeLayout layoutInspectionOneKey; // 一键车检
-    private TextView tvCheckOrder; // 查看车检订单
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.slider)
+    SliderLayout mSliderLayout;
+    @BindView(R.id.tv_user_count)
+    TextView tvUserCount;
+    @BindView(R.id.tv_limit)
+    TextView tvLimit;
+    @BindView(R.id.tv_check_order)
+    TextView tvCheckOrder;
+    @BindView(R.id.layout_inspection_one_key)
+    RelativeLayout layoutInspectionOneKey;
+    @BindView(R.id.illegal_query)
+    LinearLayout illegalQuery;
+    @BindView(R.id.car_insurance)
+    LinearLayout carInsurance;
+    @BindView(R.id.repair_station_nearby)
+    LinearLayout repairStation;
+    @BindView(R.id.validate_car)
+    LinearLayout validateCar;
+    @BindView(R.id.custom_indicator)
+    PagerIndicator indicator;
 
     private StringBuffer mUrl = new StringBuffer();
     private final OkHttpClient mClient = new OkHttpClient();
@@ -101,7 +109,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
-        findView(view); // 关联控件
+        ButterKnife.bind(this, view);
         initToolbar(view); // 初始化toolbar
         initUrl(); // 初始化url
         return view;
@@ -117,15 +125,6 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
         mTitle = (TextView) mToolbar.findViewById(R.id.title);
         mTitle.setText(getString(R.string.title_car_inspection));
 
-        mRightIcon = (ImageView) mToolbar.findViewById(R.id.right_icon);
-        mRightIcon.setVisibility(View.VISIBLE);
-        mRightIcon.setImageResource(R.drawable.icon_qr_code);
-        mRightIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), URLSettingActivity.class));
-            }
-        });
     }
 
     @Override
@@ -135,24 +134,6 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
         initEvent(); // 注册监听事件
         initSlider(); // 初始化广告区
         getData(mUrl); // 获取界面数据：用户量、限行
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView(View view) {
-        illegalQuery = (LinearLayout) view.findViewById(R.id.illegal_query);
-        carInsurance = (LinearLayout) view.findViewById(R.id.car_insurance);
-        repairStation = (LinearLayout) view.findViewById(R.id.repair_station_nearby);
-        validateCar = (LinearLayout) view.findViewById(R.id.validate_car);
-
-        tvUserCount = (TextView) view.findViewById(R.id.tv_user_count);
-        tvLimit = (TextView) view.findViewById(R.id.tv_limit);
-
-        layoutInspectionOneKey = (RelativeLayout) view.findViewById(R.id.layout_inspection_one_key);
-        tvCheckOrder = (TextView) view.findViewById(R.id.tv_check_order);
-        mSliderLayout = (SliderLayout) view.findViewById(R.id.slider);
-        indicator = (PagerIndicator) view.findViewById(R.id.custom_indicator);
     }
 
     /**
