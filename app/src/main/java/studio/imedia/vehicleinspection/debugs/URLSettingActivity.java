@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import studio.imedia.vehicleinspection.MainActivity;
+import studio.imedia.vehicleinspection.activity.MainActivity;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
@@ -37,7 +37,6 @@ public class URLSettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_urlsetting);
 
         initToolbar(); // 初始化toolbar
-        findView(); // 关联控件
         initUrl(); // 初始化显示url
     }
 
@@ -106,18 +105,8 @@ public class URLSettingActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        tvIp = (TextView) findViewById(R.id.tv_cur_ip);
-        tvPort = (TextView) findViewById(R.id.tv_cur_port);
-        etIp = (EditText) findViewById(R.id.et_ip);
-        etPort = (EditText) findViewById(R.id.et_port);
-    }
-
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
+        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         mToolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setHomeButtonEnabled(true);

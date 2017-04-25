@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="studio.imedia.vehicleinspection.RecorderActivity">
+    tools:context="studio.imedia.vehicleinspection.activity.RecorderActivity">
 
     <studio.imedia.vehicleinspection.views.AudioRecorderButton
         android:id="@+id/id_recorder_button"

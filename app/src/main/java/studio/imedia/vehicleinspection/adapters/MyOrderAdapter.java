@@ -2,7 +2,6 @@ package studio.imedia.vehicleinspection.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Rating;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.RatingActivity;
+import studio.imedia.vehicleinspection.activity.RatingActivity;
 import studio.imedia.vehicleinspection.bean.Order;
 
 /**

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_activity_bg_02"
-    tools:context="studio.imedia.vehicleinspection.SelectCouponActivity">
+    tools:context="studio.imedia.vehicleinspection.activity.SelectCouponActivity">
 
     <include
         android:id="@+id/app_bar"

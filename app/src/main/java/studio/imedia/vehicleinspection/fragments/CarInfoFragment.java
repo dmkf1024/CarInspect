@@ -44,10 +44,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 
-import studio.imedia.vehicleinspection.CityActivity;
+import studio.imedia.vehicleinspection.activity.CityActivity;
 import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.SelectCarTypeActivity;
-import studio.imedia.vehicleinspection.SelectCarBrandActivity;
+import studio.imedia.vehicleinspection.activity.SelectCarTypeActivity;
+import studio.imedia.vehicleinspection.activity.SelectCarBrandActivity;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.PicUtils;
 import studio.imedia.vehicleinspection.utils.SPUtil;

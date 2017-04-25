@@ -139,7 +139,7 @@ public class MyInspectionStationAdapter extends BaseAdapter {
                 break;
             case TYPE_NORMAL:
                 InspectionStation inspectionStation = inspectionStationList.get(position - 1);
-                holder02.imgStation.setImageBitmap(inspectionStation.getStationPic());
+                holder02.imgStation.setImageResource(R.drawable.img_station);
                 holder02.tvStationName.setText(inspectionStation.getStationName());
 
                 String startTimeMorningSummer = inspectionStation.getStartTimeMorningSummer();

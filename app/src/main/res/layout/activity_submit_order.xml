@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_activity_bg_01"
-    tools:context="studio.imedia.vehicleinspection.SubmitOrderActivity">
+    tools:context="studio.imedia.vehicleinspection.activity.SubmitOrderActivity">
 
     <include
         android:id="@+id/app_bar"

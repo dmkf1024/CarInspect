@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import studio.imedia.vehicleinspection.CarFileDetailActivity;
+import studio.imedia.vehicleinspection.activity.CarFileDetailActivity;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.adapters.MyCarFileAdapter;
 import studio.imedia.vehicleinspection.bean.CarFile;
@@ -129,6 +129,7 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
             initUrl(); // 初始化url
             getData(mUrl); // 获取数据
         } else {
+            tvNoLogin.setText("请先登录");
             WidgetUtils.hideList(lvCarFiles, tvNoLogin);
         }
     }
@@ -251,9 +252,17 @@ public class CarFileFragment extends Fragment implements AdapterView.OnItemClick
             mCarFileList.add(carFile);
         }
 
-        if (mAdapter == null)
-            mAdapter = new MyCarFileAdapter(getActivity(), mCarFileList);
-        lvCarFiles.setAdapter(mAdapter);
+        if (mCarFileList == null || mCarFileList.size() == 0) {
+            tvNoLogin.setText("爱车当前没有档案");
+            WidgetUtils.hideList(lvCarFiles, tvNoLogin);
+        } else {
+            WidgetUtils.showList(lvCarFiles, tvNoLogin);
+            if (mAdapter == null) {
+                mAdapter = new MyCarFileAdapter(getActivity(), mCarFileList);
+            } else {
+                lvCarFiles.setAdapter(mAdapter);
+            }
+        }
     }
 
 }

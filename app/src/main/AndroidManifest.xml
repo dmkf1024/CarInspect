@@ -26,7 +26,7 @@
             android:value="733378bdaf895e24632684e8597642c9" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -37,196 +37,196 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".IllegalQueryActivity"
+            android:name=".activity.IllegalQueryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".CarInsuranceActivity"
+            android:name=".activity.CarInsuranceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".RepairStationListActivity"
+            android:name=".activity.RepairStationListActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".CarInspectionLibraryActivity"
+            android:name=".activity.CarInspectionLibraryActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".InspectionStationActivity"
+            android:name=".activity.InspectionStationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".SelectTimeWayActivity"
+            android:name=".activity.SelectTimeWayActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".InspectionStationActivity" />
+                android:value=".activity.InspectionStationActivity" />
         </activity>
         <activity
-            android:name=".SelectMasterActivity"
+            android:name=".activity.SelectMasterActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SubmitOrderActivity"
+            android:name=".activity.SubmitOrderActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SelectMasterWithPopupwidnowsActivity" />
+                android:value=".activity.SelectMasterWithPopupwidnowsActivity" />
         </activity>
         <activity
-            android:name=".OrderInfoActivity"
+            android:name=".activity.OrderInfoActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MyOrderActivity" />
+                android:value=".activity.MyOrderActivity" />
         </activity>
         <activity
-            android:name=".SettingActivity"
+            android:name=".activity.SettingActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SettingActivity" />
+                android:value=".activity.SettingActivity" />
         </activity>
         <activity
-            android:name=".ModifyPwdActivity"
+            android:name=".activity.ModifyPwdActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SettingActivity" />
+                android:value=".activity.SettingActivity" />
         </activity>
         <activity
-            android:name=".MyCouponActivity"
+            android:name=".activity.MyCouponActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".WalletActivity"
+            android:name=".activity.WalletActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".MyOrderActivity"
+            android:name=".activity.MyOrderActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".RatingActivity"
+            android:name=".activity.RatingActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MyOrderActivity" />
+                android:value=".activity.MyOrderActivity" />
         </activity>
         <activity
-            android:name=".FeedBackActivity"
+            android:name=".activity.FeedBackActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".PersonalInfoActivity"
+            android:name=".activity.PersonalInfoActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".RecorderActivity"
+            android:name=".activity.RecorderActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".SelectCarBrandActivity">
+        <activity android:name=".activity.SelectCarBrandActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
-        <activity android:name=".SelectCarTypeActivity">
+        <activity android:name=".activity.SelectCarTypeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".SelectMasterWithPopupwidnowsActivity"
+            android:name=".activity.SelectMasterWithPopupwidnowsActivity"
             android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SelectTimeWayActivity" />
+                android:value=".activity.SelectTimeWayActivity" />
         </activity>
         <activity android:name=".debugs.URLSettingActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity android:name=".debugs.LocationActivity" />
         <activity
-            android:name=".CityActivity"
+            android:name=".activity.CityActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".SelectCouponActivity"
+            android:name=".activity.SelectCouponActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SubmitOrderActivity" />
+                android:value=".activity.SubmitOrderActivity" />
         </activity>
         <activity
-            android:name=".PayActivity"
+            android:name=".activity.PayActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".CarFileDetailActivity"
+            android:name=".activity.CarFileDetailActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
 
-        <activity android:name=".RegisterActivity"
+        <activity android:name=".activity.RegisterActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
+                android:value=".activity.LoginActivity" />
         </activity>
 
 

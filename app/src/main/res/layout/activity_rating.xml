@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorPrimary"
-    tools:context="studio.imedia.vehicleinspection.RatingActivity">
+    tools:context="studio.imedia.vehicleinspection.activity.RatingActivity">
 
     <include
         android:id="@+id/app_bar"

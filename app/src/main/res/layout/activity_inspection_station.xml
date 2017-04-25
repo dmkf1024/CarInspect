@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/color_activity_bg_02"
-    tools:context="studio.imedia.vehicleinspection.InspectionStationActivity">
+    tools:context="studio.imedia.vehicleinspection.activity.InspectionStationActivity">
 
     <include
         android:id="@+id/app_bar"

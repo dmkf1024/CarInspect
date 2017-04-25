@@ -4,7 +4,6 @@ package studio.imedia.vehicleinspection.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import studio.imedia.vehicleinspection.OrderInfoActivity;
+import studio.imedia.vehicleinspection.activity.OrderInfoActivity;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.adapters.MyOrderAdapter;
 import studio.imedia.vehicleinspection.bean.Order;

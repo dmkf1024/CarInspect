@@ -3,7 +3,6 @@ package studio.imedia.vehicleinspection.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.SelectTimeWayActivity;
+import studio.imedia.vehicleinspection.activity.SelectTimeWayActivity;
 import studio.imedia.vehicleinspection.adapters.MyInspectionStationAdapter;
 import studio.imedia.vehicleinspection.bean.Flow;
 import studio.imedia.vehicleinspection.bean.InspectionStation;
@@ -197,7 +196,7 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
     private void parseJson(String json) {
         try {
             JSONArray jStations = new JSONObject(json).getJSONArray("inspectStations");
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_station);
+//            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_station);
             int jStationLength = jStations.length();
             Log.d("flow", jStationLength+" -- length");
             for (int i = 0; i < jStationLength; i++) {
@@ -235,7 +234,8 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
                 station.setDistance(distance);
 
                 // 车检站图片
-                station.setStationPic(bitmap);
+//                station.setStationPic(bitmap);
+                station.setStationPic(null);
 
                 // 车检站星级评价
                 int stars = jStation.getInt("ratingStars");

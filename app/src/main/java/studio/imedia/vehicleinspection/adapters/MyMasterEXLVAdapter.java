@@ -23,7 +23,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.SubmitOrderActivity;
+import studio.imedia.vehicleinspection.activity.SubmitOrderActivity;
 import studio.imedia.vehicleinspection.bean.Master;
 import studio.imedia.vehicleinspection.bean.Recorder;
 import studio.imedia.vehicleinspection.managers.MediaManager;

@@ -31,14 +31,14 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-import studio.imedia.vehicleinspection.CarInspectionLibraryActivity;
-import studio.imedia.vehicleinspection.CarInsuranceActivity;
-import studio.imedia.vehicleinspection.IllegalQueryActivity;
-import studio.imedia.vehicleinspection.InspectionStationActivity;
-import studio.imedia.vehicleinspection.LoginActivity;
-import studio.imedia.vehicleinspection.OrderInfoActivity;
+import studio.imedia.vehicleinspection.activity.CarInspectionLibraryActivity;
+import studio.imedia.vehicleinspection.activity.CarInsuranceActivity;
+import studio.imedia.vehicleinspection.activity.IllegalQueryActivity;
+import studio.imedia.vehicleinspection.activity.InspectionStationActivity;
+import studio.imedia.vehicleinspection.activity.LoginActivity;
+import studio.imedia.vehicleinspection.activity.OrderInfoActivity;
 import studio.imedia.vehicleinspection.R;
-import studio.imedia.vehicleinspection.RepairStationListActivity;
+import studio.imedia.vehicleinspection.activity.RepairStationListActivity;
 import studio.imedia.vehicleinspection.debugs.URLSettingActivity;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
