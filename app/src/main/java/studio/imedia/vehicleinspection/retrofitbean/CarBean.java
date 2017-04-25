@@ -1,12 +1,15 @@
 package studio.imedia.vehicleinspection.retrofitbean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by 代码咖啡 on 17/4/6
  * <p>
  * Email: wjnovember@icloud.com
  */
 
-public class CarBean {
+public class CarBean implements Parcelable {
 
 
     /**
@@ -82,4 +85,45 @@ public class CarBean {
     public void setEngineNum(String engineNum) {
         this.engineNum = engineNum;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.carPlateNum);
+        dest.writeString(this.carFrameNum);
+        dest.writeString(this.carBrand);
+        dest.writeString(this.carType);
+        dest.writeString(this.registerTime);
+        dest.writeString(this.licensePic);
+        dest.writeString(this.engineNum);
+    }
+
+    public CarBean() {
+    }
+
+    protected CarBean(Parcel in) {
+        this.carPlateNum = in.readString();
+        this.carFrameNum = in.readString();
+        this.carBrand = in.readString();
+        this.carType = in.readString();
+        this.registerTime = in.readString();
+        this.licensePic = in.readString();
+        this.engineNum = in.readString();
+    }
+
+    public static final Parcelable.Creator<CarBean> CREATOR = new Parcelable.Creator<CarBean>() {
+        @Override
+        public CarBean createFromParcel(Parcel source) {
+            return new CarBean(source);
+        }
+
+        @Override
+        public CarBean[] newArray(int size) {
+            return new CarBean[size];
+        }
+    };
 }

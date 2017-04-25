@@ -1,7 +1,9 @@
 package studio.imedia.vehicleinspection.pojo;
 
 import com.amap.api.maps.model.LatLng;
-import com.squareup.okhttp.MediaType;
+
+import okhttp3.MediaType;
+import retrofit2.http.PUT;
 
 /**
  * Created by eric on 15/10/10.
@@ -30,7 +32,8 @@ public class Constant {
         public static final String API_NAME = "kqapi";
         public static final String API_LOGIN = "login.php";
 
-        public static final String BASE_URL = "http://wj1024.com/Car/";
+        public static final String BASE_URL_DEFAULT = "http://wj1024.com:8080/Car/";
+        public static final String BASE_URL_ADDITION = "http://wj1024.com:9000/Car/";
 
         public static final int READ_TIME_OUT = 6;
         public static final int CONNECT_TIME_OUT = 5;
@@ -49,6 +52,11 @@ public class Constant {
         // 接口数据的状态
         public static final int OK = 0;
         public static final int FAIL = 1;
+        public static final int OFFLINE = -1;
+
+        // 订单状态
+        public static final int ORDER_PASS = 1;
+        public static final int ORDER_FAILED = 0;
     }
 
     
@@ -72,6 +80,9 @@ public class Constant {
         public static final String CAR_TYPE_NAME = "key_car_type_name";
         public static final String CAR_TYPE_ID = "key_car_type_id";
         public static final String CAR_FRAME_NUM = "key_car_frame_num";
+        public static final String CAR_FILE_DATE = "key_car_file_date";
+        public static final String CAR_FILE_STATION = "key_car_file_station";
+        public static final String CAR_FILE_STATUS = "key_car_file_status";
         public static final String CAR_PLATE_NUM = "key_car_plate_num";
         public static final String CAR_ENGINE_NUM = "key_car_engine_num";
         public static final String CAR_LICENSE_PIC ="key_car_license_pic";
@@ -100,6 +111,10 @@ public class Constant {
         public static final String PASSWORD = "key_password";
         public static final String FROM = "key_from";
         public static final String LOGIN_PHONE_NUM = "key_login_account";
+
+        public static final String PARCELABLE_CAR_FILE = "key_parcelable_car_file";
+        public static final String PARCELABLE_CAR_BEAN = "key_parcelable_car_bean";
+        public static final String PARCELABLE_USER_BEAN = "key_parcelable_user_bean";
     }
 
     public static class Media {
@@ -121,12 +136,21 @@ public class Constant {
         public static final String NET = "tag_net";
     }
 
+    public static class Activity {
+        public static final String SELECT_COUPON = "activity_select_coupon";
+        public static final String REGISTER = "activity_register";
+        public static final String LOGIN = "activity_login";
+        public static final String SETTINGS = "activity_settings";
+        public static final String SELECT_CAR_BRAND = "activity_select_car_brand";
+        public static final String SELECT_CAR_TYPE = "activity_select_car_type";
+        public static final String SELECT_CITY = "activity_select_city";
+    }
+
     public static final int LENGTH_TIMELY_FLOW = 5;
 
     public static final String AUDIO_FILE_NAME = "/vehicle_inspection_recorder_audios";
 
     public static final String TAB_SELECTED = "tab_selected";
 
-    public static final String ACTIVITY_SELECT_COUPON = "activity_select_coupon";
-    public static final String ACTIVITY_REGISTER = "activity_register";
+
 }

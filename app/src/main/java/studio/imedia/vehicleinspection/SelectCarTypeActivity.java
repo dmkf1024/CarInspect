@@ -122,10 +122,7 @@ public class SelectCarTypeActivity extends BaseActivity implements AdapterView.O
      * 获取传递过来的数据
      */
     private void getBundle() {
-        Bundle bundle = getIntent().getExtras();
-        if (null != bundle) {
-            mCarBrandId = bundle.getInt(Constant.Key.CAR_BRAND_ID);
-        }
+        mCarBrandId = getIntent().getIntExtra(Constant.Key.CAR_BRAND_ID, 0);
     }
 
     /**
@@ -252,6 +249,7 @@ public class SelectCarTypeActivity extends BaseActivity implements AdapterView.O
         Bundle bundle = new Bundle();
         String typeName = gCarType.name;
         int typeId = gCarType.id;
+        bundle.putString(Constant.Key.FROM, Constant.Activity.SELECT_CAR_TYPE);
         bundle.putString(Constant.Key.CAR_TYPE_NAME, typeName);
         bundle.putInt(Constant.Key.CAR_TYPE_ID, typeId);
         intent.putExtras(bundle);

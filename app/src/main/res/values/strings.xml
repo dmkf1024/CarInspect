@@ -5,6 +5,16 @@
     <string name="car_info">爱车信息</string>
     <string name="owner_info">车主资料</string>
 
+    <!--Bmob开始-->
+    <string name="bmob_app_id">caea73f225257bdceb66ff911430afb9</string>
+    <string name="bmob_rest_api_key">77c379edb86ba8b73545904f3dfe2ee2</string>
+    <string name="secret_key">396b970c3cd9b7eb</string>
+    <string name="master_key">9498b61b2cf179ab62cb748a661c6443</string>
+    <!--Bmob结束-->
+
+    <string name="login_success">登录成功</string>
+    <string name="save_success">保存成功</string>
+    <string name="login_fail">用户名或密码错误</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="car_file">爱车档案</string>
     <string name="title_activity_illegal_query">IllegalQueryActivity</string>
@@ -15,6 +25,8 @@
     <string name="user_service_protocol">《车检用户服务协议》</string>
     <string name="station_name_example">杭州交警支队第三检测站</string>
     <string name="hint_feed_back">您好，如果遇到什么系统问题，或有更好的建议，欢迎您发送给我们，谢谢！</string>
+    <string name="select_car_brand_first">请先选择品牌车系</string>
+    <string name="login_first">请先登录账户</string>
 
     <string name="error_network">搜索失败,请检查网络连接！</string>
     <string name="error_key">key验证无效！</string>
@@ -57,7 +69,7 @@
     <string name="title_wallet">钱包</string>
     <string name="title_my_order">我的订单</string>
     <string name="title_feed_back">意见反馈</string>
-    <string name="title_select_car_series">选择车系</string>
+    <string name="title_select_car_brand">选择车系</string>
     <string name="title_select_car_model">选择车型</string>
     <string name="title_rating">评价</string>
     <string name="title_city">常住城市</string>
@@ -69,4 +81,5 @@
 
 
     <string name="connect_failed">连接服务器失败</string>
+    <string name="loading">加载中...</string>
 </resources>

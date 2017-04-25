@@ -28,6 +28,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 import studio.imedia.vehicleinspection.MainActivity;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.pojo.Constant;
@@ -39,7 +42,8 @@ import studio.imedia.vehicleinspection.utils.WidgetUtils;
  */
 public class CountyFragment extends Fragment {
 
-    private ListView lvCounty;
+    @BindView(R.id.county_list)
+    ListView lvCounty;
     private DrawerLayout mDrawerLayout;
 
     private int mCityId = 2;
@@ -85,7 +89,6 @@ public class CountyFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,36 +100,35 @@ public class CountyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_county, container, false);
-        lvCounty = (ListView) view.findViewById(R.id.county_list);
-        lvCounty.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // 从preferences中取出城市名称、城市id
-                String cityName = (String) SPUtil.get(getActivity(),
-                        Constant.Key.USER_CITY_NAME_TMP, Constant.Type.STRING);
-                int cityId = (int) SPUtil.get(getActivity(),
-                        Constant.Key.USER_CITY_ID_TMP, Constant.Type.INTEGER);
-
-                // 获取区ID，并存入preferences
-                int countyId = mGCountyList.county.get(position).id;
-//                MySharedPreferencesUtils.save(getActivity(), StaticValues.KEY_USER_COUNTY_ID, countyId);
-                // 获取市区名称，并存入preferences
-                String countyName = mCountyList.get(position);
-//                MySharedPreferencesUtils.save(getActivity(), StaticValues.KEY_USER_COUNTY_NAME, countyName);
-                // 拼接成城市名+市区名，跳转传值给CarInfoFragment
-                String cityCounty = cityName + countyName;
-
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constant.Key.USER_CITY_ID, cityId);
-                bundle.putInt(Constant.Key.USER_COUNTY_ID, countyId);
-                bundle.putString(Constant.Key.USER_CITY_COUNTY, cityCounty);
-                intent.putExtras(bundle);
-                getActivity().startActivity(intent);
-                getActivity().finish();
-            }
-        });
+        ButterKnife.bind(this, view);
         return view;
+    }
+
+    @OnItemClick(R.id.county_list)
+    void onItemClick(View v, int position) {
+        // 从preferences中取出城市名称、城市id
+        String cityName = (String) SPUtil.get(getActivity(),
+                Constant.Key.USER_CITY_NAME_TMP, Constant.Type.STRING);
+        int cityId = (int) SPUtil.get(getActivity(),
+                Constant.Key.USER_CITY_ID_TMP, Constant.Type.INTEGER);
+
+        // 获取区ID，并存入preferences
+        int countyId = mGCountyList.county.get(position).id;
+//                MySharedPreferencesUtils.save(getActivity(), StaticValues.KEY_USER_COUNTY_ID, countyId);
+        // 获取市区名称，并存入preferences
+        String countyName = mCountyList.get(position);
+//                MySharedPreferencesUtils.save(getActivity(), StaticValues.KEY_USER_COUNTY_NAME, countyName);
+        // 拼接成城市名+市区名，跳转传值给CarInfoFragment
+        String cityCounty = cityName + countyName;
+
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constant.Key.USER_CITY_ID, cityId);
+        bundle.putInt(Constant.Key.USER_COUNTY_ID, countyId);
+        bundle.putString(Constant.Key.USER_CITY_COUNTY, cityCounty);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

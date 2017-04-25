@@ -1,11 +1,13 @@
 package studio.imedia.vehicleinspection;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,12 +19,16 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import studio.imedia.vehicleinspection.fragments.CarFileFragment;
 import studio.imedia.vehicleinspection.fragments.CarInfoFragment;
 import studio.imedia.vehicleinspection.fragments.HomePageFragment;
 import studio.imedia.vehicleinspection.fragments.OwnerInfoFragment;
+import studio.imedia.vehicleinspection.pojo.Constant;
+import studio.imedia.vehicleinspection.retrofitbean.CarBean;
+import studio.imedia.vehicleinspection.retrofitbean.UserBean;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.img_home_page)
     ImageView imgHomePage;
@@ -56,8 +62,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Fragment fragmentOwnerInfo;
     private Fragment fragmentCarFile;
 
-    private int colorNormal;
-    private int colorSelected;
+    private Context mContext;
+
+    public static CarBean mCarBean;
+    public static UserBean mUserBean;
 
     private static final int HOME_PAGE = 0;     // fragment 首页标记
     private static final int CAR_INFO = 1;      // fragment 爱车信息标记
@@ -73,82 +81,62 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        initColor(); // 初始化颜色
-        initEvent(); // 初始化事件监听
-        initTab(); // 初始化tab栏
-        Log.d("file", Environment.getExternalStorageDirectory() + "/imooc_recorder_audios");
+        // 默认显示首页
+        setSelect(HOME_PAGE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        getBundle();
+
+        getBundle();
     }
 
     /**
      * 获取传值
      */
-//    private void getBundle() {
-//        Bundle bundle = MainActivity.this.getIntent().getExtras();
-//        if (null != bundle) {
-//            Log.d("car", "bundle not null---");
-//            int carSeriesId = bundle.getInt(StaticValues.KEY_CAR_SERIES_ID);
-//            String carSeries = bundle.getString(StaticValues.KEY_CAR_SERIES);
-//            Log.d("car", carSeries + "--id=" + carSeriesId);
-//        } else {
-//            Log.d("car", "bundle null");
-//        }
-//    }
+    private void getBundle() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            return;
+        }
+
+        String from = bundle.getString(Constant.Key.FROM);
+        if (TextUtils.equals(from, Constant.Activity.LOGIN)) {
+            mCarBean = bundle.getParcelable(Constant.Key.PARCELABLE_CAR_BEAN);
+            mUserBean = bundle.getParcelable(Constant.Key.PARCELABLE_USER_BEAN);
+
+        } if (TextUtils.equals(from, Constant.Activity.SETTINGS)) {
+            mCarBean = null;
+            mUserBean = null;
+        }
+    }
+
+    @Override
+    protected Context initContext() {
+        mContext = MainActivity.this;
+        return mContext;
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
     }
 
-    /**
-     * 初始化颜色
-     */
-    private void initColor() {
-        colorNormal = getResources().getColor(R.color.color_tab_text_normal);
-        colorSelected = getResources().getColor(R.color.color_tab_text_selected);
-
-    }
-
-    /**
-     * 初始化事件监听
-     */
-    private void initEvent() {
-        tabHomePage.setOnClickListener(this);
-        tabCarInfo.setOnClickListener(this);
-        tabOwnerInfo.setOnClickListener(this);
-        tabCarFile.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.tab_home_page, R.id.tab_car_info, R.id.tab_owner_info, R.id.tab_car_file})
+    void onClick(View v) {
         switch (v.getId()) {
             case R.id.tab_home_page:
-                resetTab();
-                tvHomePage.setTextColor(colorSelected);
-                imgHomePage.setImageResource(R.drawable.icon_home_selected);
                 setSelect(HOME_PAGE);
                 break;
             case R.id.tab_car_info:
-                resetTab();
-                tvCarInfo.setTextColor(colorSelected);
-                imgCarInfo.setImageResource(R.drawable.icon_car_info_selected);
                 setSelect(CAR_INFO);
                 break;
             case R.id.tab_owner_info:
-                resetTab();
-                tvOwnerInfo.setTextColor(colorSelected);
-                imgOwnerInfo.setImageResource(R.drawable.icon_owner_selected);
                 setSelect(OWNER_INFO);
                 break;
             case R.id.tab_car_file:
-                resetTab();
-                tvCarFile.setTextColor(colorSelected);
-                imgCarFile.setImageResource(R.drawable.icon_car_file_selected);
                 setSelect(CAR_FILE);
                 break;
         }
@@ -160,6 +148,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * @param position
      */
     private void setSelect(int position) {
+        resetTab();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         hideFragments(transaction); // 隐藏fragments
@@ -171,6 +160,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     transaction.show(fragmentHomePage);
                 }
+                tvHomePage.setTextColor(COLOR_TAB_SELECTED);
+                imgHomePage.setImageResource(R.drawable.icon_home_selected);
                 break;
             case CAR_INFO:
                 if (null == fragmentCarInfo) {
@@ -179,6 +170,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     transaction.show(fragmentCarInfo);
                 }
+                tvCarInfo.setTextColor(COLOR_TAB_SELECTED);
+                imgCarInfo.setImageResource(R.drawable.icon_car_info_selected);
                 break;
             case OWNER_INFO:
                 if (null == fragmentOwnerInfo) {
@@ -187,6 +180,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     transaction.show(fragmentOwnerInfo);
                 }
+                tvOwnerInfo.setTextColor(COLOR_TAB_SELECTED);
+                imgOwnerInfo.setImageResource(R.drawable.icon_owner_selected);
                 break;
             case CAR_FILE:
                 if (null == fragmentCarFile) {
@@ -195,6 +190,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     transaction.show(fragmentCarFile);
                 }
+                tvCarFile.setTextColor(COLOR_TAB_SELECTED);
+                imgCarFile.setImageResource(R.drawable.icon_car_file_selected);
                 break;
         }
         transaction.commit();
@@ -224,27 +221,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 重置tab栏
      */
     private void resetTab() {
-        tvHomePage.setTextColor(colorNormal);
-        tvCarInfo.setTextColor(colorNormal);
-        tvOwnerInfo.setTextColor(colorNormal);
-        tvCarFile.setTextColor(colorNormal);
+        tvHomePage.setTextColor(COLOR_TAB_NORMAL);
+        tvCarInfo.setTextColor(COLOR_TAB_NORMAL);
+        tvOwnerInfo.setTextColor(COLOR_TAB_NORMAL);
+        tvCarFile.setTextColor(COLOR_TAB_NORMAL);
 
         // 替换成normal的图标
         imgHomePage.setImageResource(R.drawable.icon_home_normal);
         imgCarInfo.setImageResource(R.drawable.icon_car_info_normal);
         imgOwnerInfo.setImageResource(R.drawable.icon_owner_normal);
         imgCarFile.setImageResource(R.drawable.icon_car_file_normal);
-    }
-
-    /**
-     * 初始化tab栏
-     */
-    private void initTab() {
-        resetTab();
-        setSelect(HOME_PAGE);
-        tvHomePage.setTextColor(colorSelected);
-        // 切换成选中的图标
-        imgHomePage.setImageResource(R.drawable.icon_home_selected);
     }
 
     /**

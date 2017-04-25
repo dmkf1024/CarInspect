@@ -414,6 +414,25 @@ public class WidgetUtils {
     }
 
     /**
+     * 显示进度条弹框
+     * @param context
+     * @param message
+     */
+    public static void showProgressDialog(Context context, String message) {
+        showProgressDialog(context, null, message, false);
+    }
+
+    /**
+     * 显示进度条弹框
+     * @param context
+     * @param message
+     * @param isCancelable
+     */
+    public static void showProgressDialog(Context context, String message, boolean isCancelable) {
+        showProgressDialog(context, null, message, isCancelable);
+    }
+
+    /**
      * 隐藏进度条对话框
      */
     public static void hideProgressDialog() {
@@ -489,22 +508,22 @@ public class WidgetUtils {
     /**
      * 隐藏列表
      *
-     * @param listView
+     * @param list
      * @param textView
      */
-    public static void hideList(ListView listView, TextView textView) {
-        listView.setVisibility(View.GONE);
+    public static void hideList(View list, TextView textView) {
+        list.setVisibility(View.GONE);
         textView.setVisibility(View.VISIBLE);
     }
 
     /**
      * 显示列表
      *
-     * @param listView
+     * @param list
      * @param textView
      */
-    public static void showList(ListView listView, TextView textView) {
-        listView.setVisibility(View.VISIBLE);
+    public static void showList(View list, TextView textView) {
+        list.setVisibility(View.VISIBLE);
         textView.setVisibility(View.GONE);
     }
 

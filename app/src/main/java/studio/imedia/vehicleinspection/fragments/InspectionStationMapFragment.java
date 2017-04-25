@@ -28,6 +28,8 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMap.InfoWindowAdapter;
+import com.amap.api.maps.AMap.OnInfoWindowClickListener;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -50,14 +52,15 @@ import com.amap.api.services.help.Tip;
 import com.amap.api.services.poisearch.PoiItemDetail;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
-import com.amap.api.maps.AMap.InfoWindowAdapter;
-import com.amap.api.maps.AMap.OnInfoWindowClickListener;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.LocationUtils;
@@ -66,12 +69,11 @@ import studio.imedia.vehicleinspection.utils.LocationUtils;
  * A simple {@link Fragment} subclass.
  */
 public class InspectionStationMapFragment extends Fragment implements LocationSource,
-        AMapLocationListener, View.OnClickListener, AMap.OnMarkerClickListener,
+        AMapLocationListener, AMap.OnMarkerClickListener,
         TextWatcher, PoiSearch.OnPoiSearchListener,
         InfoWindowAdapter, OnInfoWindowClickListener {
 
     protected AMap aMap;
-    protected MapView mapView;
     protected OnLocationChangedListener mListener;
     protected LocationManagerProxy mAMapLocationManager;
     protected Marker marker;// 定位雷达小图标
@@ -90,18 +92,21 @@ public class InspectionStationMapFragment extends Fragment implements LocationSo
     protected LatLng location;
     public int[] index;
 
-    protected Button btnLocate;
+    @BindView(R.id.map_view)
+    MapView mapView;
+    @BindView(R.id.btn_locate)
+    Button btnLocate;
 
     public InspectionStationMapFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inspection_station_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_inspection_station_map, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
 
@@ -136,10 +141,6 @@ public class InspectionStationMapFragment extends Fragment implements LocationSo
             mTilt = aMap.getCameraPosition().tilt;
         }
 
-        btnLocate = (Button) getActivity().findViewById(R.id.btn_locate);
-        btnLocate.setOnClickListener(this);//定位按钮点击实现
-
-        searchPoi = (AutoCompleteTextView) getActivity().findViewById(R.id.search_map);
         searchPoi.addTextChangedListener(this);// 添加文本输入框监听事件
         searchPoi.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -291,7 +292,7 @@ public class InspectionStationMapFragment extends Fragment implements LocationSo
             marker.setPosition(new LatLng(aMapLocation.getLatitude(), aMapLocation
                     .getLongitude()));// 定位雷达小图标
             location = marker.getPosition();
-            Log.d("msg","定位的Latlng为："+location);
+            Log.d("msg", "定位的Latlng为：" + location);
             getOrder();
             float bearing = aMap.getCameraPosition().bearing;
             aMap.setMyLocationRotateAngle(bearing);// 设置小蓝点旋转角度
@@ -318,8 +319,8 @@ public class InspectionStationMapFragment extends Fragment implements LocationSo
 
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.btn_locate})
+    void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_locate:
                 changeCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(

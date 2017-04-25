@@ -16,12 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -113,14 +107,6 @@ public class CityActivity extends BaseActivity implements AdapterView.OnItemClic
         mTitle = (TextView) mToolbar.findViewById(R.id.title);
         String title = getString(R.string.title_city);
         mTitle.setText(title);
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        lvCity = (ListView) findViewById(R.id.city_list);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.container);
     }
 
     /**

@@ -1,4 +1,4 @@
-package studio.imedia.vehicleinspection.retrofitbean;
+package studio.imedia.vehicleinspection.retrofitbean.response;
 
 /**
  * Created by 代码咖啡 on 17/4/6

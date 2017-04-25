@@ -28,6 +28,7 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
+            android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -229,6 +230,7 @@
                 android:value=".LoginActivity" />
         </activity>
 
+        <activity android:name="cn.bmob.pay.v3.act.PayAct" />
 
         <service android:name=".service.LocationService" />
     </application>

@@ -69,7 +69,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(mContext, "新用户注册成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString(Constant.Key.FROM, Constant.ACTIVITY_REGISTER);
+                    bundle.putString(Constant.Key.FROM, Constant.Activity.REGISTER);
                     bundle.putString(Constant.Key.PHONE, mPhone);
                     bundle.putString(Constant.Key.PASSWORD, mPassword);
                     intent.putExtras(bundle);

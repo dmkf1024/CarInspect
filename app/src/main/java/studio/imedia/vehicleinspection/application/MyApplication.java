@@ -3,6 +3,7 @@ package studio.imedia.vehicleinspection.application;
 import android.app.Application;
 import android.os.Environment;
 
+import c.b.BP;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.FileUtils;
@@ -17,9 +18,21 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        initBmob(); // 初始化bmob
         initIpPort(); // 初始化IP地址和端口号
         clearAudioFiles(); // 清除录音文件
         clearLogHisRecord(); // 清除上次登录状态
+    }
+
+    /**
+     * 初始化Bmob
+     *
+     * 方式：异步
+     */
+    private void initBmob() {
+        String applicationId = getString(R.string.bmob_app_id);
+        BP.init(applicationId);
+
     }
 
     /**

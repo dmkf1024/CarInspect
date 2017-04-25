@@ -1,261 +1,160 @@
 package studio.imedia.vehicleinspection.fragments;
 
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import rx.Subscriber;
+import studio.imedia.vehicleinspection.BaseActivity;
 import studio.imedia.vehicleinspection.CarFileDetailActivity;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.adapters.MyCarFileAdapter;
-import studio.imedia.vehicleinspection.bean.CarFile;
-import studio.imedia.vehicleinspection.gbean.GOrder;
+import studio.imedia.vehicleinspection.interfaces.RVListener;
+import studio.imedia.vehicleinspection.net.RetrofitUtils;
 import studio.imedia.vehicleinspection.pojo.Constant;
-import studio.imedia.vehicleinspection.utils.SPUtil;
+import studio.imedia.vehicleinspection.retrofitbean.response.OrderListResponse;
+import studio.imedia.vehicleinspection.retrofitbean.OrderBean;
 import studio.imedia.vehicleinspection.utils.WidgetUtils;
+import studio.imedia.vehicleinspection.utils.proxy.SPProxy;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CarFileFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class CarFileFragment extends BaseFragment implements RVListener {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.xrv_car_file)
+    XRecyclerView xrvCarFile;
+    @BindView(R.id.tv_no_login)
+    TextView tvNoLogin;
 
-    private TextView tvNoLogin;
-
-    private StringBuffer mUrl = new StringBuffer();
-
-    private boolean isLogin;
-
-    private final OkHttpClient mClient = new OkHttpClient();
-    private final Gson mGson = new Gson();
-    private Gist mGist;
-
-    private ListView lvCarFiles;
-    private List<CarFile> mCarFileList;
+    private List<OrderBean> mFileList = new ArrayList<>();
     private MyCarFileAdapter mAdapter;
 
-    private static final int MSG_OK = 0x01;
-    private static final int MSG_FAIL = 0x02;
-    private static final int CONNECT_FAIL = 0x03;
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_OK:
-                    WidgetUtils.hideProgressDialog();
-                    mGist = (Gist) msg.obj;
-                    setAdapter(mGist); // 设置适配器
-                    break;
-                case MSG_FAIL:
-                    WidgetUtils.hideProgressDialog();
-                    Toast.makeText(getActivity(), "数据获取失败", Toast.LENGTH_SHORT).show();
-                    break;
-                case CONNECT_FAIL:
-                    WidgetUtils.hideProgressDialog();
-                    Toast.makeText(getActivity(), "连接服务器失败", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
+    private Context mContext;
 
     public CarFileFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_car_file, container, false);
-        initToolbar(view); // 初始化toolbar
+        ButterKnife.bind(this, view);
         return view;
-    }
-
-    /**
-     * 初始化toolbar
-     * @param view
-     */
-    private void initToolbar(View view) {
-        mToolbar = (Toolbar) view.findViewById(R.id.app_bar);
-        mToolbar.setTitle("");
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(mToolbar);
-
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
-        mTitle.setText(getString(R.string.title_car_file));
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        findView(); // 关联控件
-        lvCarFiles.setOnItemClickListener(this);
+        // 初始化toolbar
+        initToolbar();
+    }
+
+    @Override
+    protected Context initContext() {
+        mContext = getActivity();
+        return mContext;
+    }
+
+    /**
+     * 初始化toolbar
+     */
+    private void initToolbar() {
+        BaseActivity activity = (BaseActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+        mTitle.setText(TITLE_CAR_FILE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        isLogin = (boolean) SPUtil.get(getActivity(), Constant.Key.LOGIN_STATE,
-                Constant.Type.BOOLEAN);
-        if (isLogin) {
-            WidgetUtils.showProgressDialog(getActivity(), null, "加载中...", true);
-            WidgetUtils.showList(lvCarFiles, tvNoLogin);
-            initUrl(); // 初始化url
-            getData(mUrl); // 获取数据
+        if (SPProxy.isOnline(getContext())) {
+            WidgetUtils.showProgressDialog(getActivity(), LOADING, true);
+            WidgetUtils.showList(xrvCarFile, tvNoLogin);
+            getData(); // 获取数据
         } else {
-            WidgetUtils.hideList(lvCarFiles, tvNoLogin);
+            WidgetUtils.hideList(xrvCarFile, tvNoLogin);
         }
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        lvCarFiles = (ListView) getActivity().findViewById(R.id.lv_car_file);
-        tvNoLogin = (TextView) getActivity().findViewById(R.id.tv_no_login);
-    }
-
-    /**
-     * 初始化url
-     */
-    private void initUrl() {
-        String ip = (String) SPUtil.get(getActivity(), Constant.Key.URL_IP, Constant.Type.STRING);
-        String port = (String) SPUtil.get(getActivity(), Constant.Key.URL_PORT, Constant.Type.STRING);
-
-        mUrl.append("http://")
-                .append(ip)
-                .append(":")
-                .append(port)
-                .append("/Car/getOrderListById.jsp");
     }
 
     /**
      * 获取数据
      */
-    private void getData(StringBuffer urlSB) {
-        String url = urlSB.toString();
-        int userId = (int) SPUtil.get(getActivity(), Constant.Key.USER_ID, Constant.Type.INTEGER);
-        RequestBody formBody = new FormEncodingBuilder()
-                .add("id", String.valueOf(userId))
-                .build();
+    private void getData() {
 
-        Request request = new Request.Builder()
-                .url(url)
-                .post(formBody)
-                .build();
-        mClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-                Log.i(Constant.Tag.NET, "onFailure: " + e.getMessage());
-                mHandler.sendEmptyMessage(CONNECT_FAIL);
-            }
+        String id = SPProxy.getUserId(mContext) + "";
+        RetrofitUtils.getInstance()
+                .baseUrl(Constant.Net.BASE_URL_DEFAULT)
+                .getOrderList(id, new Subscriber<OrderListResponse>() {
+                    @Override
+                    public void onCompleted() {
+                        unsubscribe();
+                        WidgetUtils.hideProgressDialog();
+                    }
 
-            @Override
-            public void onResponse(Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    WidgetUtils.hideProgressDialog();
-                    throw new IOException("Unexpected code " + response);
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        unsubscribe();
+                        WidgetUtils.hideProgressDialog();
+                        Toast.makeText(mContext, CONNECT_FAILED, Toast.LENGTH_SHORT).show();
+                    }
 
-                String jsonStr = response.body().string();
-                Gist gist = mGson.fromJson(jsonStr, Gist.class);
-                int status = gist.status;
-                if (status == 0) {
-                    Message msg = new Message();
-                    msg.obj = gist;
-                    msg.what = MSG_OK;
-                    mHandler.sendMessage(msg);
-                } else
-                    mHandler.sendEmptyMessage(MSG_FAIL);
-            }
-        });
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(getActivity(), CarFileDetailActivity.class);
-        Bundle bundle = new Bundle();
-
-        GOrder gOrder = mGist.orders.get(position);
-        int orderId = gOrder.getId();
-        String date = ((TextView) view.findViewById(R.id.tv_date)).getText().toString();
-        String station = gOrder.getName();
-        int isPass = gOrder.getIsPass();
-
-        bundle.putInt("order_id", orderId);
-        bundle.putString("car_file_date", date);
-        bundle.putString("car_file_station", station);
-        bundle.putInt("car_file_is_pass", isPass);
-
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
-    private static class Gist {
-        List<GOrder> orders;
-        int status;
+                    @Override
+                    public void onNext(OrderListResponse orderListResponse) {
+                        int status = orderListResponse.getStatus();
+                        if (status == Constant.Status.OK) {
+                            mFileList = orderListResponse.getOrders();
+                        }
+                        setAdapter();
+                    }
+                });
     }
 
     /**
      * 设置适配器
      */
-    private void setAdapter(Gist gist) {
-        List<GOrder> orderList = gist.orders;
-        if (mCarFileList == null) {
-            mCarFileList = new ArrayList<>();
+    private void setAdapter() {
+        if (mFileList == null || mFileList.size() == 0) {
+            return;
+        }
+
+        if (mAdapter == null) {
+            mAdapter = new MyCarFileAdapter(mContext, mFileList);
+            xrvCarFile.setPullRefreshEnabled(false);
+            xrvCarFile.setLoadingMoreEnabled(false);
+            xrvCarFile.setLayoutManager(new LinearLayoutManager(mContext));
+            xrvCarFile.setAdapter(mAdapter);
+            mAdapter.setOnItemClickListener(this);
         } else {
-            mCarFileList.clear(); // 清空list
+            mAdapter.notifyDataSetChanged();
         }
-
-        for (GOrder gOrder : orderList) {
-            CarFile carFile = new CarFile();
-            String orderTime = gOrder.getOrderTime();
-            String year = orderTime.substring(0, orderTime.indexOf("-"));
-            String month = orderTime.substring(orderTime.indexOf("-") + 1, orderTime.lastIndexOf("-"));
-            String day = orderTime.substring(orderTime.lastIndexOf("-") + 1, orderTime.indexOf(" "));
-            String date = year + "年" + month + "月" + day + "日";
-            carFile.setDate(date);
-            String stationName = gOrder.getName();
-            carFile.setStation(stationName);
-            int isPass = gOrder.getIsPass();
-            if (isPass == 0)
-                carFile.setState(false);
-            else
-                carFile.setState(true);
-            mCarFileList.add(carFile);
-        }
-
-        if (mAdapter == null)
-            mAdapter = new MyCarFileAdapter(getActivity(), mCarFileList);
-        lvCarFiles.setAdapter(mAdapter);
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        OrderBean carFile = mFileList.get(position);
+        activityJump(CarFileDetailActivity.class, Constant.Key.PARCELABLE_CAR_FILE, carFile);
+    }
 }
 
 

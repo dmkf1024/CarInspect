@@ -15,12 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.pojo.Constant;
 import studio.imedia.vehicleinspection.utils.SPUtil;
-import studio.imedia.vehicleinspection.utils.WidgetUtils;
 
 public class SelectCarBrandActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
@@ -47,18 +40,7 @@ public class SelectCarBrandActivity extends BaseActivity implements AdapterView.
 
     private static final String[] seriesArray = {"丰田", "法拉利", "马自达"};
 
-    private String mIp;
-    private String mPort;
-    private StringBuffer mUrl = new StringBuffer();
-
-
-    private final OkHttpClient mClient = new OkHttpClient();
-    private final Gson mGson = new Gson();
-    private GBrandList mGBrandList = null;
-
-    private static final String DIALOG_MSG = "加载中...";
-
-    private Context mContext = SelectCarBrandActivity.this;
+    private Context mContext;
 
     private static final int MSG_OK = 0;
     private static final int MSG_FAIL = 1;
@@ -70,14 +52,11 @@ public class SelectCarBrandActivity extends BaseActivity implements AdapterView.
                 case MSG_OK:
                     mGBrandList = (GBrandList) msg.obj;
                     setAdapter();
-                    WidgetUtils.hideProgressDialog();
                     break;
                 case MSG_FAIL:
-                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "获取服务器数据失败", Toast.LENGTH_SHORT).show();
                     break;
                 case CONNECT_FAIL:
-                    WidgetUtils.hideProgressDialog();
                     Toast.makeText(mContext, "连接服务器失败", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -90,33 +69,25 @@ public class SelectCarBrandActivity extends BaseActivity implements AdapterView.
         setContentView(R.layout.activity_select_car_brand);
         ButterKnife.bind(this);
 
-        WidgetUtils.showProgressDialog(mContext, null, DIALOG_MSG, false);
         initToolbar(); // 初始化toolbar
-        initEvent(); // 监听事件回调
         initUrl(); // 初始化url
         getData(mUrl); // 获取数据
+    }
+
+    @Override
+    protected Context initContext() {
+        mContext = SelectCarBrandActivity.this;
+        return mContext;
     }
 
     /**
      * 初始化toolbar
      */
     private void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
-        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
-        String title = getString(R.string.title_select_car_series);
-        mTitle.setText(title);
-    }
-
-    /**
-     * 监听事件回调
-     */
-    private void initEvent() {
-        lvCarSeries.setOnItemClickListener(this);
+        mTitle.setText(TITLE_SELECT_CAR_BRAND);
     }
 
     /**
@@ -141,6 +112,7 @@ public class SelectCarBrandActivity extends BaseActivity implements AdapterView.
         Bundle bundle = new Bundle();
 
         GBrand gBrand = mGBrandList.carbrand.get(position);
+        bundle.putString(Constant.Key.FROM, Constant.Activity.SELECT_CAR_BRAND);
         bundle.putString(Constant.Key.CAR_BRAND_NAME, gBrand.name);
         bundle.putInt(Constant.Key.CAR_BRAND_ID, gBrand.id);
         Log.d("brand", gBrand.id + "");

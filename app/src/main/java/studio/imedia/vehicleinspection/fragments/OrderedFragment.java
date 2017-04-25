@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.adapters.MyOrderAdapter;
 import studio.imedia.vehicleinspection.bean.Order;
@@ -23,8 +25,10 @@ import studio.imedia.vehicleinspection.gbean.GOrder;
  */
 public class OrderedFragment extends Fragment {
 
-    private TextView tvNoOrder;
-    private ListView lvOrdered;
+    @BindView(R.id.lv_ordered)
+    ListView lvOrdered;
+    @BindView(R.id.tv_no_ordered_order)
+    TextView tvNoOrderedOrder;
     private List<Order> mOrderList = new ArrayList<>();
 
     private MyOrderAdapter myOrderAdapter;
@@ -59,8 +63,10 @@ public class OrderedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ordered, container, false);
+        View view = inflater.inflate(R.layout.fragment_ordered, container, false);
+
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -76,7 +82,7 @@ public class OrderedFragment extends Fragment {
      */
     private void findView() {
         lvOrdered = (ListView) getActivity().findViewById(R.id.lv_ordered);
-        tvNoOrder = (TextView) getActivity().findViewById(R.id.tv_no_ordered_order);
+        tvNoOrderedOrder = (TextView) getActivity().findViewById(R.id.tv_no_ordered_order);
     }
 
     /**
@@ -98,7 +104,7 @@ public class OrderedFragment extends Fragment {
      */
     private void hideList() {
         lvOrdered.setVisibility(View.GONE);
-        tvNoOrder.setVisibility(View.VISIBLE);
+        tvNoOrderedOrder.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -106,6 +112,6 @@ public class OrderedFragment extends Fragment {
      */
     private void showList() {
         lvOrdered.setVisibility(View.VISIBLE);
-        tvNoOrder.setVisibility(View.GONE);
+        tvNoOrderedOrder.setVisibility(View.GONE);
     }
 }

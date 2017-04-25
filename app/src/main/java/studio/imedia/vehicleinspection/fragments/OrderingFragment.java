@@ -4,7 +4,6 @@ package studio.imedia.vehicleinspection.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.OrderInfoActivity;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.adapters.MyOrderAdapter;
@@ -26,8 +27,11 @@ import studio.imedia.vehicleinspection.gbean.GOrder;
  */
 public class OrderingFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private TextView tvNoOrder;
-    private ListView lvOrdering;
+    @BindView(R.id.lv_ordering)
+    ListView lvOrdering;
+    @BindView(R.id.tv_no_ordering_order)
+    TextView tvNoOrderingOrder;
+
     private List<Order> mOrderList = new ArrayList<>();
 
     private MyOrderAdapter myOrderAdapter;
@@ -55,8 +59,9 @@ public class OrderingFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ordering, container, false);
+        View view = inflater.inflate(R.layout.fragment_ordering, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -73,7 +78,7 @@ public class OrderingFragment extends Fragment implements AdapterView.OnItemClic
      */
     private void findView() {
         lvOrdering = (ListView) getActivity().findViewById(R.id.lv_ordering);
-        tvNoOrder = (TextView) getActivity().findViewById(R.id.tv_no_ordering_order);
+        tvNoOrderingOrder = (TextView) getActivity().findViewById(R.id.tv_no_ordering_order);
     }
 
     /**
@@ -115,7 +120,7 @@ public class OrderingFragment extends Fragment implements AdapterView.OnItemClic
      * 隐藏列表
      */
     private void hideList() {
-        tvNoOrder.setVisibility(View.VISIBLE);
+        tvNoOrderingOrder.setVisibility(View.VISIBLE);
         lvOrdering.setVisibility(View.GONE);
     }
 
@@ -123,7 +128,7 @@ public class OrderingFragment extends Fragment implements AdapterView.OnItemClic
      * 显示列表
      */
     private void showList() {
-        tvNoOrder.setVisibility(View.GONE);
+        tvNoOrderingOrder.setVisibility(View.GONE);
         lvOrdering.setVisibility(View.VISIBLE);
     }
 }

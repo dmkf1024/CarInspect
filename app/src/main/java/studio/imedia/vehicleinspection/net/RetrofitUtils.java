@@ -65,7 +65,7 @@ public class RetrofitUtils {
      * @param url
      * @return
      */
-    private static RetrofitUtils baseUrl(String url) {
+    public RetrofitUtils baseUrl(String url) {
         mRetrofitBuilder.baseUrl(url);
         return mInstance;
     }
@@ -76,7 +76,7 @@ public class RetrofitUtils {
      * @param url
      * @return
      */
-    private static RetrofitUtils baseUrl(HttpUrl url) {
+    public RetrofitUtils baseUrl(HttpUrl url) {
         mRetrofitBuilder.baseUrl(url);
         return mInstance;
     }
@@ -87,7 +87,7 @@ public class RetrofitUtils {
      * @param seconds
      * @return
      */
-    public static RetrofitUtils readTimeOut(int seconds) {
+    public RetrofitUtils readTimeOut(int seconds) {
         mClientBuilder.readTimeout(seconds, TimeUnit.SECONDS);
         return mInstance;
     }
@@ -98,7 +98,7 @@ public class RetrofitUtils {
      * @param seconds
      * @return
      */
-    public static RetrofitUtils connectTimeOut(int seconds) {
+    public RetrofitUtils connectTimeOut(int seconds) {
         mClientBuilder.connectTimeout(seconds, TimeUnit.SECONDS);
         return mInstance;
     }
@@ -119,8 +119,7 @@ public class RetrofitUtils {
      *
      * @return
      */
-    private static RetrofitUtils create(Context context) {
-        baseUrl(Constant.Net.BASE_URL);
+    private RetrofitUtils create() {
         if (mApi == null) {
             mApi = mRetrofitBuilder.client(mClientBuilder.build())
                     .build()
@@ -132,15 +131,64 @@ public class RetrofitUtils {
     /**
      * 登录
      *
-     * @param context
      * @param phone
      * @param pwd
      * @param subscriber
      * @return
      */
-    public static RetrofitUtils login(Context context, String phone, String pwd, Subscriber subscriber) {
-        create(context);
+    public RetrofitUtils login(String phone, String pwd, Subscriber subscriber) {
+        create();
         mObservable = mApi.login(phone, pwd);
+        config(subscriber);
+        return mInstance;
+    }
+
+    /**
+     * 获取订单列表
+     * @param id
+     * @param subscriber
+     * @return
+     */
+    public RetrofitUtils getOrderList(String id, Subscriber subscriber) {
+        create();
+        mObservable = mApi.getOrderList(id);
+        config(subscriber);
+        return mInstance;
+    }
+
+    /**
+     * 获取爱车档案信息
+     * @param orderId
+     * @param subscriber
+     * @return
+     */
+    public RetrofitUtils getArchivesInfo(String orderId, Subscriber subscriber) {
+        create();
+        mObservable = mApi.getArchivesInfo(orderId);
+        config(subscriber);
+        return mInstance;
+    }
+
+    /**
+     * 更新爱车信息
+     * @param userId
+     * @param carBrandId
+     * @param carTypeId
+     * @param engineNum
+     * @param registerTime
+     * @param provinceId
+     * @param cityId
+     * @param countyId
+     * @param detailedAddress
+     * @param subscriber
+     * @return
+     */
+    public RetrofitUtils updateCarInfo(String userId, int carBrandId, int carTypeId, String engineNum,
+                                        String registerTime, int provinceId, int cityId, int countyId,
+                                        String detailedAddress, Subscriber subscriber) {
+        create();
+        mObservable = mApi.updateCarInfo(userId, carBrandId + "", carTypeId + "", engineNum, registerTime,
+                provinceId + "", cityId + "", countyId + "", detailedAddress);
         config(subscriber);
         return mInstance;
     }
@@ -151,7 +199,7 @@ public class RetrofitUtils {
      *
      * @param subscriber
      */
-    private static void config(Subscriber subscriber) {
+    private void config(Subscriber subscriber) {
         if (mObservable != null) {
             mObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

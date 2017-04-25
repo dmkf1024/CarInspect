@@ -1,4 +1,8 @@
-package studio.imedia.vehicleinspection.retrofitbean;
+package studio.imedia.vehicleinspection.retrofitbean.response;
+
+import studio.imedia.vehicleinspection.retrofitbean.CarBean;
+import studio.imedia.vehicleinspection.retrofitbean.UserBean;
+import studio.imedia.vehicleinspection.retrofitbean.response.BaseResponse;
 
 /**
  * Created by 代码咖啡 on 17/4/6
@@ -6,7 +10,7 @@ package studio.imedia.vehicleinspection.retrofitbean;
  * Email: wjnovember@icloud.com
  */
 
-public class InfoResponse extends BaseResponse {
+public class LoginResponse extends BaseResponse {
 
     private UserBean user;
     private CarBean car;

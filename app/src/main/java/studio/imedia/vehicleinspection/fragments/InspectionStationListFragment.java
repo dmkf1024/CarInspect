@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.imedia.vehicleinspection.R;
 import studio.imedia.vehicleinspection.SelectTimeWayActivity;
 import studio.imedia.vehicleinspection.adapters.MyInspectionStationAdapter;
@@ -44,8 +46,8 @@ import studio.imedia.vehicleinspection.utils.WidgetUtils;
  */
 public class InspectionStationListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private ListView lvInspectionStation;
-    private List<InspectionStation> inspectionStationList;
+    @BindView(R.id.lv_station)
+    ListView lvStation;
     private List<InspectionStation> stationFromOkHttpList;
     private MyInspectionStationAdapter myInspectionStationAdapter;
 
@@ -72,15 +74,15 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
     private Object lngLat;
 
     public InspectionStationListFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inspection_station_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_inspection_station_list, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -89,7 +91,6 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
 
         WidgetUtils.showProgressDialog(getActivity(), null, "数据加载中...", true);
         init();
-        findView(); // 关联控件
         initUrl(); // 初始化url
         initEvent(); // 初始化监听事件
     }
@@ -106,17 +107,10 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
             index = bundle.getIntArray("index");
             distances = bundle.getDoubleArray("distance");
             for (int i = 0; i < index.length; i++) {
-                Log.d("msg", "传过来的车检站id: " + index[i] +": "+distances[i]);
+                Log.d("msg", "传过来的车检站id: " + index[i] + ": " + distances[i]);
                 //                Log.d("msg", "Activity传过来的值" + StaticValues.DISTANCE[i] + "  " + bundle.getDouble(StaticValues.DISTANCE[i]));
             }
         }
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        lvInspectionStation = (ListView) getActivity().findViewById(R.id.lv_station);
     }
 
     /**
@@ -199,7 +193,7 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
             JSONArray jStations = new JSONObject(json).getJSONArray("inspectStations");
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_station);
             int jStationLength = jStations.length();
-            Log.d("flow", jStationLength+" -- length");
+            Log.d("flow", jStationLength + " -- length");
             for (int i = 0; i < jStationLength; i++) {
                 JSONObject jStation = jStations.getJSONObject(index[i]);
                 InspectionStation station = new InspectionStation();
@@ -335,7 +329,7 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
      * 初始化监听事件
      */
     private void initEvent() {
-        lvInspectionStation.setOnItemClickListener(this);
+        lvStation.setOnItemClickListener(this);
     }
 
     /**
@@ -346,7 +340,7 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
             myInspectionStationAdapter = new MyInspectionStationAdapter(getActivity(), stationFromOkHttpList);
             Log.d("flow", "outside is " + stationFromOkHttpList.size());
         }
-        lvInspectionStation.setAdapter(myInspectionStationAdapter);
+        lvStation.setAdapter(myInspectionStationAdapter);
     }
 
     @Override

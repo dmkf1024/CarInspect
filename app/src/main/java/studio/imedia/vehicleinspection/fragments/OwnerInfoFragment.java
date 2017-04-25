@@ -14,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import studio.imedia.vehicleinspection.FeedBackActivity;
 import studio.imedia.vehicleinspection.LoginActivity;
 import studio.imedia.vehicleinspection.MyCouponActivity;
@@ -29,29 +32,46 @@ import studio.imedia.vehicleinspection.views.RoundImageView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OwnerInfoFragment extends Fragment implements View.OnClickListener {
+public class OwnerInfoFragment extends Fragment {
 
-    private Toolbar mToolbar;
-    private TextView mTitle;
-    private ImageView mRightIcon;
-
-    private RelativeLayout layoutLoginBox;
-    private LinearLayout layoutCoupon;
-    private LinearLayout layoutWallet;
-    private RelativeLayout layoutMyOrder;
-    private RelativeLayout layoutFeedBack;
-
-    private RoundImageView imgAvatar;
-    private TextView tvUsername;
-    private ImageView imgGender;
-    private TextView tvScore;
-
-    private LinearLayout layoutLogin;
-    private LinearLayout layoutUserInfo;
-    private ImageView imgNext;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.right_icon)
+    ImageView mRightIcon;
+    @BindView(R.id.app_bar)
+    Toolbar mToolbar;
+    @BindView(R.id.img_avatar)
+    RoundImageView imgAvatar;
+    @BindView(R.id.layout_login)
+    LinearLayout layoutLogin;
+    @BindView(R.id.tv_username)
+    TextView tvUsername;
+    @BindView(R.id.img_gender)
+    ImageView imgGender;
+    @BindView(R.id.tv_score)
+    TextView tvScore;
+    @BindView(R.id.layout_user_info)
+    LinearLayout layoutUserInfo;
+    @BindView(R.id.img_next)
+    ImageView imgNext;
+    @BindView(R.id.layout_login_box)
+    RelativeLayout layoutLoginBox;
+    @BindView(R.id.layout_coupon)
+    LinearLayout layoutCoupon;
+    @BindView(R.id.layout_wallet)
+    LinearLayout layoutWallet;
+    @BindView(R.id.img_my_order)
+    ImageView imgMyOrder;
+    @BindView(R.id.layout_my_order)
+    RelativeLayout layoutMyOrder;
+    @BindView(R.id.img_app)
+    ImageView imgApp;
+    @BindView(R.id.img_suggestion)
+    ImageView imgSuggestion;
+    @BindView(R.id.layout_feed_back)
+    RelativeLayout layoutFeedBack;
 
     public OwnerInfoFragment() {
-        // Required empty public constructor
     }
 
 
@@ -59,67 +79,29 @@ public class OwnerInfoFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_owner_info, container, false);
+        ButterKnife.bind(this, view);
         initToolbar(view); // 初始化toolbar
         return view;
     }
 
     private void initToolbar(View view) {
-        mToolbar = (Toolbar) view.findViewById(R.id.app_bar);
-        mToolbar.setTitle("");
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
 
-        mTitle = (TextView) mToolbar.findViewById(R.id.title);
         mTitle.setText(getString(R.string.title_owner_info));
 
-        mRightIcon = (ImageView) mToolbar.findViewById(R.id.right_icon);
         mRightIcon.setVisibility(View.VISIBLE);
         mRightIcon.setImageResource(R.drawable.icon_set);
-        mRightIcon.setOnClickListener(this);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        findView(); // 关联控件
-        initEvent(); // 初始化监听事件
-    }
-
-    /**
-     * 关联控件
-     */
-    private void findView() {
-        layoutLoginBox = (RelativeLayout) getActivity().findViewById(R.id.layout_login_box);
-        layoutCoupon = (LinearLayout) getActivity().findViewById(R.id.layout_coupon);
-        layoutWallet = (LinearLayout) getActivity().findViewById(R.id.layout_wallet);
-        layoutMyOrder = (RelativeLayout) getActivity().findViewById(R.id.layout_my_order);
-        layoutFeedBack = (RelativeLayout) getActivity().findViewById(R.id.layout_feed_back);
-        layoutLogin = (LinearLayout) getActivity().findViewById(R.id.layout_login);
-        layoutUserInfo = (LinearLayout) getActivity().findViewById(R.id.layout_user_info);
-
-        imgNext = (ImageView) getActivity().findViewById(R.id.img_next);
-
-        imgAvatar = (RoundImageView) getActivity().findViewById(R.id.img_avatar);
-        tvUsername = (TextView) getActivity().findViewById(R.id.tv_username);
-        imgGender = (ImageView) getActivity().findViewById(R.id.img_gender);
-        tvScore = (TextView) getActivity().findViewById(R.id.tv_score);
-    }
-
-    /**
-     * 初始化监听事件
-     */
-    private void initEvent() {
-        layoutLoginBox.setOnClickListener(this);
-        layoutCoupon.setOnClickListener(this);
-        layoutWallet.setOnClickListener(this);
-        layoutMyOrder.setOnClickListener(this);
-        layoutFeedBack.setOnClickListener(this);
-
     }
 
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.layout_login_box, R.id.right_icon, R.id.layout_coupon, R.id.layout_wallet, R.id.layout_my_order, R.id.layout_feed_back})
+    void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_login_box:
                 boolean isLogin = (boolean) SPUtil.get(getActivity(),

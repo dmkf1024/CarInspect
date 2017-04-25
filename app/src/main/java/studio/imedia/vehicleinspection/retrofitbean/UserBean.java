@@ -1,12 +1,15 @@
 package studio.imedia.vehicleinspection.retrofitbean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by 代码咖啡 on 17/4/6
  * <p>
  * Email: wjnovember@icloud.com
  */
 
-public class UserBean {
+public class UserBean implements Parcelable {
 
     /**
      * gender : 0
@@ -28,15 +31,15 @@ public class UserBean {
     private String signature;
     private int city;
     private int county;
+    private int province;
+    private String provinceName;
+    private String countyName;
+    private String cityName;
     private String avatar;
     private int score;
-    private String province;
-    private String cityName;
     private String detailedAddress;
     private String name;
     private int id;
-    private String provinceName;
-    private String countyName;
 
     public int getGender() {
         return gender;
@@ -86,11 +89,11 @@ public class UserBean {
         this.score = score;
     }
 
-    public String getProvince() {
+    public int getProvince() {
         return province;
     }
 
-    public void setProvince(String province) {
+    public void setProvince(int province) {
         this.province = province;
     }
 
@@ -141,4 +144,57 @@ public class UserBean {
     public void setCountyName(String countyName) {
         this.countyName = countyName;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.gender);
+        dest.writeString(this.signature);
+        dest.writeInt(this.city);
+        dest.writeInt(this.county);
+        dest.writeString(this.avatar);
+        dest.writeInt(this.score);
+        dest.writeInt(this.province);
+        dest.writeString(this.cityName);
+        dest.writeString(this.detailedAddress);
+        dest.writeString(this.name);
+        dest.writeInt(this.id);
+        dest.writeString(this.provinceName);
+        dest.writeString(this.countyName);
+    }
+
+    public UserBean() {
+    }
+
+    protected UserBean(Parcel in) {
+        this.gender = in.readInt();
+        this.signature = in.readString();
+        this.city = in.readInt();
+        this.county = in.readInt();
+        this.avatar = in.readString();
+        this.score = in.readInt();
+        this.province = in.readInt();
+        this.cityName = in.readString();
+        this.detailedAddress = in.readString();
+        this.name = in.readString();
+        this.id = in.readInt();
+        this.provinceName = in.readString();
+        this.countyName = in.readString();
+    }
+
+    public static final Parcelable.Creator<UserBean> CREATOR = new Parcelable.Creator<UserBean>() {
+        @Override
+        public UserBean createFromParcel(Parcel source) {
+            return new UserBean(source);
+        }
+
+        @Override
+        public UserBean[] newArray(int size) {
+            return new UserBean[size];
+        }
+    };
 }
