@@ -160,9 +160,10 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), CarInsuranceActivity.class));
                 break;
             case R.id.repair_station_nearby:
-                if (isLogin)
-                    startActivity(new Intent(getActivity(), RepairStationListActivity.class));
-                else {
+                if (isLogin) {
+                    Toast.makeText(getActivity(), "此功能暂未开放", Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(getActivity(), RepairStationListActivity.class));
+                } else {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
                 }
@@ -186,32 +187,35 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
 
     private void initSlider() {
         TextSliderView textSliderView = new TextSliderView(this.getActivity());
-        textSliderView.image("http://m.360buyimg.com/mobilecms/s300x98_jfs/t2416/102/20949846/13425/a3027ebc/55e6d1b9Ne6fd6d8f.jpg");
-        textSliderView.description("新品推荐");
+        textSliderView.image(R.drawable.img_engine);
+        textSliderView.setScaleType(BaseSliderView.ScaleType.CenterCrop);
+        textSliderView.description("NGK火花塞 赛车直选");
         textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
             @Override
             public void onSliderClick(BaseSliderView slider) {
-                Toast.makeText(getActivity(), "新品推荐", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "广告 敬请期待", Toast.LENGTH_SHORT).show();
             }
         });
 
         TextSliderView textSliderView2 = new TextSliderView(this.getActivity());
-        textSliderView2.image("http://m.360buyimg.com/mobilecms/s300x98_jfs/t1507/64/486775407/55927/d72d78cb/558d2fbaNb3c2f349.jpg");
-        textSliderView2.description("时尚男装");
+        textSliderView2.image(R.drawable.img_car_model);
+        textSliderView2.description("一汽-大众家用汽车");
+        textSliderView2.setScaleType(BaseSliderView.ScaleType.CenterCrop);
         textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
             @Override
             public void onSliderClick(BaseSliderView slider) {
-                Toast.makeText(getActivity(), "时尚男装", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "广告 敬请期待", Toast.LENGTH_SHORT).show();
             }
         });
 
         TextSliderView textSliderView3 = new TextSliderView(this.getActivity());
-        textSliderView3.image("http://m.360buyimg.com/mobilecms/s300x98_jfs/t1363/77/1381395719/60705/ce91ad5c/55dd271aN49efd216.jpg");
-        textSliderView3.description("家电秒杀");
+        textSliderView3.image(R.drawable.img_wolun);
+        textSliderView3.description("汽车配件，来京东");
+        textSliderView3.setScaleType(BaseSliderView.ScaleType.CenterCrop);
         textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
             @Override
             public void onSliderClick(BaseSliderView slider) {
-                Toast.makeText(getActivity(), "家电秒杀", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "广告 敬请期待", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="field1" />
+                    android:text="项目一" />
 
                 <TextView
                     android:id="@+id/tv_field1"
@@ -133,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="field2" />
+                    android:text="项目二" />
 
                 <TextView
                     android:id="@+id/tv_field2"
@@ -159,7 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="field3" />
+                    android:text="项目三" />
 
                 <TextView
                     android:id="@+id/tv_field3"
@@ -172,11 +172,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:visibility="gone"
                 android:background="@color/color_divider" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:visibility="gone"
                 android:background="@android:color/white"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
@@ -203,6 +205,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:visibility="gone"
                 android:background="@android:color/white"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
@@ -231,6 +234,7 @@
                 android:layout_height="48dp"
                 android:background="@android:color/white"
                 android:paddingLeft="16dp"
+                android:visibility="gone"
                 android:paddingRight="16dp">
 
                 <TextView

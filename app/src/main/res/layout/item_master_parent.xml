@@ -18,6 +18,7 @@
     <ImageView
         android:id="@+id/img_folder"
         android:layout_width="20dp"
+        android:visibility="gone"
         android:layout_height="20dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
@@ -30,6 +31,7 @@
         android:layout_toLeftOf="@id/img_folder"
         android:layout_centerVertical="true"
         android:layout_marginRight="24dp"
+        android:layout_alignParentRight="true"
         android:orientation="horizontal">
 
         <TextView

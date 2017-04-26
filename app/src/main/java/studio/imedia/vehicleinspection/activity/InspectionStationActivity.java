@@ -188,7 +188,7 @@ public class InspectionStationActivity extends BaseActivity implements View.OnCl
                 bundle.putIntArray("index", index);
                 bundle.putDoubleArray("distance", distance);
                 setSelect(STATION_LIST); // 设置选择为列表显示
-                Log.d("msg", "获取到的定位经纬度为：" + latitude + " " + longitude + " " + index[0] + " " + distance[index[0]]);
+//                Log.d("msg", "获取到的定位经纬度为：" + latitude + " " + longitude + " " + index[0] + " " + distance[index[0]]);
             }
         });
 

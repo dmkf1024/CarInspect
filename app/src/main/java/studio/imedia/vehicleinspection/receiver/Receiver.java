@@ -25,7 +25,7 @@ public class Receiver extends BroadcastReceiver {
             index = bundle.getIntArray("下标");
             distance = bundle.getDoubleArray("距离");
             latLongListner.OnReceived(latitude, longitude, index, distance);
-            Log.d("msg", "经纬度：" + latitude + "  " + longitude + " " + index[0] + " " + distance[index[0]]);
+//            Log.d("msg", "经纬度：" + latitude + "  " + longitude + " " + index[0] + " " + distance[index[0]]);
         }
 
     }

@@ -323,7 +323,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                             IMG_LICENSE_FILE_NAME);
                     mAvatarFile = tmpFile;
                     mAvatar = BitmapFactory.decodeFile(tmpFile.getPath());
-                    imgUserAvatar.setImageBitmap(PicUtils.fitView(mAvatar, imgUserAvatar));
+//                    imgUserAvatar.setImageBitmap(PicUtils.fitView(mAvatar, imgUserAvatar));
+                    imgUserAvatar.setImageBitmap(mAvatar);
                     isAvatarUpdate = true;
                 } else {
                     Toast.makeText(mContext, "未检测到SD卡", Toast.LENGTH_SHORT).show();
@@ -337,7 +338,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     mAvatarFile = new File(mImgFileName); // 得到文件
                     Log.d("files", "the file from gallery is " + mAvatarFile.toString());
                     mAvatar = BitmapFactory.decodeFile(mImgFileName);
-                    imgUserAvatar.setImageBitmap(PicUtils.fitView(mAvatar, imgUserAvatar));
+//                    imgUserAvatar.setImageBitmap(PicUtils.fitView(mAvatar, imgUserAvatar));
+                    imgUserAvatar.setImageBitmap(mAvatar);
                     isAvatarUpdate = true;
                 }
                 break;

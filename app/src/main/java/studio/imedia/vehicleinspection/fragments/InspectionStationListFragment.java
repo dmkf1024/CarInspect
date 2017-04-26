@@ -104,10 +104,10 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
         if (bundle != null) {
             index = bundle.getIntArray("index");
             distances = bundle.getDoubleArray("distance");
-            for (int i = 0; i < index.length; i++) {
-                Log.d("msg", "传过来的车检站id: " + index[i] +": "+distances[i]);
-                //                Log.d("msg", "Activity传过来的值" + StaticValues.DISTANCE[i] + "  " + bundle.getDouble(StaticValues.DISTANCE[i]));
-            }
+//            for (int i = 0; i < index.length; i++) {
+//                Log.d("msg", "传过来的车检站id: " + index[i] +": "+distances[i]);
+//                //                Log.d("msg", "Activity传过来的值" + StaticValues.DISTANCE[i] + "  " + bundle.getDouble(StaticValues.DISTANCE[i]));
+//            }
         }
     }
 
@@ -198,9 +198,9 @@ public class InspectionStationListFragment extends Fragment implements AdapterVi
             JSONArray jStations = new JSONObject(json).getJSONArray("inspectStations");
 //            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img_station);
             int jStationLength = jStations.length();
-            Log.d("flow", jStationLength+" -- length");
             for (int i = 0; i < jStationLength; i++) {
-                JSONObject jStation = jStations.getJSONObject(index[i]);
+//                JSONObject jStation = jStations.getJSONObject(index[i]);
+                JSONObject jStation = jStations.getJSONObject(i);
                 InspectionStation station = new InspectionStation();
 
                 // - 营业时间

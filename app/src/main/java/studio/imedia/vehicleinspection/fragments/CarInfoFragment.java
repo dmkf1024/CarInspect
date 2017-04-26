@@ -385,6 +385,7 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
      * 清除界面数据
      */
     private void clearView() {
+//        imgDriverLicense.setImageDrawable(null);
         etCarPlateNum.setText("");
         tvCarBrand.setText("");
         tvCarType.setText("");
@@ -573,7 +574,8 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
                     File tmpFile = new File(Environment.getExternalStorageDirectory(),
                             IMG_LICENSE_FILE_NAME);
                     mLicensePic = BitmapFactory.decodeFile(tmpFile.getPath());
-                    imgDriverLicense.setImageBitmap(PicUtils.fitView(mLicensePic, imgDriverLicense));
+//                    imgDriverLicense.setImageBitmap(PicUtils.fitView(mLicensePic, imgDriverLicense));
+                    imgDriverLicense.setImageBitmap(mLicensePic);
                     isLicenseUpdate = true;
                 } else {
                     Toast.makeText(getActivity(), "未检测到SD卡", Toast.LENGTH_SHORT).show();
@@ -585,7 +587,8 @@ public class CarInfoFragment extends Fragment implements View.OnClickListener {
                     mImgFileName = PicUtils.getDataColumn(getActivity().getApplicationContext(),
                             data.getData(), null, null); // 得到文件名
                     mLicensePic = BitmapFactory.decodeFile(mImgFileName);
-                    imgDriverLicense.setImageBitmap(PicUtils.fitView(mLicensePic, imgDriverLicense));
+//                    imgDriverLicense.setImageBitmap(PicUtils.fitView(mLicensePic, imgDriverLicense));
+                    imgDriverLicense.setImageBitmap(mLicensePic);
                     isLicenseUpdate = true;
                 }
                 break;

@@ -22,7 +22,7 @@
             <com.daimajia.slider.library.SliderLayout
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="80dp">
+                android:layout_height="120dp">
 
                 <com.daimajia.slider.library.Indicators.PagerIndicator
                     android:id="@+id/custom_indicator"
@@ -79,6 +79,7 @@
                 <TextView
                     android:id="@+id/tv_check_order"
                     android:clickable="true"
+                    android:visibility="gone"
                     android:paddingBottom="8dp"
                     android:paddingRight="16dp"
                     android:layout_width="wrap_content"

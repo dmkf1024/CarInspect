@@ -184,6 +184,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         Log.d("reg", "login");
         String phone = etPhoneNum.getText().toString();
         String password = etPassword.getText().toString();
+        
+        if (password.length() < 6) {
+            Toast.makeText(mContext, "密码至少为6位", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String urlGet = url + "?phone=" + phone + "&password=" + password;
         // 登录验证

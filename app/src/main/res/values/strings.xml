@@ -20,7 +20,7 @@
     <string name="hint_input_password">请输入6位数字密码</string>
     <string name="login_agree">登录即表示同意</string>
     <string name="user_service_protocol">《车检用户服务协议》</string>
-    <string name="station_name_example">杭州交警支队第三检测站</string>
+    <string name="station_name_example">杭州警苑综合服务部第二车辆监测站</string>
     <string name="hint_feed_back">您好，如果遇到什么系统问题，或有更好的建议，欢迎您发送给我们，谢谢！</string>
 
     <string name="error_network">搜索失败,请检查网络连接！</string>

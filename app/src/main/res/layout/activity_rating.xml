@@ -49,7 +49,7 @@
         android:layout_gravity="center_horizontal"
         android:numStars="5"
         android:stepSize="1"
-        android:progress="20"
+        android:progress="100"
         style="@style/RatingBarYellow" />
 
     <RelativeLayout

@@ -511,6 +511,6 @@ public class WidgetUtils {
     public static boolean isEtContentEqual(EditText editText1, EditText editText2) {
         String content1 = editText1.getText().toString();
         String content2 = editText2.getText().toString();
-        return content1.equals(content1);
+        return TextUtils.equals(content1, content2);
     }
 }

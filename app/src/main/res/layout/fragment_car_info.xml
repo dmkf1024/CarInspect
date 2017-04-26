@@ -53,6 +53,7 @@
                 <ImageView
                     android:id="@+id/img_driver_license"
                     android:layout_width="match_parent"
+                    android:scaleType="centerCrop"
                     android:layout_height="match_parent" />
             </RelativeLayout>
 

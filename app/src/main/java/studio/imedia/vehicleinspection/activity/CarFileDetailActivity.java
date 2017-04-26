@@ -208,11 +208,14 @@ public class CarFileDetailActivity extends BaseActivity {
             tvStatus.setText("状态：未通过");
         else
             tvStatus.setText("状态：通过");
-        tvField1.setText(archives.field1 + "");
-        tvField2.setText(archives.field2 + "");
-        tvField3.setText(archives.field3 + "");
-        tvField4.setText(archives.field4 + "");
-        tvField5.setText(archives.field5 + "");
-        tvField6.setText(archives.field6 + "");
+//        tvField1.setText(archives.field1 + "");
+//        tvField2.setText(archives.field2 + "");
+//        tvField3.setText(archives.field3 + "");
+//        tvField4.setText(archives.field4 + "");
+//        tvField5.setText(archives.field5 + "");
+//        tvField6.setText(archives.field6 + "");
+        tvField1.setText("底盘");
+        tvField2.setText("发动机");
+        tvField3.setText("灯光");
     }
 }

@@ -35,6 +35,7 @@ public class RatingActivity extends BaseActivity implements View.OnClickListener
 
         initToolbar(); // 初始化toolbar
         initWidget(); // 初始化控件状态
+        initListener(); // 注册监听事件
     }
 
     /**
@@ -51,6 +52,13 @@ public class RatingActivity extends BaseActivity implements View.OnClickListener
         mTitle.setText(title);
     }
 
+    /**
+     * 注册监听事件
+     */
+    private void initListener() {
+        btnConfirm.setOnClickListener(this);
+    }
+
 
     /**
      * 初始化控件状态
@@ -63,6 +71,10 @@ public class RatingActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_back:
+                startActivity(new Intent(mContext, MyOrderActivity.class));
+                finish();
+                break;
+            case R.id.btn_confirm:
                 startActivity(new Intent(mContext, MyOrderActivity.class));
                 finish();
                 break;

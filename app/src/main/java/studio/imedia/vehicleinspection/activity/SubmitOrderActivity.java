@@ -452,7 +452,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             sum += item.getPrice();
         }
         if (isProxy)
-            sum += 52; // 加上代检费
+            sum += 25; // 加上代检费
         DecimalFormat df = new DecimalFormat(".00");
         mSumStr = df.format(sum);
         tvCostSum.setText("￥" + mSumStr);

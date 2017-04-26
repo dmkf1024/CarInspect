@@ -137,13 +137,9 @@ public class PayActivity extends BaseActivity {
                 } else {
                     pay(false);
                 }
-                payMoney();
+                doPay();
                 break;
         }
-    }
-
-    private void payMoney() {
-
     }
 
     /**
@@ -235,8 +231,8 @@ public class PayActivity extends BaseActivity {
 //                    installBmobPayPlugin("bp.db");
                     installApk("bp.db");
                 } else {
-                    Toast.makeText(PayActivity.this, "支付中断!", Toast.LENGTH_SHORT)
-                            .show();
+//                    Toast.makeText(PayActivity.this, "支付中断!", Toast.LENGTH_SHORT)
+//                            .show();
                 }
 //                tv.append(name + "'s pay status is fail, error code is \n"
 //                        + code + " ,reason is " + reason + "\n\n");

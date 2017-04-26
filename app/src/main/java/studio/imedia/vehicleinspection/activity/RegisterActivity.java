@@ -134,6 +134,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if (WidgetUtils.isEtContentEqual(etPassword, etConfirmPwd)) {
             final String phone = etPhone.getText().toString();
             final String password = etPassword.getText().toString();
+
+            if (password.length() < 6) {
+                Toast.makeText(mContext, "密码至少为6位", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             initUrl(); // 初始化url
             RequestBody formBody = new FormEncodingBuilder()
                     .add("phone", phone)
